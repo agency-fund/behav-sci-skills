@@ -1,0 +1,33 @@
+{
+  "skill_name": "design-golden-dataset",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "MaizeMate is our WhatsApp AI assistant that answers agronomy questions for smallholder maize farmers in western Kenya. Most messages are a Swahili-English mix, a few are in Luhya. The knowledge base covers maize varieties, planting windows, top-dressing, and common pests. It has to refuse anything about restricted pesticides and anything medical. We have about 6 weeks of pilot logs. Last quarter we checked it once against a test set our partner agronomist wrote, but that set has no stress-test questions and we've never re-run it, and we're about to swap models. Can you spec a golden dataset for us?",
+      "expected_output": "A full golden dataset specification following the output template: product line, the languages and registers covered including code-switching, version binding fields (model id, system-prompt tag, knowledge-base tag), a coverage table with all four buckets (knowledge, implementation, personalization, stress-test) each with a target count and query sources that draw on the pilot logs and the guardrail spec, ideal-response authoring rules naming the agronomist role and must-include/must-not-include form with verbatim refusal goldens, a scoring plan that assigns similarity to knowledge and implementation with a threshold set after a code-switched distribution check, an LLM-judge rubric with a human-calibration step and agreement threshold for personalization, mandatory human review for stress-test, and refresh triggers tied to knowledge-base updates, new query patterns, and safety incidents. It does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Can you make us a golden dataset for our chatbot?",
+      "expected_output": "The skill does not produce the specification. It asks what the product does and for whom, which languages and registers users write in, what the knowledge base covers and which failures would be harmful, whether logged user queries exist, and what the product must refuse. It may ask about any existing test set and who could author ideal answers, marked optional. It explains briefly that the coverage plan is derived from real traffic and the stress-test bucket from the guardrails.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We run a WhatsApp assistant in Hindi and Marathi for pregnant women and new mothers in Maharashtra, answering questions about nutrition, danger signs, and when to go to the clinic. It must never give medication doses and must redirect anything that sounds like an emergency to the helpline. Our team is two engineers and a program manager; the content came from a government handbook. We have 3 months of logs. We need a test set before we change the prompt.",
+      "expected_output": "The skill produces the specification with all four buckets, drawing stress-test queries from the must-refuse rules (dosing) and the emergency-redirect rule, with verbatim refusal and redirect goldens and mandatory human review for that bucket. Because the domain is maternal health and the team has no clinician or native-speaker reviewer on it, it tells the user to bring in a qualified clinical reviewer to author and review the stress-test and refusal goldens and a native Hindi and Marathi speaker for ideal answers and calibration ratings, and says what to bring them. It flags that similarity thresholds must be checked against human ratings in Hindi and Marathi before being trusted.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We want to find out whether farmers who use MaizeMate actually get better yields than farmers who don't. How do we test that?",
+      "expected_output": "The skill recognizes that this is a question about user and development outcomes, not about whether the model's answers are correct, and says a golden dataset cannot answer it. It does not produce a specification. It points the user to choose-ai-eval-level to establish which evaluation level the product has earned, and to plan-evaluation-design for the outcome measurement plan.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

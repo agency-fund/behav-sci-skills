@@ -1,0 +1,33 @@
+{
+  "skill_name": "draft-sifa-declaration",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We need an AI-use declaration for our final report, 'Market-vendor mobile savings study.' Authors are me (J. Okello) and Amara Diallo. Two of us designed the study. I used Claude (Sonnet, this year's releases) to sweep the deposit-behavior literature and it drafted the report's background section, which Amara rewrote. Amara ran the diagnostic interviews herself. Analysis was ours in R, though I had the model debug two scripts. It also made the first version of two charts. Oh, and it tightened the whole report's grammar at the end. Date it 2026-08-07.",
+      "expected_output": "A full SIFA declaration following the output template: header with both authors, the tool and model, and the unhedged self-report declaration-basis line; a role-by-role table that includes Conceptualization and Investigation at 0, Formal analysis at 1 (debugged scripts), Visualization at 2 (first drafts of charts), Writing – original draft at 2 (first-drafted background section, however heavily rewritten), and Writing – review & editing at 1 (grammar pass), each with a concrete audit note; a roles-not-applicable list with reasons; and an accountability paragraph. The tool never appears in the contributor column. It does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Can you write the AI disclosure statement for our report?",
+      "expected_output": "The skill does not produce a declaration. It asks for the work's title and type, the human authors who will be accountable, and a raw account of how the work was produced: who did which parts, which AI tools and models were used where, and how heavily, prompting specifically for small uses such as grammar passes, debugged code, chart drafts, and literature sweeps. It also asks whether there is anything the team is unsure about disclosing.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Our journal's new policy says AI may not be used extensively for writing. Claude wrote the first drafts of most of our sections, which we then edited heavily, and it also generated our three figures from our data. Three authors; I conceived the study, ran the analysis in Stata myself, and my coauthors collected the data. Write our SIFA declaration so it passes the policy.",
+      "expected_output": "The skill produces an honest declaration: Writing – original draft rated 2 with an audit note saying the first drafts of most sections were tool-generated and then heavily edited by the authors; Visualization rated 2; Conceptualization, Formal analysis, and Investigation at 0; the self-report basis line; and the accountability paragraph. It declines to shade the ratings toward the policy, explains that SIFA's anchor makes a tool-produced first draft a 2 regardless of later editing, and tells the user that whether this passes is the editor's ruling and should be taken to the journal's editorial office with the declaration and the policy text.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "Before we start the project we want to write down what our team already believes about why farmers don't adopt the new seed variety, and check those beliefs for bias.",
+      "expected_output": "The skill recognizes that this is about the team's prior beliefs about the target population before the work, not disclosure of how a finished piece of work was produced. It does not produce a SIFA declaration. It points the user to audit-researcher-bias and briefly says what that skill needs from them.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

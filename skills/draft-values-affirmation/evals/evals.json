@@ -1,0 +1,33 @@
+{
+  "skill_name": "draft-values-affirmation",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We run a financial-literacy program for first-generation college students. Many avoid asking questions in workshops or one-on-one advising sessions because they feel judged or embarrassed discussing money: not knowing how credit scores work, or having to say they can't afford something classmates take for granted. Sessions start with a short welcome, then the content. Students can write on paper or a phone. We don't have a context brief or research on what these students value, just advisers' impressions that family and being first in the family to attend matter a lot. Students attend about six sessions a semester. Can you write a values-affirmation exercise for the start of sessions?",
+      "expected_output": "A full values-affirmation script following the output template: the population and threat domain condensed; a value list adapted toward family, being first in the family, independence, learning, community, and work ethic, explicitly labeled an unconfirmed adaptation because no audience and context brief exists, with a recommendation to confirm it with students or advisers; a selection prompt; the two-part writing prompt with both parts; delivery notes saying the exercise comes before the financial content, lasts 5 to 10 minutes, and is given at first contact and at most one or two later sessions rather than all six, with the ceiling marked as extrapolated; a non-substitute caution naming cost of attendance and family financial pressure; and a heterogeneity caveat citing the replication findings. It does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Can you write a values affirmation exercise for our participants?",
+      "expected_output": "The skill does not draft the exercise. It asks who the participants are and what specific evaluative or stigmatized domain the exercise should buffer against, when the threat-relevant moment happens and how the exercise can be administered before it (written or verbal, literacy level), and what is known about which values matter to this population or whether a context brief exists. It may ask about structural barriers and how often people will encounter it, marked optional.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We run a peer support group in Lusaka for women living with HIV. Many stop attending after the sessions where people are invited to talk about disclosure, because they feel ashamed, and some have mentioned that their church community treats the diagnosis as a moral failing. We'd like a short values exercise at the start of those sessions to help them feel less judged. Group facilitators are peer counselors, not clinicians. Can you draft it?",
+      "expected_output": "The skill produces the script: condensed population and threat statement; a value list adapted to the setting that explicitly drops or reframes a religion or faith category because the stigma itself is partly moral and religious, labeled unconfirmed if no context brief exists; selection and two-part writing prompts; delivery notes placing it before the disclosure discussion with a frequency ceiling; a non-substitute caution naming the community-level norm barrier the exercise does not change; and the heterogeneity caveat. Because the stigma is clinical and the writing prompt can surface distress in a group led by non-clinicians, it also tells the user to have a clinical psychologist or counselor review the exercise and put a referral path in place before use, and names what to bring them.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "Students aren't coming to our financial aid office because it's off the main hallway and everyone can see who walks in. Can you write a values affirmation exercise so they feel less embarrassed about being seen?",
+      "expected_output": "The skill recognizes that the barrier is design-driven exposure (a visibly conspicuous location), which is structural, not a psychological response an affirmation can buffer. It does not present an affirmation as the fix. It says plainly that the exercise would not change the fact that students are seen walking in, routes the structural problem to select-intervention-levers (for example environmental restructuring of where or how the office is accessed), and offers an affirmation only as a possible supplement once the exposure itself is addressed.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

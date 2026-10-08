@@ -1,0 +1,33 @@
+{
+  "skill_name": "plan-evaluation-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Target behavior: female stall vendors in Nairobi's Gikomba and Toi markets deposit that day's net cash surplus into an M-Pesa savings wallet before leaving the market, each trading day. Our barrier hypotheses from the COM-B work: (a) vendors don't trust mobile savings compared with cash or their chama, and (b) visible saving at the kiosk invites borrowing requests from neighbors. The lever brief plans a phased rollout: half the enrolled vendors start in month 1, the rest in month 2. The sponsor has said a 10 percentage point increase in the share of trading days with a deposit would justify scaling. The mobile money provider says transaction logs are available daily through their API if vendors consent. How should we measure whether this worked?",
+      "expected_output": "A full evaluation design brief following the output template: the behavior carried over verbatim; a primary outcome that observes the deposit itself from transaction logs (not self-report), with a recording-risk note; a comparison condition grounded in the phased rollout (randomized waitlist, month 2 as comparison for month 1); the 10 percentage point threshold named as the sponsor's and not as a power calculation; a feasibility section naming the API, daily frequency, and consent; one mediating measure per barrier hypothesis, distinct from the primary outcome; a dated pre-registration sentence; and open questions such as the consent process. It does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Our program's goal is to improve the financial resilience of market vendors. How will we know if it worked?",
+      "expected_output": "The skill does not produce a brief. It explains that 'improve financial resilience' is a goal, not a behavior, and points the user to define-key-behavior to pick one who-what-when behavior first. It also asks what threshold the sponsor or program would need to see to continue, and what data exists today (transaction logs, surveys, administrative records) and who controls access.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Behavior: pupils in grades 3 to 6 wash their hands with soap before eating lunch at school. We're rolling this out across 40 primary schools in two districts in Zambia. District officials will choose which 20 schools go first and which 20 go six months later. Our funder wants an evaluation it can call rigorous because the result will feed a national scale-up decision. We can observe handwashing stations at lunch with trained monitors twice a term. What's the measurement plan?",
+      "expected_output": "The skill produces the brief: a primary outcome based on observed handwashing (with a note on observer effects as a recording risk), a comparison condition that names the later-starting schools as the comparison and states plainly that officials choosing the order is not randomization, a minimum effect marked provisional because no threshold was stated, feasibility of twice-a-term observation, no mediating measures (stated as not applicable), a dated pre-registration sentence, and open questions. Because the design is clustered at the school level, assignment is not random, and the result feeds a national scale decision, it tells the user to bring in an evaluation methodologist for the power calculation and the design choice, and says what to bring them.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We want to test two versions of our SMS reminder text in Evidential, randomizing farmers who onboard over the next eight weeks. What should the arms, randomization unit, and sample size be?",
+      "expected_output": "The skill recognizes this as a request for a launch-ready experiment configuration in Evidential, not a measurement plan for a target behavior. It does not produce an evaluation design brief. It points the user to design-evidential-experiment, and notes that if the program already has a locked primary outcome and minimum effect from an evaluation design brief, those should carry into the experiment rather than be chosen fresh.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

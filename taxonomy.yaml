@@ -215,6 +215,75 @@ io_types:
     description: An ordered set of recommended skills with their relationships.
     user_suppliable: false
 
+  - id: evidence-scan-brief
+    label: Evidence scan brief
+    description: "What has been tried for a behavior, population, or context, with effect sizes where reported, null or contradicting findings, evidence gaps, and which findings are WEIRD-skewed."
+    user_suppliable: false
+  - id: audience-context-brief
+    label: Audience and context brief
+    description: "The population operationalized as a specific subgroup, the decision moment where the behavior choice is made, the channels already reaching them, and unconfirmed WEIRD-default assumptions."
+    user_suppliable: false
+  - id: researcher-assumptions
+    label: Researcher assumption statement
+    description: "A research team's own short, honest answers about what they already believe causes the behavior gap, which population they have worked with most, and what would change their mind, given before looking at diagnostic data."
+    user_suppliable: true
+  - id: bias-audit-report
+    label: Bias audit report
+    description: "A flag list of which stated researcher assumptions are unfalsifiable as written, default to a WEIRD population as the norm, or lack a named disconfirming observation. Not a score and not a debiasing plan."
+    user_suppliable: false
+  - id: prior-intervention-record
+    label: Prior intervention record
+    description: "A team's own written account of an intervention it already tried: what was planned, what it believes happened, and why it believes it succeeded or failed."
+    user_suppliable: true
+  - id: intervention-post-mortem
+    label: Intervention post-mortem brief
+    description: "A retrospective separating what was planned from what was implemented, classifying the result as implementation failure, idea failure, or cannot yet tell, and checking the team's causal story against the data collected."
+    user_suppliable: false
+  - id: affirmation-context
+    label: Affirmation context statement
+    description: "The population and the specific evaluative or stigmatized domain a values-affirmation exercise needs to buffer against, plus what is known about which values matter to this population."
+    user_suppliable: true
+  - id: ai-use-account
+    label: AI use account
+    description: "A team's raw account of how a piece of work was produced: who did which parts, which AI tools were used where and how heavily, and anything they are unsure whether to disclose."
+    user_suppliable: true
+  - id: sifa-declaration
+    label: SIFA declaration
+    description: "A Statement of Intellectual Fellowship and Accountability: per CRediT contributor role, the human contributors, any AI tool, the extent of AI involvement on a none/some/extensive scale, and an audit note."
+    user_suppliable: false
+  - id: ai-product-account
+    label: AI product account
+    description: "A team's plain-language account of an AI product: what it does and for whom, the development outcome it targets, its maturity, the evaluation evidence that exists, and the decision the team wants to inform next."
+    user_suppliable: true
+  - id: ai-eval-level-recommendation
+    label: AI evaluation level recommendation
+    description: "Per level of The Agency Fund's four-level AI evaluation framework, which evaluations the product has earned now, which are premature and why, and the evaluability-early steps to take regardless."
+    user_suppliable: false
+  - id: user-funnel-map
+    label: User funnel map
+    description: "A staged user funnel worked backward from one development outcome, with the user action, confirming metric, target, and owner for each stage."
+    user_suppliable: false
+  - id: funnel-metric-readout
+    label: Funnel metric readout
+    description: "A team's observed numbers for an existing funnel: the value or transition rate per stage over a stated window, plus known data-quality caveats."
+    user_suppliable: true
+  - id: funnel-weak-link-hypotheses
+    label: Funnel weak-link hypotheses
+    description: "For a funnel's largest unexplained drop-off, competing testable mechanism hypotheses, each paired with the measurement or experiment that would discriminate it. Not a redesign."
+    user_suppliable: false
+  - id: golden-dataset-spec
+    label: Golden dataset specification
+    description: "A build specification for an AI product's golden evaluation dataset: coverage buckets, query sourcing rules, ideal-response authoring rules, and the scoring plan."
+    user_suppliable: false
+  - id: experiment-intent
+    label: Experiment intent statement
+    description: "A team's plain-language statement of the change it wants to test, who it applies to, what it expects to move, and the decision the result will inform."
+    user_suppliable: true
+  - id: experiment-configuration
+    label: Experiment configuration brief
+    description: "A launch-ready experiment configuration: hypothesis, experiment type, randomization unit and arms, primary and guardrail metrics, power inputs, stopping rule, delivery mapping, and analysis plan."
+    user_suppliable: false
+
 # Suggested free-form tags. Any tag is allowed; these keep spelling consistent.
 suggested_tags:
   - com-b
@@ -236,3 +305,10 @@ suggested_tags:
   - cultural-psychology
   - implementation
   - pre-mortem
+  - behavior-change-techniques
+  - self-affirmation
+  - evidence-synthesis
+  - process-evaluation
+  - research-transparency
+  - funnel
+  - evidential

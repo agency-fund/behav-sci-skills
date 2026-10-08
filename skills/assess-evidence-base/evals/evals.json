@@ -1,0 +1,33 @@
+{
+  "skill_name": "assess-evidence-base",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our goal is to increase long-term savings among informal-sector market vendors in Nairobi so they have a buffer against income shocks. Mostly women running produce stalls, cash-based, most already in a chama. Before we pick a behavior to target, has this been done before? What does the evidence say? We have about a day for this.",
+      "expected_output": "An evidence scan brief following the output template: the goal restated; findings under 'What has already been tried', each with population and setting, effect size and direction where available, and a confidence qualifier; a filled 'Findings that don't support the goal' section (for example low take-up of formal bank accounts in comparable Kenyan settings), not omitted; a WEIRD-skew flag per finding naming where it was measured versus urban Nairobi markets; an evidence gaps section naming the lack of mobile-money commitment-device studies among urban vendors if none are found; and a confidence section stating this was a one-day scan and what a fuller review would check. It does not select a target behavior and does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "What does the research say?",
+      "expected_output": "The skill does not produce a brief. It asks for the program goal as stated and what is known about the target population and setting. It may also ask how much time is available for the scan, which sources the user can reach, and whether the team already has studies or a candidate intervention in mind, marked optional.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We're drafting a policy brief for the Ministry of Education recommending a nationwide cash transfer conditional on secondary school attendance for girls. Can you summarize the evidence that it works so we can cite it? Deadline is Friday.",
+      "expected_output": "The skill produces an evidence scan brief with the mandatory sections, including findings that do not support the goal (null, mixed, or backfire results for conditional cash transfers) and per-finding WEIRD-skew flags. Because the decision is a national policy recommendation that will be cited, it tells the user plainly that a rapid, time-bounded scan should not carry that weight alone, that contradictory findings need a methods judgment it cannot settle, and that an evidence-synthesis specialist or a published systematic review should be consulted before the brief goes out. It refuses to search only for supporting evidence.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We ran a daily SMS reminder program for medication adherence last year and adherence barely moved. What does that tell us about whether reminders work for our patients?",
+      "expected_output": "The skill recognizes that the evidence in question is the team's own prior attempt, not the published literature. It does not produce an evidence scan brief. It points the user to review-prior-intervention to separate implementation failure from idea failure using the team's own record, and offers to scan the external literature on SMS reminders afterward if that would still help.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

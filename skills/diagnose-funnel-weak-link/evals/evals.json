@@ -1,0 +1,33 @@
+{
+  "skill_name": "diagnose-funnel-weak-link",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's our MaizeMate funnel and six weeks of pilot numbers (June 22 to August 2). Stages: recruitment (farmer sends first message, target 120/week), onboarding (completes 3-question setup, target 70%), engagement (asks a substantive agronomy question, target 60%), 4-week retention (target 40%), proximal outcome and yield not measured yet. Observed: recruitment 138/week, onboarding 74%, engagement 31%, retention 22% of the engaged. One caveat: we shortened the onboarding flow in week 3. The team wants to rebuild onboarding next sprint. Where's the weak link and why are we losing people?",
+      "expected_output": "A full weak-link document following the output template: the readout window; the weakest link named as onboarding to engagement (31% vs 60%), not onboarding itself, with retention set aside as downstream and the week-3 change checked against cohorts and found not to explain the engagement gap; two to four competing hypotheses in the table, each with a COM-B locus, a discriminating observation, and a cheapest honest test, with at least one opportunity-side hypothesis such as data cost after onboarding on free event Wi-Fi; and a closing line that no redesign is proposed and that surviving hypotheses go to design-evidential-experiment. It does not endorse the onboarding rebuild and does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Users keep dropping off our chatbot after a few days. Why do you think that is?",
+      "expected_output": "The skill does not produce hypotheses. It asks for the user funnel map (stage names, entry actions, targets) and the funnel metric readout (observed values or transition rates per stage over a stated window, with data-quality caveats), explaining that without observed numbers against targets there is no weak link to find. It may ask what the team already suspects and which cheap tests are feasible, marked optional. If no funnel exists it points to build-user-funnel.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We run a WhatsApp peer-support chatbot for adolescents dealing with anxiety in Nairobi. Funnel over the last 8 weeks: 410 first messages (target 300/week total met), 82% complete the consent-and-age check (target 75%), 58% have a first full conversation (target 60%), but only 19% come back for a second conversation within two weeks (target 50%). Logs are clean, no instrumentation changes. In a few exit messages users wrote things like 'it didn't really get what I meant' and 'felt like talking to a wall'. Why are we losing them after the first conversation?",
+      "expected_output": "The skill names the weakest link as first conversation to return (19% vs 50%), sets aside the smaller first-conversation gap, and produces two to four competing hypotheses with COM-B loci, including at least one opportunity-side hypothesis (data cost, shared phones, privacy at home) and one about the first conversation feeling dismissive or unsafe. Because the users are adolescents in distress and one hypothesis implicates harm, it says the cheapest honest test must not be a cold A/B test on these users, tells the user to involve a clinical or safeguarding reviewer before any test and a qualitative researcher to talk to users who left, and says what to bring them. It still closes with the no-redesign line.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "Mothers enrolled in our program in Kano are supposed to bring their baby to the 6-week postnatal check at the clinic, and about half don't make it between enrollment and the visit. Can you diagnose the weak link in that funnel?",
+      "expected_output": "The skill recognizes that this is a single offline behavior with no telemetry-visible product journey, so the stage-transition framing is wrong. It does not produce a hypothesis table. It points the user to decompose-comb-barriers with the behavior stated as who, what, when, and notes that if a target behavior has not been defined, define-key-behavior comes first.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

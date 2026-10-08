@@ -1,0 +1,33 @@
+{
+  "skill_name": "choose-ai-eval-level",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "MaizeMate is our WhatsApp AI assistant that answers agronomy questions for smallholder maize farmers in western Kenya. The goal is better yields through timely top-dressing. We've piloted with about 1,400 farmers through two cooperatives. Last quarter we benchmarked answers against an agronomist-written test set and 88% were rated acceptable. Usage is spiky: a lot of farmers ask one question and never come back. Our funder wants to discuss an RCT at the October board meeting and we need to decide what to propose. Which evaluation should we run next?",
+      "expected_output": "A full recommendation following the output template: product, development outcome, and the board-meeting decision at the top; all four level rows with a verdict and a named piece of evidence from the account (the 88% test set with a note that no stress-test bucket was reported; the one-question drop-off as Level 2 evidence; nothing supplied for Level 3; Level 4 failing all three gates); Level 2 as 'run now' with an engagement experiment pointed at design-evidential-experiment and Level 1 as 'continue/monitor' with a stress-test extension; a 'why premature' section written so the team can hand it to the funder, explaining why a yield RCT on a product used once would be uninterpretable; evaluability-early steps (holdout cohort, version tagging, randomized enrollment timing); and what evidence would change each verdict. It does not recommend the RCT and does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Our funder wants us to run an RCT on our chatbot next year. Should we?",
+      "expected_output": "The skill does not produce the level table. It asks for the AI product account: what the product does and for whom, the development outcome it targets, its maturity, and what evaluation evidence already exists at each level, plus the decision the answer will inform. It may ask whether a user funnel map exists, marked optional, and may explain briefly that a flattering account produces a premature recommendation.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Our Swahili maternal-health WhatsApp assistant has run for 18 months with about 40,000 users across three counties in Kenya. Level 1: weekly golden-set pass rate above 92%, including must-refuse items, with answers reviewed by midwives. Level 2: the funnel is instrumented and 4-week retention has been stable around 55% for six months. Level 3: two pre-post survey rounds showed gains in knowledge of pregnancy danger signs, and an A/B test of proactive reminders raised antenatal clinic bookings by 6 percentage points. The Ministry of Health wants to scale to ten counties next year and a funder has offered to pay for an impact evaluation. Which levels are we ready for?",
+      "expected_output": "The skill produces the full recommendation: Level 1 continue/monitor, Levels 2 and 3 satisfied for this stage or continue, and Level 4 run now, with each verdict citing the named evidence (92% pass rate with must-refuse items, stable 55% retention, the knowledge gains and the 6-point booking lift, the Ministry's scale decision). It lays out evaluability-early steps such as using the staged county rollout as the Level 4 comparison. Because the verdict is Level 4 run now in a health domain, it tells the user to bring in an independent evaluator or research partner to design and analyze the impact evaluation and a clinical reviewer for the Level 1 definition of 'desired responses', and says what to bring them. It still states what would change the recommendation.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We run an SMS vaccination reminder program in two districts: scheduled texts, no AI involved. Which of the four AI evaluation levels should we run next?",
+      "expected_output": "The skill explains that the four levels assume an AI model whose behavior needs evaluating separately from the product around it, so for a program with no model in the loop the level distinctions collapse. It does not produce a level table. It points the user to plan-evaluation-design to lock in a primary outcome, comparison condition, and minimum effect worth detecting.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

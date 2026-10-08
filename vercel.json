@@ -5,7 +5,7 @@
   "buildCommand": "bash scripts/vercel_build.sh build",
   "outputDirectory": "site/dist",
   "cleanUrls": true,
-  "trailingSlash": false,
+  "trailingSlash": true,
   "functions": {
     "api/submit.py": {
       "maxDuration": 30,

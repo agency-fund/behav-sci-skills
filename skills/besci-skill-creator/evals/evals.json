@@ -1,0 +1,40 @@
+{
+  "skill_name": "besci-skill-creator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I'm a behavioral scientist at Irrational Labs. I want to turn the 'saying-is-believing' technique from Walton & Cohen's belonging work into a skill for the behav-sci-skills library. Users would be NGO program staff designing a storytelling intervention. Can you help me build it? I'm in Claude Code.",
+      "expected_output": "The skill starts the interview rather than drafting. It asks for the one-sentence 'what it does' first (or proposes one and asks for confirmation), checks it for 'and', then moves to trigger phrasings. It asks one question per turn with a recommended answer. It does not produce SKILL.md until the atomicity gate, trigger rule, before-you-start, evidence, procedure, output template, failure modes, escalation, and evals have been covered. When it does draft, it writes the full folder, runs the validator, and reports results in the output template.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Make me a skill that designs a complete behavior change program for an NGO, from understanding the problem to designing the intervention and planning the evaluation.",
+      "expected_output": "The skill fails the atomicity gate on purpose: it explains that this is a workflow made of several atomic skills (define the behavior, diagnose barriers, select levers, draft content, plan the evaluation), proposes the split, records the others as future skills, and asks which one to build now. It does not draft a monolithic skill.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Here's my draft SKILL.md for a skill called comb-barrier-decomposer. Can you check it against the library spec? [SKILL.md text follows with a summary-style description, no 'Do not use when' clause, no 'When to bring in a specialist' section, and no evals folder]",
+      "expected_output": "The skill reads the draft, identifies that it is a revision/check rather than a new skill, and reports concrete spec problems: the name should be verb-first (decompose-comb-barriers), the description is a summary not a trigger rule and lacks a do-not-use clause, the specialist section is missing, evals/evals.json is missing. If a filesystem is available it runs the validator; otherwise it walks the checklist. It then offers to fix each item through short questions rather than silently rewriting.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "I want to create a skill that formats Excel spreadsheets with our company's brand colors.",
+      "expected_output": "The skill says this is not a behavioral-science library skill and points the user to Anthropic's general skill-creator (in Claude.ai under Customize > Skills), without starting the interview.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 5,
+      "prompt": "I'm on Claude Desktop with no code execution. I've done the interview and you've drafted the skill. I don't think my skill needs a 'Before you start' section, it just runs.",
+      "expected_output": "The skill pushes back once with a concrete question about the most common way users under-specify the request, and if the author still declines, accepts 'Not applicable:' followed by the author's real reason, written into the section verbatim. Because there is no code execution, it walks the manual checklist from references/checklist.md instead of running the validator, and offers the files as text blocks the author can save, explaining how to zip them into a .skill file.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

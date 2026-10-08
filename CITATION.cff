@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use skills from this library in research or program work, please cite the specific skill and version (see docs/citing.md). To cite the library as a whole, use the metadata below."
+title: "Behavioral Science Skills Library"
+type: software
+authors:
+  - name: "The Agency Fund"
+  - name: "Irrational Labs"
+repository-code: "https://github.com/agency-fund/behav-sci-skills"
+url: "https://behav-sci-skills.vercel.app"
+license: "CC-BY-4.0 (content), MIT (code)"
+version: "0.1.0"
+date-released: "2026-10-08"
+keywords:
+  - behavioral science
+  - AI skills
+  - intervention design
+  - measurement
+  - evaluation
+abstract: "A curated, open-source library of small, single-purpose AI skills that put behavioral-science methods into the daily work of social-sector teams. Each skill is a versioned, cited procedure with a trigger rule, an output template, known failure modes, an escalation point, and test cases."

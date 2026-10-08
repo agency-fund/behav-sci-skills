@@ -1,0 +1,70 @@
+name: Propose a skill
+description: Claim or suggest an atomic behavioral-science skill before writing it.
+title: "Skill proposal: <verb-first-name>"
+labels: ["skill-proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A skill is **one thing a behavioral scientist does**, narrow enough to describe in one sentence without the word "and". Check the catalog first so we don't get two skills for the same operation. Read `docs/skill-spec.md` for the full rules.
+  - type: input
+    id: name
+    attributes:
+      label: Proposed name
+      description: Verb-first, kebab-case. Examples - decompose-comb-barriers, define-key-behavior, draft-values-affirmation-exercise.
+      placeholder: draft-something-specific
+    validations:
+      required: true
+  - type: input
+    id: what
+    attributes:
+      label: What it does, in one sentence (no "and")
+      placeholder: Turns a vague program goal into one observable target behavior stated as who, what, and when.
+    validations:
+      required: true
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Stage
+      description: Where in a project this skill is normally used. Pick "other" only if none fit.
+      options:
+        - define
+        - diagnose
+        - design
+        - measure
+        - test
+        - analyze
+        - implement
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: atomic
+    attributes:
+      label: Why this is atomic
+      description: What single input does it take and what single output does it produce? If you needed "and", what would the two skills be?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence base
+      description: The framework, paper, or practice it draws on, with a citation or link. Note WEIRD skew if you know it.
+    validations:
+      required: true
+  - type: input
+    id: who
+    attributes:
+      label: Who you are and your organization
+      placeholder: Jane Doe, Irrational Labs
+    validations:
+      required: true
+  - type: dropdown
+    id: claim
+    attributes:
+      label: Are you claiming it?
+      options:
+        - "Yes, I will write it"
+        - "No, suggesting it for someone else"
+    validations:
+      required: true

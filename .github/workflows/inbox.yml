@@ -1,0 +1,113 @@
+name: Unpack inbox submissions
+
+# Authors who cannot use git upload a .skill file into inbox/ through GitHub's
+# web UI ("Add file -> Upload files -> Create a new branch and start a pull
+# request"). This workflow unpacks it into skills/<name>/, removes the archive,
+# commits to the PR branch, validates, and posts the report.
+
+on:
+  pull_request:
+    paths:
+      - "inbox/**"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Explain the limitation for fork PRs
+        if: github.event.pull_request.head.repo.full_name != github.repository
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            await github.rest.issues.createComment({ owner, repo, issue_number, body:
+              "Thanks for the submission. This pull request comes from a fork, so the inbox bot cannot push the unpacked folder to it. " +
+              "Please either (a) unzip your .skill locally and add the folder as `skills/<name>/` in this PR, or (b) use the upload form on the website, " +
+              "or (c) send the .skill file to a maintainer listed in MAINTAINERS.md." });
+
+      - name: Stop here for fork PRs
+        if: github.event.pull_request.head.repo.full_name != github.repository
+        run: |
+          echo "Fork PR, nothing to do."
+
+      - uses: actions/checkout@v4
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install dependencies
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        run: uv sync
+
+      - name: Unpack archives from inbox/
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        id: unpack
+        run: |
+          set +e
+          uv run scripts/unpack_inbox.py --result unpack-result.json | tee unpack-log.txt
+          echo "exit=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Commit unpacked skills to the PR branch
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        run: |
+          git config user.name "besci-inbox-bot"
+          git config user.email "besci-inbox-bot@users.noreply.github.com"
+          git add -A skills inbox
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+          else
+            names=$(python3 -c "import json;print(', '.join(u['skill'] for u in json.load(open('unpack-result.json'))['unpacked']) or 'archive')")
+            git commit -m "Unpack ${names} from inbox"
+            git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          fi
+
+      - name: Validate skills
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        id: validate
+        run: |
+          set +e
+          uv run scripts/besci_validate.py | tee validate-report.txt
+          echo "exit=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Post report on the pull request
+        if: github.event.pull_request.head.repo.full_name == github.repository && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- besci-validate-report -->';
+            const read = (f) => { try { return fs.readFileSync(f, 'utf8'); } catch (e) { return ''; } };
+            const unpackLog = read('unpack-log.txt').trim();
+            const report = read('validate-report.txt').trim() || '(validator did not run)';
+            const unpackOk = '${{ steps.unpack.outputs.exit }}' === '0';
+            const passed = '${{ steps.validate.outputs.exit }}' === '0';
+            const head = !unpackOk
+              ? '### Inbox: an archive was rejected — see below, fix it, and upload again'
+              : passed ? '### Inbox: unpacked and structure check passed'
+                       : '### Inbox: unpacked, but structure check failed — fix the items below and upload again';
+            const body = `${marker}\n${head}\n\n**Unpack log**\n\`\`\`\n${unpackLog}\n\`\`\`\n\n**Validator report**\n\`\`\`\n${report}\n\`\`\`\n\n_To fix: re-run besci-skill-creator or edit the files, re-zip the folder, and upload the new .skill into inbox/ on this same branch. The bot will replace the folder. Rules: \`docs/skill-spec.md\`._`;
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number, per_page: 100 });
+            const existing = comments.find(c => c.body && c.body.startsWith(marker));
+            if (existing) await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+            else await github.rest.issues.createComment({ owner, repo, issue_number, body });
+
+      - name: Fail if anything was rejected
+        if: github.event.pull_request.head.repo.full_name == github.repository && (steps.unpack.outputs.exit != '0' || steps.validate.outputs.exit != '0')
+        run: exit 1

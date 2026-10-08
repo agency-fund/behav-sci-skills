@@ -1,0 +1,33 @@
+{
+  "skill_name": "draft-cognitive-interview-script",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We run a girls' education program in northern Nigeria and we're adding a 6-item 'sense of agency' scale to our baseline survey, in Hausa, administered face to face by enumerators. Items: (1) I can make decisions about my own future. (2) When I set a goal, I usually find a way to reach it. (3) People around me listen to my opinions. (4) I have control over how I spend my time. (5) If something goes wrong, I can do something about it. (6) I know where to get help when I need it. Response options: strongly disagree to strongly agree, 5 points. Respondents are 13 to 18, many with little schooling. Items 3 and 4 worry us. Each item is meant to measure perceived control over decisions (1, 4, 5), goal pursuit (2), social voice (3), and access to support (6). Can you draft the cognitive interview script?",
+      "expected_output": "A full script following the output template: opening with think-aloud practice, concrete probes for all six items with extra probes for items 3 and 4, conditional probes, closing, note-taking sheet, and an analysis plan. Because respondents are adolescents with little schooling and a status gap with enumerators, the script chooses concrete verbal probing over open think-aloud and says so. Probes are open and do not contain intended answers. It flags that item 4 ('control over time') and item 3 may carry different meanings for adolescent girls in households with strong norms, and notes the Hausa translation should be probed. It does not ask the 'Before you start' questions again because they were answered.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Can you make a cognitive interview script for our survey?",
+      "expected_output": "The skill does not produce a script. It asks for the items exactly as respondents will see them (with response options and language), who the respondents are and the setting, and what each item intends to measure. It may also ask about which items worry the team and interviewer experience, marked optional. It explains briefly why it needs the intended meaning of each item.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We're using the PHQ-9 depression screener in Swahili with refugee adults in a camp setting to decide who gets referred to the mental health team. Our translation is done. Items are the standard nine PHQ-9 items with the 'not at all / several days / more than half the days / nearly every day' options. Each item measures a DSM depression symptom over the past two weeks. We want to check comprehension with 10 respondents before we start referrals. Draft the script.",
+      "expected_output": "The skill produces the script (it has everything it needs) with probes for all nine items, with particular attention to the two-week recall window and the frequency response options. It also triggers the escalation point clearly: the instrument is a validated scale used for high-stakes referral decisions, and items involve sensitive mental-health content, so it tells the user to involve a psychometrician or clinical researcher before changing any wording based on findings, and to have a bilingual reviewer distinguish translation problems from comprehension problems. It mentions that referral decisions should not rest on a cognitively tested but quantitatively unvalidated translation alone.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "I want to understand why mothers in our program stop coming to the nutrition sessions after the third visit. Can you write interview questions for them?",
+      "expected_output": "The skill recognizes this is an exploratory qualitative interview about experiences and barriers, not item pretesting, and says so. It does not produce a cognitive interview script. It points the user toward a qualitative interview guide or a barrier diagnosis skill, and offers to help with cognitive testing later if they build a survey from what they learn.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

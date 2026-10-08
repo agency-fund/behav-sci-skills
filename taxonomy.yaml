@@ -1,0 +1,238 @@
+# Controlled vocabularies for the Behavioral Science Skills Library.
+# scripts/besci_validate.py reads this file. The site and the navigator read
+# the catalog that is built from it. Change this file in the same pull
+# request as the first skill that needs the change.
+
+# Where in a project a skill is normally used. One per skill. These seven
+# are strong recommendations, not rules: a skill that genuinely fits none of
+# them uses `other`, which the validator accepts with a warning so that
+# maintainers notice recurring gaps and extend the list.
+stages:
+  - id: define
+    label: Define
+    description: Turn a goal, population, or outcome into something specific enough to work on.
+    crosswalk:
+      bit_test: Target
+      busara_audas: Assess
+      taf_eval: "Level 0: theory of change"
+  - id: diagnose
+    label: Diagnose
+    description: "Explain why the current behavior pattern exists: barriers, drivers, context."
+    crosswalk:
+      bit_test: Explore
+      busara_audas: Understand
+      taf_eval: "Level 1: formative research"
+  - id: design
+    label: Design
+    description: Produce intervention content, levers, messages, or strategy.
+    crosswalk:
+      bit_test: Solution
+      busara_audas: Design
+      taf_eval: "Level 1: prototype"
+  - id: measure
+    label: Measure
+    description: Choose, adapt, or build instruments for a behavior or construct.
+    crosswalk:
+      bit_test: Trial (measurement)
+      busara_audas: Assess
+      taf_eval: "Level 2: outcome measures"
+  - id: test
+    label: Test
+    description: Plan a pilot, experiment, or evaluation of an intervention.
+    crosswalk:
+      bit_test: Trial
+      busara_audas: Assess
+      taf_eval: "Level 3: experimental evaluation"
+  - id: analyze
+    label: Analyze
+    description: Analyze data from a test or evaluation and interpret the result.
+    crosswalk:
+      bit_test: Trial (analysis)
+      busara_audas: Assess
+      taf_eval: "Level 3 and 4: analysis"
+  - id: implement
+    label: Implement
+    description: Roll out, adapt, or scale what worked, and report what was done.
+    crosswalk:
+      bit_test: Scale
+      busara_audas: Scale
+      taf_eval: "Level 4: scale and welfare"
+  - id: other
+    label: Other
+    description: Does not fit the seven stages. The validator warns so maintainers can review the gap.
+
+# Skill types. Atomic skills do one behavioral-science operation. Meta-skills
+# operate on the library itself.
+types:
+  - atomic
+  - meta
+
+# Review status. `draft` while in review or when merged without review;
+# `published` once a maintainer approved it; `deprecated` when retired.
+statuses:
+  - draft
+  - published
+  - deprecated
+
+# How far the evidence base has been tested outside WEIRD (Western, Educated,
+# Industrialized, Rich, Democratic) samples. Required for atomic skills.
+weird_statuses:
+  - id: weird-only
+    label: WEIRD-only evidence
+  - id: mixed-evidence
+    label: Mixed evidence across contexts
+  - id: likely-generalizes
+    label: Likely generalizes
+  - id: untested-outside-weird
+    label: Untested outside WEIRD samples
+  - id: not-applicable
+    label: Not applicable (procedural or meta skill)
+
+# Contributing organizations. Free text is accepted; these are the known ids.
+orgs:
+  - TAF
+  - IL
+  - community
+
+# Verbs a skill name may start with. Verb-first names are the atomicity test
+# applied to the folder name. Add a verb here in the same PR as the first
+# skill that needs it.
+verbs:
+  - adapt
+  - adjust
+  - analyze
+  - assess
+  - audit
+  - build
+  - choose
+  - cluster
+  - compare
+  - decompose
+  - define
+  - design
+  - diagnose
+  - draft
+  - estimate
+  - evaluate
+  - find
+  - generate
+  - identify
+  - map
+  - measure
+  - plan
+  - prioritize
+  - propose
+  - review
+  - score
+  - select
+  - simulate
+  - specify
+  - summarize
+  - synthesize
+  - test
+  - translate
+  - validate
+  - write
+
+# Optional vocabulary for `consumes` and `produces`. Two skills chain when
+# one produces what the other consumes. `user_suppliable: true` means a
+# person can hand it over directly. Unknown ids are a warning, not an error.
+io_types:
+  - id: program-goal
+    label: Program goal statement
+    description: A plain-language statement of what a program is trying to achieve, with whatever context exists.
+    user_suppliable: true
+  - id: target-behavior-brief
+    label: Target behavior brief
+    description: One observable target behavior stated as who, what, and when, with runner-up candidates.
+    user_suppliable: false
+  - id: comb-barrier-hypotheses
+    label: COM-B barrier hypotheses
+    description: Competing capability, opportunity, and motivation hypotheses with diagnostic questions.
+    user_suppliable: false
+  - id: barrier-diagnosis
+    label: Confirmed barrier diagnosis
+    description: The barrier(s) field evidence supports, with the evidence.
+    user_suppliable: true
+  - id: intervention-levers
+    label: Candidate intervention levers
+    description: Two to four candidate levers per barrier, each tied to a mechanism.
+    user_suppliable: false
+  - id: intervention-draft
+    label: Intervention draft
+    description: A draft message, exercise, script, or product change ready for review.
+    user_suppliable: false
+  - id: interview-guide
+    label: Interview or survey guide
+    description: A script or protocol a researcher can run with participants.
+    user_suppliable: false
+  - id: measurement-plan
+    label: Measurement plan
+    description: Constructs, instruments, timing, and analysis for measuring outcomes.
+    user_suppliable: false
+  - id: survey-items
+    label: Survey items
+    description: Draft or existing questionnaire items for a construct.
+    user_suppliable: true
+  - id: evaluation-design
+    label: Evaluation design
+    description: Outcomes, comparison, sample size, and timeline for a test.
+    user_suppliable: false
+  - id: dataset-description
+    label: Dataset description
+    description: Column names, sample rows, and collection context for a dataset.
+    user_suppliable: true
+  - id: analysis-plan
+    label: Analysis plan
+    description: Pre-specified models, decision rules, and robustness checks.
+    user_suppliable: true
+  - id: qualitative-data
+    label: Qualitative data
+    description: Interview transcripts, field notes, or open-ended responses.
+    user_suppliable: true
+  - id: personas
+    label: Personas or segments
+    description: Behaviorally meaningful groups with defining features.
+    user_suppliable: false
+  - id: journey-map
+    label: Behavioral journey map
+    description: Who does what at each phase, where barriers sit, where touchpoints are.
+    user_suppliable: false
+  - id: risk-register
+    label: Risk or pre-mortem register
+    description: Anticipated failure points and backfire effects with mitigations.
+    user_suppliable: false
+  - id: skill-draft
+    label: Skill draft
+    description: A skill folder drafted for this library.
+    user_suppliable: true
+  - id: eval-report
+    label: Skill evaluation report
+    description: Structure, triggering, and output-quality results for a skill.
+    user_suppliable: false
+  - id: workflow-draft
+    label: Workflow draft
+    description: An ordered set of recommended skills with their relationships.
+    user_suppliable: false
+
+# Suggested free-form tags. Any tag is allowed; these keep spelling consistent.
+suggested_tags:
+  - com-b
+  - behavior-change-wheel
+  - wise-interventions
+  - agency
+  - self-determination-theory
+  - social-cognitive-theory
+  - theory-of-planned-behavior
+  - intervention-mapping
+  - choice-architecture
+  - qualitative
+  - quantitative
+  - psychometrics
+  - measurement
+  - experimental-design
+  - bayesian
+  - ai-eval
+  - cultural-psychology
+  - implementation
+  - pre-mortem

@@ -1,0 +1,40 @@
+{
+  "skill_name": "besci-eval",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I'm in Claude Code with an API key set. Evaluate skills/draft-cognitive-interview-script before I open the PR. All three checks, compare Opus and Sonnet.",
+      "expected_output": "The skill confirms the three checks and the two models, estimates the number of API calls and says it costs money, runs the validator first, then runs scripts/run_evals.py with both models (or explains the exact command and runs it), and reports in the output template: verdict first, structure report, trigger precision/recall with misses, per-case rubric scores with any blocking findings, a model comparison table, and one-line next actions. It does not rewrite the skill.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "I'm on Claude Desktop, no code execution. Here is my skill folder as pasted text: SKILL.md and evals/evals.json for decompose-comb-barriers. Does it trigger on the right things?",
+      "expected_output": "The skill says it will run the triggering check qualitatively in-conversation on the current model only, extracts the use-it-when and do-not-use-it-when phrasings plus the eval prompts, judges each as a fresh model would (relative to the catalog snapshot's other descriptions, noting that the snapshot may be stale), reports precision and recall with a table of misses and false alarms, and proposes the smallest description edit without applying it. It offers to run output quality next.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Can you evaluate our maternal health chatbot? We want to know if it's improving outcomes.",
+      "expected_output": "The skill says this is program or product evaluation, not skill evaluation, and points to The Agency Fund's four-level evaluation framework (https://eval.playbook.org.ai/) and, if appropriate, to besci-navigator for finding library skills about evaluation design. It does not run its checks.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "Here's a skill with only one eval case. Run the full evaluation.",
+      "expected_output": "The skill stops at the pre-check: fewer than three evals means there is nothing to grade reliably. It runs the structural check (which will report the evals error), explains why one case is not enough, and sends the author to besci-skill-creator to add realistic cases, suggesting the three standard shapes (complete, missing-context, escalation).",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 5,
+      "prompt": "A new Claude model was released this week. Which of our published skills got worse? We have twelve skills in the repo and the previous eval reports in each skill's workspace folder.",
+      "expected_output": "The skill proposes a regression plan rather than guessing: run scripts/run_evals.py for each published skill on the new model with the same runs setting as the previous reports, compare median rubric totals and blocking findings against the previous results.json files, and flag any skill whose median dropped by two or more points or gained a blocking finding. It estimates the total call count and cost before running and asks for confirmation. If run, it reports a table of skills with old median, new median, delta, and blocking findings, and a short list of skills to re-check with their authors.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

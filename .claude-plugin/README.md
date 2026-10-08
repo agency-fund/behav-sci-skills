@@ -1,0 +1,3 @@
+The repo root is both the marketplace root and the plugin root, so the plugin's skills are discovered from the standard `skills/` directory without a `skills` key (declaring `./skills` as well would scan it twice). Test locally with `claude plugin validate ./` then `claude plugin marketplace add ./ && claude plugin install behav-sci-skills@behav-sci-skills`.
+The plugin `version` lives only in `plugin.json`; setting it on the marketplace entry too triggers a drift warning. Bump it with each release tag.
+`claude plugin validate` warns about `CLAUDE.md` at the plugin root; that is expected (it is for people working in the repo, not loaded into the plugin) and does not block installs.

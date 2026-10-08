@@ -1,0 +1,48 @@
+name: Report a problem with a skill
+description: A skill gave a wrong, unsafe, or confusing result, or failed to trigger.
+title: "Problem with <skill-name>: <short summary>"
+labels: ["bug"]
+body:
+  - type: input
+    id: skill
+    attributes:
+      label: Skill name
+      placeholder: draft-cognitive-interview-script
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Skill version
+      description: From `metadata.version` in SKILL.md, or the catalog page.
+      placeholder: "0.1.0"
+  - type: textarea
+    id: happened
+    attributes:
+      label: What happened
+      description: What you asked, what the skill did. Paste the prompt if you can, with any sensitive details removed.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: input
+    id: tool
+    attributes:
+      label: AI tool and model
+      placeholder: Claude Desktop, Claude Opus 5.5
+    validations:
+      required: true
+  - type: checkboxes
+    id: kind
+    attributes:
+      label: Kind of problem
+      options:
+        - label: Did not trigger when it should have
+        - label: Triggered when it should not have
+        - label: Output did not follow the template
+        - label: Content was wrong or unsafe
+        - label: Should have escalated to a specialist but did not

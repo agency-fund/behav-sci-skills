@@ -1,0 +1,14 @@
+{
+  "name": "behav-sci-skills",
+  "displayName": "Behavioral Science Skills",
+  "version": "0.1.0",
+  "description": "Atomic, evidence-cited AI skills for behavioral science in the social sector. Start with besci-navigator to find the right skill.",
+  "author": {
+    "name": "The Agency Fund and Irrational Labs",
+    "url": "https://github.com/agency-fund/behav-sci-skills"
+  },
+  "homepage": "https://github.com/agency-fund/behav-sci-skills",
+  "repository": "https://github.com/agency-fund/behav-sci-skills",
+  "license": "MIT",
+  "keywords": ["behavioral-science", "besci", "social-sector", "evaluation", "measurement", "intervention-design"]
+}

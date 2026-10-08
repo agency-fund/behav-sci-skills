@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+site/dist/
+dist/
+.DS_Store
+.vercel/
+.env
+.env.local
+*-workspace/

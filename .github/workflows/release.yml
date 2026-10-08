@@ -1,0 +1,42 @@
+name: Release
+
+# Tag main as vX.Y.Z and push the tag. This validates, packages every skill as
+# a .skill zip, and attaches the archives plus manifest.json to a GitHub Release.
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Validate skills
+        run: uv run scripts/besci_validate.py
+
+      - name: Package skills
+        run: uv run scripts/package_skills.py
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            dist/*.skill
+            dist/manifest.json

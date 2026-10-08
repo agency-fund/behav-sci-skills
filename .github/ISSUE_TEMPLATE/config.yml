@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: How to contribute a skill
+    url: https://github.com/agency-fund/behav-sci-skills/blob/main/CONTRIBUTING.md
+    about: The three ways to get a skill into the library, and the rules a skill must follow.
+  - name: Upload a skill on the website
+    url: https://behav-sci-skills.vercel.app/contribute
+    about: For TAF and IL staff with a contributor key. No git needed.

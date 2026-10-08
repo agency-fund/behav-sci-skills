@@ -1,0 +1,18 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "behav-sci-skills",
+  "description": "Atomic AI skills for behavioral science, by The Agency Fund and Irrational Labs. Install the one plugin to get every skill, including besci-navigator, besci-eval, and besci-skill-creator.",
+  "owner": {
+    "name": "The Agency Fund and Irrational Labs",
+    "url": "https://github.com/agency-fund/behav-sci-skills"
+  },
+  "plugins": [
+    {
+      "name": "behav-sci-skills",
+      "source": "./",
+      "description": "Every skill in the Behavioral Science Skills Library: atomic skills for defining, diagnosing, designing, measuring, testing, analyzing, and implementing, plus the three meta-skills.",
+      "category": "behavioral-science",
+      "tags": ["behavioral-science", "social-sector", "research-methods", "evaluation"]
+    }
+  ]
+}

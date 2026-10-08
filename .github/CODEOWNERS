@@ -1,0 +1,6 @@
+# Every file is owned by the maintainers team, so GitHub requests their review
+# on every pull request. The team @agency-fund/behav-sci-maintainers must be
+# created in the agency-fund GitHub organization (Settings -> Teams) and must
+# contain the people listed in MAINTAINERS.md from both The Agency Fund and
+# Irrational Labs. Until the team exists, this file has no effect.
+*   @agency-fund/behav-sci-maintainers

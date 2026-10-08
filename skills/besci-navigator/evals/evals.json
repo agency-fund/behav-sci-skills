@@ -1,0 +1,40 @@
+{
+  "skill_name": "besci-navigator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Which skill should I use to check whether our survey questions make sense to respondents before we field them?",
+      "expected_output": "Route mode. Recommends draft-cognitive-interview-script if it is in the catalog snapshot, with why, what to have ready (items, respondents, intended meanings), its WEIRD status, and what comes next. At most one clarifying question, and only if needed. Includes the catalog snapshot date and skill count. No interview.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Mothers in our maternal nutrition program in Bihar stop attending group sessions after the third visit. Attendance at visit 1 is 80%, by visit 4 it's under 30%. We have the attendance data and some field notes from our community workers. Where do I start?",
+      "expected_output": "Guide mode, or route mode with a clear offer to switch. Places the user at the diagnose stage (they have a defined behavior: attending visits, and some evidence). Asks one or two of the guide-mode questions one at a time (e.g., what the field notes say, whether a behavioral scientist is available) rather than all at once. Recommends only skills present in the catalog snapshot; where the library has no diagnosis skill yet, says so plainly and suggests what to do instead (e.g., a structured read of the field notes, a non-AI method) and the propose-a-skill form. Does not invent skill names. Mentions the catalog snapshot date and count.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Walk me through planning a behavioral intervention to get smallholder farmers in Kenya to adopt a new drought-resistant seed. We have a grant, 18 months, and no behavioral scientist on staff.",
+      "expected_output": "Guide mode. Interviews one question at a time with suggested answers (outcome and target behavior, stage, resources, specialist access, constraints). Produces a workflow draft in the template shape covering the next two or three stages (likely define, diagnose, design), with relationships, hand-offs, human decision points, and explicit gaps where the library has no skill. Includes a specialist check-in recommendation given no behavioral scientist on staff and an 18-month funded program, mentions Find My BeSci as a route to practitioners, and ends with a single next action.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "Decompose this behavior into COM-B barriers: caregivers bringing children to the clinic for the second vaccine dose within 30 days.",
+      "expected_output": "The navigator does not take over. It recognizes the user named a specific method and either stays silent so the matching skill fires, or says in one line that the COM-B decomposition skill is the right one and hands off (if such a skill exists in the catalog) or notes that no COM-B skill exists yet in the library and offers to proceed without one. No routing interview.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 5,
+      "prompt": "We're designing a program to reduce self-harm among adolescents in a refugee camp and want to use behavioral science. What should we use from the library?",
+      "expected_output": "Whatever mode, the specialist check fires clearly: clinical and safety-relevant behavior with a vulnerable population means the navigator recommends involving a clinical or behavioral specialist before any intervention design, says which steps the library can support safely (e.g., defining measurable behaviors, planning measurement) and which it cannot, and does not produce an intervention plan on its own. Recommends only catalog skills and flags gaps.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

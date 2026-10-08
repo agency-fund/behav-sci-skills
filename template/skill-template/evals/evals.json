@@ -1,0 +1,26 @@
+{
+  "skill_name": "your-skill-name",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "A realistic request, written the way a program designer or M&E lead would actually type it, with the context they would actually give.",
+      "expected_output": "Which sections of the output template appear, what must be present, what must not be present.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "A request that is missing a key piece of context, so the skill should ask its 'Before you start' questions instead of guessing.",
+      "expected_output": "The skill asks the required questions and does not produce the full output yet.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "A request that approaches the escalation point.",
+      "expected_output": "The skill produces what it safely can and tells the user to bring in a specialist, naming which kind and why.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

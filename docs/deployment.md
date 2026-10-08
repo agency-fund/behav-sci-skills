@@ -29,8 +29,8 @@ How the site, the upload endpoint, CI, and releases are wired, and the one-time 
 
 1. In Vercel, **Add New Project**, import `agency-fund/behav-sci-skills`. Use a Vercel team both orgs can access, or add the IL maintainers as members.
 2. Framework preset: **Other**. The repo's `vercel.json` already sets:
-   - Install command: `python3 -m pip install -r requirements.txt`
-   - Build command: `python3 scripts/build_site.py`
+   - Install command: `bash scripts/vercel_build.sh install` (runs `uv sync --frozen`; Vercel's build image has a uv-managed Python that rejects plain `pip install`, and the script falls back to `pip --break-system-packages` if uv is ever absent)
+   - Build command: `bash scripts/vercel_build.sh build` (runs `uv run --frozen scripts/build_site.py`)
    - Output directory: `site/dist`
    - Python function: `api/submit.py`, 30 s max, 1 GB memory
    Vercel detects `api/*.py` and runs it on its Python 3.12 runtime. `requirements.txt` at the root supplies the function's dependencies (`pyyaml`); `api/requirements.txt` is a fallback some Vercel versions read instead.

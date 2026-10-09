@@ -1,0 +1,33 @@
+{
+  "skill_name": "design-evidential-experiment",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We run MaizeMate, a WhatsApp agronomy assistant for smallholder maize farmers in western Kenya. Our funnel diagnosis found the weak link is onboarding to engagement (31% engage vs a 60% target), and log analysis supported the hypothesis that onboarded farmers type nothing because the open 'ask me anything' prompt gives them no model of a good first question. We want to test a county-localized 4-item example-question menu against the open prompt. New farmers enroll every day, about 140 a week. Our participants table is in BigQuery with a hashed WhatsApp id, onboarding_complete, enrollment_date, county, and a weekly engaged_week1 flag; our product lead can route the WhatsApp flow by arm. If the menu lifts week-1 engagement by 8 points or more we'll make it the default. Set this up for Evidential.",
+      "expected_output": "A full experiment configuration brief following the output template: the H1 mechanism carried verbatim as the hypothesis, a decision rule covering positive, null, and negative results, a design table choosing freq_online because of open enrollment, individual randomization with the spillover reasoning stated, control-first arms, eligibility filters on onboarding_complete and enrollment_date, strata n/a, dates; exactly one primary metric (engaged_week1) with the detectable effect of 8 points sourced from the decision rule and an explicit rejection of the baseline × 0.1 default; named guardrails with direction (setup completion must not fall, refusal rate must not rise); power inputs and a stopping rule with a no-peeking commitment; a delivery integration section mapping arm_name to the WhatsApp flow and naming the assignment endpoint; an ITT analysis plan noting the absence of a balance check for online designs; and data and ethics notes about the hashed id and consent posture. It does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "We want to A/B test a new reminder message in Evidential. Can you set it up?",
+      "expected_output": "The skill does not produce the brief. It asks for the experiment intent (what the new message is meant to change, for whom, what it should move, and what decision the result informs), whether there is a warehouse with a participants table and which fields exist, whether the program can deliver each arm's message, and whether the population is a fixed roster or open enrollment. It may ask about an existing funnel diagnosis, evaluation design brief, and baseline value, marked optional. It explains briefly that without a mechanism hypothesis the experiment answers a question nobody asked.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We have 40 farmer cooperatives in our program, about 60 farmers each, all in our Postgres warehouse. We want to test whether a 'top-dressing week' reminder broadcast to the cooperative WhatsApp group increases the share of farmers who report applying fertilizer on time. Farmers in the same cooperative talk constantly and share phones. We'll decide whether to roll the broadcast out nationally based on the result. Design it for Evidential.",
+      "expected_output": "The skill produces the brief with a freq_preassigned design (known finite roster), a cluster randomization unit (cluster_key on cooperative) because the treatment spills over within groups, strata, one primary metric with a detectable effect that must come from the program's threshold rather than the default, guardrails, delivery mapping, and analysis plan. Because the design randomizes only 40 clusters with unknown intraclass correlation and the result feeds a national scale decision, it tells the user to bring in a statistician to check the cluster-level power and the number of clusters before launch, and says what to bring them. It does not propose a bandit for a scale decision.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "Our funder wants proof that MaizeMate improves maize yields. Can you design the RCT in Evidential so we can show impact at the board meeting?",
+      "expected_output": "The skill recognizes that this is a Level 4 impact question requiring a full-scale RCT with outcome measurement over a season, which Evidential is not built for. It does not produce an experiment configuration. It points the user to choose-ai-eval-level to establish whether the product has earned a Level 4 evaluation and to plan-evaluation-design plus an independent evaluator for the impact design, and offers to design a Level 2 or 3 experiment in Evidential if the team has a specific product change to test.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

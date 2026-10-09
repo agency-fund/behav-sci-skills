@@ -1,0 +1,33 @@
+{
+  "skill_name": "select-intervention-levers",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our vendor interviews in Gikomba and Toi confirmed the barrier: women vendors won't deposit at the M-Pesa kiosk at closing time because neighboring stallholders see them counting cash and then ask to borrow money. Several said they change when and where they count cash to avoid being seen. We'd classed this as Opportunity/social. The behavior is: female stall vendors deposit the day's net cash surplus into an M-Pesa savings wallet before leaving the market each trading day. We have a small pilot budget and a relationship with both markets' vendor associations, but no relationship with the mobile money provider. The agent kiosks are inside the markets. We don't have the BCW table in front of us. What should we do about this barrier?",
+      "expected_output": "A full intervention lever brief following the output template: the confirmed barrier carried over with its sub-component and evidence; the applicable functions read off the Opportunity/social row of the matrix (Environmental restructuring, Modeling, Enablement), each with a one-clause mechanism match and an explicit confidence marker, with low-confidence entries flagged for verification; an APEASE table scoring each function with one-clause reasons, where Enablement scores negative on Practicability because it needs the provider; a selected function with tie-breaker reasoning tied to cells; a specific BCTTv1 technique by number and name (e.g. 12.1 Restructuring the physical environment, a partition or marked position at the kiosk); the rejected functions kept with reasons; and open questions such as market management permission. It does not brainstorm levers outside the matrix and does not write the sign or script.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Here are the COM-B hypotheses we drafted for why vendors don't deposit: they can't work the savings-lock menu, they can't estimate their surplus, the agent queue is too long at closing, visible cash invites borrowing requests, they don't trust mobile savings, and they habitually hand all cash to a spouse at home. Which intervention should we go with?",
+      "expected_output": "The skill does not produce a lever brief. It says these are unconfirmed hypotheses and that selecting a lever for the wrong barrier wastes a pilot. It asks which hypothesis the field diagnostic questions confirmed and what the evidence was, asks what the implementer controls (budget, channels, partners), and points to decompose-comb-barriers' diagnostic questions as the way to confirm one if that has not happened yet.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Confirmed barrier (Motivation/reflective, from focus groups in all six villages): farmers in our cooperative don't repay their input loans by the harvest deadline because they believe the cooperative never actually enforces it. Behavior: member farmers repay the full input loan within two weeks of their first crop sale. The cooperative board controls repayment rules, next season's seed allocation, and the SMS list. The board is leaning toward fines or withholding seed from late payers. What are our options?",
+      "expected_output": "The skill produces the lever brief: the Motivation/reflective row of the matrix (Education, Persuasion, Incentivization, Coercion) with confidence markers, APEASE scoring in which Coercion and withholding seed get engaged honestly on Side-effects/safety and Equity, a selected function with a named BCTTv1 technique, rejected functions, and open questions. Because Coercion is eligible and the board is considering penalties that affect livelihoods, it also tells the user to involve a behavioral scientist and the cooperative's legal or governance lead before piloting any penalty-based function, and names what to bring them.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We've settled on the lever: BCT 12.1, a privacy partition and a marked quick-deposit spot at the kiosk. Can you write the sign and tell us what the agent should say to vendors?",
+      "expected_output": "The skill recognizes that the lever and technique are already selected and that the request is for delivery content. It does not rescore functions. It points the user to draft-lever-content, carrying the technique, the confirmed barrier, and the target behavior over as the input, and notes that the audience and context brief (channel and decision moment) should go with it.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

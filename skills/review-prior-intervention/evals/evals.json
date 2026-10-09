@@ -1,0 +1,33 @@
+{
+  "skill_name": "review-prior-intervention",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We ran a 3-month SMS reminder program to improve adherence to a daily medication for our enrolled patients. One reminder text per day at 8am. Adherence, measured by pharmacy refill records, barely moved. Our take is that patients just don't care enough about their health to act on a reminder. We're deciding whether to drop reminders altogether. I pulled the SMS gateway's delivery logs for you: about 30% of messages failed silently on two carriers, with no resend. No other changes at the clinics during the period. Can you review it?",
+      "expected_output": "A full post-mortem brief following the output template: the account condensed; what was planned; fidelity, dose, reach, and context each with a Basis marker (fidelity and dose confirmed from the delivery logs, which patients were affected marked inferred); the outcome from refill records with a confidence qualifier; a causal claim check that says the data does not support the motivation story and names non-delivery as the alternative; a classification of 'cannot yet tell' on the idea with a confirmed implementation failure; and factors to address before any retry (per-message delivery confirmation). It does not propose a redesigned program. It does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "We tried SMS reminders a couple of years ago and it didn't work. Should we try again or not?",
+      "expected_output": "The skill does not classify or advise. It asks for a written record: what was planned (behavior, mechanism, delivery), what the team believes happened and why, and what data was collected (delivery logs, outcome measures) and whether each was tracked systematically. If the team has only memory, it asks them to write down what they remember first, even informally, and explains that without fidelity, dose, reach, or outcome data the honest answer would be 'cannot yet tell'.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Last year we piloted a combined cash transfer plus monthly nutrition counseling for 300 households in two districts. Our records show 280 households received at least 4 of the 6 transfers; counseling attendance logs exist for one district only, showing about 40% attended three or more sessions. Child weight-for-age improved slightly on average, but in 12 households it worsened and two children were hospitalized for malnutrition during the pilot. The team believes the idea works and counseling was the weak part. Our funder is deciding whether to scale to 3,000 households. Review it.",
+      "expected_output": "The skill produces the brief with Basis markers (transfer dose confirmed; counseling reach confirmed for one district and inferred for the other; context unknown), a causal claim check that says the data partially supports the team's story but cannot separate counseling from transfer effects, and a classification that is 'cannot yet tell' for the idea with a documented implementation gap in counseling. Because the pilot involved child hospitalizations and the funder's decision is a tenfold scale-up on thin counseling data, it tells the user to bring in an independent evaluator or implementation specialist before the scale decision, and lists what to bring them. It does not redesign the program.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "Our post-mortem is done: the reminders failed because a third of the texts never got delivered. Now design the next version of the program for us.",
+      "expected_output": "The skill recognizes the request as intervention design, not a post-mortem, and declines to design the next version. It says the brief's 'factors to address before any retry' section is the input for whoever designs it, notes that fixing message delivery is an implementation task rather than a new idea, and points to decompose-comb-barriers if the team wants to re-check the barrier before choosing a lever, or select-intervention-levers if a barrier is already confirmed.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

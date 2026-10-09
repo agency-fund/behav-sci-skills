@@ -1,0 +1,33 @@
+{
+  "skill_name": "build-user-funnel",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "MaizeMate is our WhatsApp AI agronomy assistant for smallholder maize farmers in western Kenya. The goal is better yields through timely top-dressing. Farmers hear about it from cooperative SMS blasts and local radio, message it questions, and it answers from our agronomy knowledge base. We have WhatsApp message logs and a 3-question setup flow (county, crop stage, plot size). We don't have any survey tool in the chat yet, and we haven't asked the cooperatives about harvest records. Can you map our user funnel?",
+      "expected_output": "A full user funnel map following the output template: one development outcome (yield); an instrumentation reality check saying stages 1 to 4 come from message logs while stage 5 needs an in-chat check that does not exist and stage 6 needs cooperative harvest records with access unconfirmed; six stage rows each with a user-verb entry action (not 'we broadcast on radio'), a confirming metric, a target marked provisional where guessed, and an owner role; a stage 5 proximal outcome stated as a knowledge or decision change (identifying the top-dressing window), not more usage; Level 1 monitoring underneath (golden-set pass rate, guardrail log, version tags); and a checkable assumptions list including the one-number-one-farmer assumption. It does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Can you build a user funnel for our app?",
+      "expected_output": "The skill does not produce the funnel. It asks for the AI product account (what the product does, for whom, how users find and use it, and the one development outcome it targets) and where stage metrics would come from today (logs, surveys, partner records). It may ask whether an audience and context brief or any rough targets exist, marked optional.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "StudyBuddy is a WhatsApp AI tutor for secondary-school students in Uganda. The outcome we care about is better end-of-year exam scores, which we think happens through students building regular study habits and more confidence in their own ability. Students find us through school study clubs where several students often share one phone. We only have message logs. Map the funnel for us.",
+      "expected_output": "The skill produces the full funnel map with six stages, provisional targets, owners, Level 1 monitoring, and assumptions. Its instrumentation reality check names stage 5 (study habits or self-efficacy) and stage 6 (exam scores) as not observable from message logs. Because stage 5 is a self-efficacy or habit change that needs a validated instrument and stage 6 depends on school exam records, it tells the user to involve a psychometrician or survey methodologist (and points to draft-cognitive-interview-script for the instrument) and to secure a data-sharing agreement with schools, and because of shared phones it recommends a data engineer assess what the logs can support before targets are trusted. It says what to bring them.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We want more women in our district to deliver at a health facility instead of at home. There's no app; community health workers do monthly home visits. Can you map the funnel from first contact to delivery?",
+      "expected_output": "The skill explains that a non-digital single behavior does not need a six-stage product funnel, and that forcing one onto it would manufacture stages with no observable metrics. It does not produce the funnel table. It points the user to define-key-behavior to state the target behavior as who, what, when, and to decompose-comb-barriers for why it is not happening.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

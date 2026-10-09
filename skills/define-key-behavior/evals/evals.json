@@ -1,0 +1,33 @@
+{
+  "skill_name": "define-key-behavior",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our goal is 'increase long-term savings among informal-sector market vendors in Nairobi so they have a buffer against income shocks.' We've already done the groundwork: the context brief says the population is women aged 25-50 running fixed produce stalls in Gikomba and Toi markets, the decision moment is the end-of-day cash count at the stall before heading home, existing channels are weekly chama meetings and the M-Pesa agent kiosk inside each market, and the nearest bank branch is about 40 minutes away. The evidence scan found a Kenyan field experiment where lockbox commitment devices raised savings among market women, ROSCAs had smaller and less consistent effects, and formal bank accounts had low take-up because of fees and distance. We also have a savings product already built on M-Pesa. What behavior should we target?",
+      "expected_output": "A full target behavior brief following the output template: the goal restated, a scoring table with at least three candidates each scored +/-/0 with a one-clause reason on all eight columns, at least one candidate outside the M-Pesa product (for example the chama group), a selected behavior whose Who uses the operationalized population from the context brief and whose When uses the end-of-day decision moment, a one-sentence statement without 'and', a 'why this one' that points at specific cells (the Effectiveness score grounded in the lockbox evidence, Practicability tied to the decision moment), a ranked shortlist, and open questions. It does not re-ask the Before you start questions because they were answered.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "We want to increase savings. What behavior should we target?",
+      "expected_output": "The skill does not produce a brief. It asks for the goal as stated and who stated it, and for at least a rough population and setting (who the program reaches, where, through what channel, with what constraints). It explains briefly that without a population and setting the 'who' of the behavior would be generic and every downstream step would inherit that, and offers map-audience-context as a way to get there. It may ask whether any evidence scan or candidate behaviors already exist, marked optional.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We run four rural clinics in Malawi and our funder's goal is 'reduce maternal mortality in the catchment area.' Pregnant women come for a first antenatal visit but many don't come back and most deliver at home. We have community health workers who visit villages monthly and a motorbike ambulance at two of the clinics. Help us pick the behavior to target.",
+      "expected_output": "The skill produces a target behavior brief with candidates such as attending the full antenatal schedule, delivering at a facility, calling the ambulance at labor onset, and taking iron-folate daily, scored on all eight columns, with the Side-effects/safety and Equity cells engaged honestly (for example, facility delivery depends on transport and distance). It selects one behavior and ranks the rest. Because the candidates carry clinical and safety consequences and the goal is a mortality outcome, it also tells the user to involve a clinical or maternal-health specialist before relying on the Side-effects/safety scoring, and names what to bring them. It does not pick 'reduce maternal mortality' or 'improve maternal health' as the behavior.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "Mothers enrolled in our program in Kano are supposed to bring their baby to the 6-week postnatal check at the clinic, and about half don't. Why aren't they coming?",
+      "expected_output": "The skill recognizes that a specific, observable behavior with a named actor and time window already exists (enrolled mothers bring the baby to the 6-week postnatal check) and that the question is why it is not happening. It does not generate candidates or a scoring table. It says this is a diagnosis question and points the user to decompose-comb-barriers, carrying the behavior statement over as the input.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

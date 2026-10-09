@@ -1,0 +1,33 @@
+{
+  "skill_name": "audit-researcher-bias",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's my honest take before we start the diagnosis on the Nairobi market vendor savings project. What I believe is causing it: they just don't prioritize saving the way we'd expect; people generally know saving is good for them, so if they're not doing it, it's probably a discipline issue more than anything structural. The population I've worked with most is urban Nairobi tech-sector employees, and I'd guess this group is fairly similar. What would change my mind: hard evidence they're actively trying to save and failing for reasons outside their control. We're about to run the COM-B barrier decomposition. Audit this.",
+      "expected_output": "A researcher bias self-audit following the output template: the statement verbatim; the discipline claim flagged as unfalsifiable with a concrete falsifiable rewrite; the 'people know saving is good' belief flagged as a default-to-WEIRD prior (salaried, banked, individual saving as the baseline) with a local fact to check (whether chama saving already functions as this group's savings strategy); the 'what would change my mind' answer quoted and its risk named (requires unobservable proof of intent); a population-transfer flag contrasting salaried tech workers with informal cash-based vendors; and a re-audit trigger before decompose-comb-barriers runs and after first field interviews. Every flag has a rewrite or follow-up question. It does not prescribe a debiasing plan or an intervention.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Can you check our team for bias before we start?",
+      "expected_output": "The skill does not produce an audit. It gives the user the three fixed prompts (what do you already believe is causing the behavior gap; which population have you personally worked with most and how similar is it; what observation would change your mind) and asks for short, honest answers written before looking at any diagnostic data. It may also ask whether a post-mortem of a prior attempt exists and where the project is in its timeline, marked optional.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Our assumptions for the adolescent contraception uptake project in rural Uganda: the girls know about contraception but are embarrassed to ask, and the real issue is low self-efficacy. Our team has only worked with university students in the US on sexual health campaigns, which we think is close enough since the age range overlaps. We'd change our minds if the girls told us in interviews that embarrassment isn't the reason. I'm the only one who wrote this and I'll be the one reading the audit.",
+      "expected_output": "The skill produces the full audit: the embarrassment and self-efficacy beliefs checked for falsifiability with rewrites; the default-to-WEIRD flag on assuming individual girls are the decision-makers and have private access, with local facts to check (household, partner, or clinic gatekeeping); the disconfirming-observation answer flagged as weak because adolescents may not disclose embarrassment or its absence directly; a strong population-transfer flag between US university students and rural Ugandan adolescents; and a re-audit trigger. Because the beliefs concern a stigmatized sexual-health topic where the disconfirming observations cannot be ethically collected by the team alone, and the author is the sole reader, it tells the user to involve a local researcher and an external reader before diagnosis, and names what to bring them.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "What does the research literature say about why informal market vendors in East Africa don't save?",
+      "expected_output": "The skill recognizes this is a question about the external evidence base, not about the team's own beliefs. It does not produce an audit. It points the user to assess-evidence-base, and notes that the two can run on the same project: the evidence scan for what is known about the population, this audit for what the team already believes.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

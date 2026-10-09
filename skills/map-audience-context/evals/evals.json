@@ -1,0 +1,33 @@
+{
+  "skill_name": "map-audience-context",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Goal: increase long-term savings among informal-sector market vendors in Nairobi so they have a buffer against income shocks. What we know comes from one field visit to Gikomba market: the vendors we'd reach are mostly women with fixed produce stalls, they count cash at the stall at the end of the day before heading home, neighbors watch and sometimes ask to borrow, a husband often waits at home for the takings, most are in a weekly chama, there's an M-Pesa agent kiosk in the market they use every day, and the nearest bank is about 40 minutes away. We also plan to work in Toi market but haven't been. Can you map the audience and context?",
+      "expected_output": "An audience and context brief following the output template: the label verbatim versus an operationalized subgroup (women with fixed stalls in Gikomba and Toi, not hawkers); a decision moment (end-of-day cash count, cash in hand, before leaving) with a source label of 'reported by someone who lives it, one field visit to Gikomba'; who else is present (neighboring vendors, spouse at home); real existing channels (chama, M-Pesa kiosk) and no invented ones; constraints with sources; a WEIRD-default check that names the implicit bank-account assumption and considers decision authority (the spouse receiving the takings); and Open questions flagging that nothing is confirmed for Toi. It does not pick a target behavior or propose an intervention.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Our audience is smallholder farmers. Can you map the context?",
+      "expected_output": "The skill does not produce a brief. It asks for the program goal as stated and what is known about the population and setting, and it asks where that knowledge comes from (direct observation, someone who lives it, or general literature), explaining that every claim in the brief carries a source label. It may ask about infrastructure and decision-authority assumptions and about subgroups, marked optional.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Goal: improve dietary diversity for children under two among rural women in Bihar through our nutrition counseling program. None of us has been to the villages yet; what we know is from state nutrition reports and a partner NGO's proposal. Map the audience and context so we can define the behavior.",
+      "expected_output": "The skill produces a brief in which every section is labeled as sourced from general literature or secondhand reports, operationalizes only as far as the input supports (no invented district or village), and runs the WEIRD-default check with explicit attention to decision authority, since feeding decisions for young children in this setting may sit with a mother-in-law or household head rather than the mother. Because nothing is directly observed and decision authority touches household food and gender norms, it tells the user to involve a local researcher or someone from the community before define-key-behavior, and names what to bring them. It does not present the brief as settled.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We've already documented this: women aged 25-50 with fixed stalls in Gikomba and Toi, decision moment is the end-of-day cash count before leaving, channels are the weekly chama and the in-market M-Pesa kiosk, and the bank-account assumption is flagged as unconfirmed. What behavior should we target?",
+      "expected_output": "The skill recognizes that the decision moment and existing channels are already documented at this level of detail and that the request is for a target behavior. It does not re-run the mapping. It points the user to define-key-behavior and says to pass the existing brief in as its audience and context input.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

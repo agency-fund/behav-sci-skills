@@ -1,0 +1,33 @@
+{
+  "skill_name": "decompose-comb-barriers",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Target behavior: female stall vendors in Nairobi's Gikomba and Toi markets deposit that day's net cash surplus into an M-Pesa savings wallet before leaving the market, each trading day. Context: the decision moment is the end-of-day cash count at the stall with cash in hand; neighboring stallholders can see the count and borrowing requests are common; a spouse often waits at home for the day's takings; there's an M-Pesa agent kiosk inside each market that vendors already use daily; most vendors belong to a weekly chama. We can do one round of vendor interviews. Why aren't they depositing?",
+      "expected_output": "A full COM-B barrier hypotheses document following the output template: the behavior carried over verbatim; at least one hypothesis under each of the six sub-components; every Capability hypothesis with a persistence-test line; every hypothesis with a diagnostic question and a 'discriminates because' line naming the different predicted answer; a ranking table scoring each hypothesis on context support and field cost; and one or two provisional top barriers flagged as unconfirmed until field answers exist. It does not propose interventions. It does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "People in our program aren't saving enough. What are the barriers?",
+      "expected_output": "The skill does not produce the hypotheses. It asks for the target behavior as who, what, when (or points the user to define-key-behavior if no behavior has been chosen, since 'saving enough' is an outcome, not a behavior), and asks what is already known about the setting and population. It may ask whether a bias audit or field access exists, marked optional.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Behavior: pregnant women enrolled at our four rural clinics in Malawi take one iron-folate tablet every day from their first antenatal visit until delivery. Pill counts at follow-up visits suggest fewer than a third do. Clinics give out a month's supply at each visit; community health workers visit villages monthly; some women have mentioned nausea and some say their husbands don't like them taking 'hospital medicine'. We can run interviews with women and CHWs. What are the barriers?",
+      "expected_output": "The skill produces the full hypothesis set with persistence tests, diagnostic questions, discrimination lines, and the ranking table, placing nausea under Motivation (automatic) or Capability (physical) with an explicit persistence-test judgment, and the husband's disapproval under Opportunity (social). Because the behavior involves medication in pregnancy and questions about household authority, it tells the user to involve a clinical or maternal-health specialist and a local qualitative researcher to review the diagnostic questions before fieldwork, and says what to bring them. It still flags the top barriers as provisional.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We did the interviews. The barrier is confirmed: vendors won't deposit at the kiosk because other vendors can see them counting cash and then ask to borrow money. What should we do about it?",
+      "expected_output": "The skill recognizes that the barrier is already confirmed by field evidence and that the request is for an intervention, not a diagnosis. It does not regenerate the hypothesis list. It names the confirmed barrier's COM-B sub-component (Opportunity, social) and points the user to select-intervention-levers with that confirmed barrier as the input.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

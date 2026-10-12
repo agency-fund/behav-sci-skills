@@ -1,0 +1,33 @@
+{
+  "skill_name": "diagnose-social-norm",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Practice: mothers of infants under one year in six villages of Udaipur district, Rajasthan, bring the child to the monthly immunization camp for the third DPT dose, in the month it is due. We want more of it. Our ASHAs say 'nobody here goes back after the first shots'. We ran 22 interviews with mothers and 2 focus groups with mothers-in-law across the six villages last month. Summary of what we heard: most mothers think the later shots are good for the child but say 'maybe 3 of 10 go back'; many say their mother-in-law or the older women in the lane think the shots give fever and a child who gets fever after a shot shows the mother was careless; a few mothers who did go back say they were told 'you want to show you are better than us'; several said that if the other mothers in the lane went, they would go too. The practice is not sensitive. Is this a social norm?",
+      "expected_output": "A full social norm diagnosis following the output template: the practice carried over verbatim with the direction; evidence used (22 interviews, 2 focus groups, who and where); the four-question table with counts or quotes for personal belief (mostly for), empirical expectation (about 3 of 10), normative expectation (mothers-in-law and older women against, with the carelessness attribution), and deviation and conditionality (teasing of those who go; would go if others went); a classification that shows each branch of the decision tree and makes a call (social norm holding the practice down, or descriptive norm if normative evidence is judged thin), with 'cannot tell' only where evidence is missing; a provisional reference group naming mothers-in-law and older women in the lane and noting it differs from the program's ASHA-to-mother channel; sanctions; a belief-expectation gap line noting that mothers privately favor the shots while believing others disapprove; confidence and what would raise it; what to check (focus groups with mothers-in-law may have given the official answer). It does not draft a message or pledge, does not design a vignette, and does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Is open defecation a social norm in our villages?",
+      "expected_output": "The skill does not produce a classification. It asks the three Required questions: the practice as who does what, when, and the direction the program wants (which villages, which people, daily practice); what evidence exists or can be collected and with whom; and whether the practice is sensitive. It may offer the four diagnostic questions as a preview marked 'pending field answers', but it does not make a call and does not invent respondent answers.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We work in three woredas in Amhara, Ethiopia, on child marriage. Practice: parents arrange a marriage for a daughter before she turns 18. We want less of it. We plan to run your four questions in mixed village meetings next month with parents, elders, and the girls themselves, about 40 people per meeting, and ask who in the village still arranges early marriages and what happens to families who refuse. Can you give us the question set and the diagnosis plan?",
+      "expected_output": "The skill produces what it safely can: the practice statement, the four diagnostic questions adapted for a harmful and legally restricted practice (hypothetical 'a family like yours' wording; no question that asks respondents to name who still arranges marriages or who refused; no deviation question asked of girls in front of parents and elders), and the classification rules, marked 'pending field answers'. It states plainly that the planned mixed village meetings are not a safe setting for these questions and that it has not produced a group-meeting version. It tells the user to consult a local qualitative researcher with experience of child marriage and an ethics reviewer before anyone is asked, and lists what to bring: the practice statement, the adapted questions, the sampling plan, and any existing answers. It does not refuse the whole task and does not produce a message or pledge.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We already did the diagnosis: in our 12 villages in East Nusa Tenggara, open defecation is a social norm with a belief-expectation gap, and the reference group is the neighbors in the same hamlet. Now write us the noticeboard message saying most households have already built a latrine.",
+      "expected_output": "The skill recognizes that the diagnosis exists and the request is for a norm message. It does not re-run the four questions or re-classify. It says that drafting the message belongs to write-social-norm-message, which takes this diagnosis as input, and it may add one caution from the diagnosis itself: the message should state a true majority, so the team should check the empirical-expectation answers and actual latrine coverage before writing 'most households'. It produces no message text.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

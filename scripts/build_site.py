@@ -40,7 +40,6 @@ DIST = os.path.join(ROOT, "site", "dist")
 SKILLS_DIR = os.path.join(ROOT, "skills")
 WORKFLOWS_DIR = os.path.join(ROOT, "workflows")
 NON_WORKFLOW_FILES = {"README.md", "WORKFLOW-TEMPLATE.md"}
-START_HERE = ["besci-navigator", "besci-eval"]
 FONTS = "https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Montserrat:wght@400;500;600;700;800&display=swap"
 
 MD = MarkdownIt("commonmark", {"html": True, "linkify": False}).enable(["table", "strikethrough"])
@@ -60,7 +59,38 @@ ICONS = {
     "map": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="5" cy="6" r="2.5"/><circle cx="19" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M7 7.5c2 2 3.5 5 5 8M17 7.5c-2 2-3.5 5-5 8"/></svg>',
     "arrow": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
     "download": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M6 11l6 6 6-6M4 21h16"/></svg>',
+    "clip": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 11-8.6 8.6a5.5 5.5 0 0 1-7.8-7.8l8.6-8.6a3.7 3.7 0 0 1 5.2 5.2l-8.6 8.6a1.8 1.8 0 0 1-2.6-2.6l8-8"/></svg>',
+    "replay": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>',
 }
+
+# One icon per stage (Lucide-style paths, drawn in the stage's color).
+STAGE_ICONS = {
+    "define": '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+    "diagnose": '<path d="M11 2v2"/><path d="M5 2v2"/><path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/><path d="M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/>',
+    "design": '<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>',
+    "measure": '<path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/>',
+    "test": '<path d="M10 2v7.53a2 2 0 0 1-.21.9L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.07-10.13a2 2 0 0 1-.21-.9V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/>',
+    "analyze": '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>',
+    "implement": '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>',
+    "other": '<path d="M12 3l1.9 5.8L20 10l-5 3.8L16.6 20 12 16.6 7.4 20 9 13.8 4 10l6.1-1.2z"/>',
+}
+
+# Skills shown on the home page's stage chart; any that no longer exist are
+# skipped and the stage's other skills fill in.
+FEATURED = {
+    "define": ["define-key-behavior", "build-user-funnel", "draft-theory-of-change", "assess-evidence-base"],
+    "diagnose": ["decompose-comb-barriers", "diagnose-funnel-weak-link", "identify-positive-deviants", "diagnose-social-norm"],
+    "design": ["select-intervention-levers", "design-reminder-schedule", "select-default-option", "write-social-norm-message"],
+    "measure": ["draft-survey-items", "plan-agency-measurement", "design-list-experiment", "translate-survey-instrument"],
+    "test": ["design-pilot-feasibility-study", "estimate-sample-size", "choose-trial-design", "write-pre-analysis-plan"],
+    "analyze": ["synthesize-interview-findings", "analyze-heterogeneous-effects", "adjust-for-multiple-comparisons", "estimate-cost-effectiveness"],
+    "implement": ["plan-scale-up-strategy", "design-fidelity-monitoring", "draft-intervention-description", "assess-scalability"],
+}
+
+
+def stage_icon(stage: str) -> str:
+    paths = STAGE_ICONS.get(stage, STAGE_ICONS["other"])
+    return f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{paths}</svg>'
 
 THEME_SCRIPT = (
     "<script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}"
@@ -203,7 +233,7 @@ ORG_NAMES = {"TAF": "The Agency Fund", "IL": "Irrational Labs", "community": "Co
 # ---------------------------------------------------------------------------
 
 NAV = [
-    ("Skills", "/"),
+    ("Skills", "/skills/"),
     ("Workflows", "/workflows/"),
     ("Install", "/install/"),
     ("Contribute", "/contribute/"),
@@ -225,10 +255,11 @@ def logos_html() -> str:
 
 
 def layout(title: str, description: str, body: str, path: str, extra_head: str = "", page_class: str = "") -> str:
-    nav = "".join(
-        f'<a href="{E(href)}"{" aria-current=\"page\"" if href == path else ""}>{E(label)}</a>'
-        for label, href in NAV
-    )
+    def current(href: str) -> str:
+        return ' aria-current="page"' if path.startswith(href) else ""
+
+    nav = "".join(f'<a href="{E(href)}"{current(href)}>{E(label)}</a>' for label, href in NAV)
+    home_current = ' aria-current="page"' if path == "/" else ""
     full_title = f"{title} · {SITE_NAME}" if title != SITE_NAME else f"{SITE_NAME}: an open library of atomic AI skills"
     canonical = f"{SITE_URL}{path}"
     logos = logos_html()
@@ -261,11 +292,7 @@ def layout(title: str, description: str, body: str, path: str, extra_head: str =
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="wrap header-row">
-    <a class="brand" href="/" aria-label="{E(SITE_NAME)} home">
-      {logos}
-      <span class="brand-sep" aria-hidden="true"></span>
-      <span class="brand-name">{E(SITE_NAME)}</span>
-    </a>
+    <a class="home-tab" href="/"{home_current}>Home</a>
     <nav class="site-nav" id="site-nav" aria-label="Main">{nav}</nav>
     <div class="header-actions">
       <a class="icon-btn" href="{GITHUB}" rel="noopener" target="_blank" aria-label="Source on GitHub" title="GitHub">{ICONS['github']}</a>
@@ -286,8 +313,8 @@ def layout(title: str, description: str, body: str, path: str, extra_head: str =
       </div>
       <div class="footer-col">
         <h4>Library</h4>
-        <a href="/">Skills</a>
-        <a href="/?view=map">Skill map</a>
+        <a href="/skills/">Skills</a>
+        <a href="/skills/?view=map">Skill map</a>
         <a href="/workflows/">Workflows</a>
         <a href="/whats-new/">What's new</a>
         <a href="/feed.xml">RSS feed</a>
@@ -352,19 +379,27 @@ def copy_block(cmd: str, label: str = "") -> str:
     )
 
 
-def install_tabs(key: str, skill: Optional[dict] = None, compact: bool = False) -> str:
-    """Three-tab install block. One localStorage key so the user's tool choice follows them."""
-    names = [skill["name"]] if skill else START_HERE
-    flags = " ".join(f"--skill {n}" for n in names)
+def install_tabs(key: str, skill: Optional[dict] = None, n_skills: int = 0) -> str:
+    """Three-tab install block. One localStorage key so the user's tool choice follows them.
+
+    With a skill, the agents and Desktop tabs install that one skill; without
+    one, every tab installs the whole library."""
     if skill:
+        flags = f"--skill {skill['name']}"
         downloads = f'<p><a class="btn" href="{E(skill["download_url"])}" rel="noopener">{ICONS["download"]} Download {E(skill["name"])}.skill</a></p>'
+        intro_cc = intro_ag = ""
+        intro_dt = "<p>Upload the file under <strong>Settings → Capabilities → Skills</strong>. Zip installs do not update themselves; check <a href=\"/whats-new/\">What's new</a> now and then.</p>"
     else:
-        downloads = "<p>" + " ".join(
-            f'<a class="btn-secondary" href="{GITHUB}/releases/latest/download/{n}.skill" rel="noopener">{ICONS["download"]} {n}.skill</a>'
-            for n in names) + "</p>"
-    intro_cc = "" if compact else "<p>Installs the whole library as one plugin. Turn on auto-update and it stays current.</p>"
-    intro_ag = "" if compact else "<p>Codex, Cursor, Copilot, Gemini CLI, OpenCode and others, through the <code>skills</code> CLI.</p>"
-    intro_dt = "<p>Upload the file under <strong>Settings → Capabilities → Skills</strong>. Zip installs do not update themselves; check <a href=\"/whats-new/\">What's new</a> now and then.</p>"
+        flags = "--all"
+        everything = f"all {n_skills} skills" if n_skills else "every skill"
+        downloads = (
+            f'<p><a class="btn-secondary" href="{GITHUB}/releases/latest/download/besci-navigator.skill" rel="noopener">{ICONS["download"]} besci-navigator.skill</a> '
+            f'<a class="btn-ghost" href="{GITHUB}/releases/latest" rel="noopener">Every .skill file {ICONS["arrow"]}</a></p>')
+        intro_cc = f"<p>Installs {everything} as one plugin. Turn on auto-update and it stays current.</p>"
+        intro_ag = f"<p>Codex, Cursor, Copilot, Gemini CLI, OpenCode and others, through the <code>skills</code> CLI. Installs {everything}.</p>"
+        intro_dt = ("<p>Claude Desktop and claude.ai take one skill per upload, so start with the navigator and add skills as it sends you to them. "
+                    "Upload each file under <strong>Settings → Capabilities → Skills</strong>; zip installs do not update themselves.</p>")
+        downloads, intro_dt = intro_dt, downloads
     return f"""<div class="tabs" data-tabs="install">
   <div class="tablist" role="tablist" aria-label="Install options">
     <button class="tab" role="tab" type="button" data-tab="claude-code" id="{key}-t1" aria-controls="{key}-p1" aria-selected="true">Claude Code</button>
@@ -430,17 +465,162 @@ def filters_html(skills: List[dict], taxonomy: dict) -> str:
 </form>"""
 
 
-def quoted_examples(skills: List[dict], limit: int = 4) -> List[str]:
-    """User-voice examples from the navigator's 'Use it when' list, for the hero demo."""
-    nav = next((s for s in skills if s["name"] == "besci-navigator"), None)
-    out: List[str] = []
-    for line in (nav or {}).get("use_when", []) or []:
-        m = re.match(r'^\s*["“](.+?)["”]\s*$', str(line))
-        if m:
-            out.append(m.group(1).strip())
-        if len(out) >= limit:
-            break
-    return out or ["Mothers stop coming to our nutrition sessions after the third visit. Where do I start?"]
+def skill_link(name: str, by_name: Dict[str, dict]) -> str:
+    """A skill name in mono, linked to its page when the skill exists."""
+    if name in by_name:
+        return f'<a class="t-skill" href="{E(by_name[name]["url"])}">{E(name)}</a>'
+    return f'<span class="t-skill">{E(name)}</span>'
+
+
+def tool_line(name: str, sub: str, by_name: Dict[str, dict], wf: Optional[int] = None) -> str:
+    """One 'Skill(name)' line in the hero demo, the way Claude Code shows a skill loading."""
+    wf_attr = f' data-wf="{wf}"' if wf is not None else ""
+    return (f'<div class="t-tool" data-step="tool"{wf_attr}><span class="t-b" aria-hidden="true"></span>'
+            f'Skill(<b>{skill_link(name, by_name)}</b>)<span class="t-sub">⎿&nbsp; {E(sub)}</span></div>')
+
+
+def hero_demo(by_name: Dict[str, dict]) -> str:
+    """Two scripted, illustrative conversations: one skill, and one workflow.
+
+    The full transcript is in the HTML; app.js only reveals it step by step,
+    so readers without JavaScript or with reduced motion see all of it."""
+    sk = lambda n: skill_link(n, by_name)  # noqa: E731
+    clip = ICONS["clip"]
+    skill_panel = f"""
+  <div class="demo-screen" role="tabpanel" id="demo-p-skill" aria-labelledby="demo-t-skill" data-demo-panel="skill">
+    <div class="demo-body" tabindex="0" aria-label="Illustrative conversation using plan-agency-measurement">
+      <div class="t-user" data-step="type"><span class="t-text">Here is the agency definition for Pitch Partner, our WhatsApp AI mentor for student entrepreneurs. How should we measure agency?</span><span class="t-file">{clip}agency-definition.md</span></div>
+      {tool_line("plan-agency-measurement", "Loaded skill · Measure stage", by_name)}
+      <div class="t-ai" data-step="say"><p>Your definition focuses on three constructs: <b>entrepreneurial self-efficacy</b>, <b>revising after feedback</b>, and <b>calibrated reliance on the mentor</b>. One question before I plan anything:</p>
+        <p class="t-ask">What decision will this plan support?<small>Suggested: choosing between the mentor's direct mode and a questions-first mode.</small></p></div>
+      <div class="t-user" data-step="type"><span class="t-text">The mode decision, and maybe a funder report later. Students consented to chat analysis. We can run a 20-minute survey in weeks 1 and 12.</span></div>
+      <div class="t-ai" data-step="say"><p>Here is the plan on the 2x2 agency framework. <i>(have)</i> marks data you already collect.</p></div>
+      <div class="t-block" data-step="rows">
+        <div class="t-cap" data-row>Measures on the 2x2 agency framework</div>
+        <table class="t-grid">
+          <thead><tr data-row><th></th><th>End goal<small>a viable business idea</small></th><th>Digital tool<small>the AI mentor</small></th></tr></thead>
+          <tbody>
+            <tr data-row><th>Thoughts and feelings</th><td><span class="t-m"><span class="t-on">on</span>one-item confidence check after each revision <i>#1</i></span><span class="t-m"><span class="t-off">off</span>self-efficacy scale in the week 1 and 12 survey <i>#2</i></span></td><td class="t-dim">not in focus</td></tr>
+            <tr data-row><th>Choices and actions</th><td><span class="t-m"><span class="t-on">on</span>LLM-coded idea revisions, experimental <i>#3</i></span><span class="t-m"><span class="t-off">off</span>panel pitch rubric (have) <i>#4</i></span></td><td><span class="t-m"><span class="t-on">on</span>delegation versus pushback in chats <i>#5</i></span><span class="t-m"><span class="t-off">off</span>teacher observation checklist <i>#6</i></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="t-ai" data-step="say"><p><b>Item #1</b>, drafted example, not from the literature: “How sure are you that you can make your idea work? Not sure / A little sure / Very sure.” Benchmark it against #2 before trusting it.</p></div>
+      <div class="t-block" data-step="rows">
+        <div class="t-cap" data-row>Next steps</div>
+        <ol class="t-list">
+          <li data-row><b>Research:</b> a validated entrepreneurial self-efficacy scale for secondary-school students, with a paste-ready search query</li>
+          <li data-row><b>Adapt</b> #2 with {sk("translate-survey-instrument")}; build #1, #3, #5 and #6 from the drafted examples</li>
+          <li data-row><b>Test:</b> cognitive interviews with 8 students ({sk("draft-cognitive-interview-script")}); model codes against two human coders on 150 chat segments ({sk("audit-llm-qualitative-coding")})</li>
+          <li data-row><b>Interpret:</b> drop #1 as a proxy if it does not track #2</li>
+          <li data-row><b>Later:</b> {sk("design-evidential-experiment")} for the direct versus questions-first comparison</li>
+        </ol>
+      </div>
+      <p class="t-note t-warn" data-step="note">Bring in a psychometrician before #2 backs a funder claim.</p>
+    </div>
+  </div>"""
+
+    rail_steps = [
+        ("define-key-behavior", "Behavior"),
+        ("decompose-comb-barriers", "COM-B"),
+        ("draft-tdf-interview-guide", "Interviews"),
+        ("synthesize-interview-findings", "Synthesis"),
+        ("select-intervention-levers", "Lever"),
+    ]
+    rail = "".join(
+        f'<li data-stage="{E(by_name.get(n, {}).get("stage", ""))}" title="{E(n)}"><span class="wf-dot">{i + 1}</span><span class="wf-lab">{E(lab)}</span></li>'
+        for i, (n, lab) in enumerate(rail_steps))
+    wf_panel = f"""
+  <div class="demo-screen" role="tabpanel" id="demo-p-workflow" aria-labelledby="demo-t-workflow" data-demo-panel="workflow" hidden>
+    <ol class="wf-rail" aria-label="Workflow steps">{rail}</ol>
+    <div class="demo-body" tabindex="0" aria-label="Illustrative conversation running the diagnose-to-pilot workflow">
+      <div class="t-user" data-step="type"><span class="t-text">Women in our antenatal program in Malawi get iron-folate tablets, but most do not take them daily. Where do we start?</span></div>
+      {tool_line("besci-navigator", "Matched workflow: diagnose-to-pilot", by_name)}
+      <div class="t-ai" data-step="say"><p>This fits <a href="/workflows/diagnose-to-pilot/">From a vague goal to a piloted intervention</a>. I will run five skills in order and stop wherever you need to decide.</p></div>
+      {tool_line("define-key-behavior", "Step 1 · Define", by_name, 0)}
+      <div class="t-ai" data-step="say"><p><b>Target behavior:</b> enrolled women take one tablet every day, from the first antenatal visit until delivery. Observable by pill count at each visit.</p></div>
+      {tool_line("decompose-comb-barriers", "Step 2 · Diagnose", by_name, 1)}
+      <div class="t-block" data-step="rows">
+        <div class="t-cap" data-row>Barrier hypotheses, by COM-B</div>
+        <div class="t-hyp" data-row><span class="t-tag" data-comb="c">C · psychological</span><span>Forgetting: nothing in the day cues the tablet<small>Ask: “What were you doing the last time you took one?”</small></span></div>
+        <div class="t-hyp" data-row><span class="t-tag" data-comb="m">M · automatic</span><span>Nausea after taking it<small>Ask: “How did you feel after the last tablet?”</small></span></div>
+        <div class="t-hyp" data-row><span class="t-tag" data-comb="o">O · social</span><span>Husbands distrust “hospital medicine”<small>Ask: “What does your husband say about the tablets?”</small></span></div>
+      </div>
+      <p class="t-note t-decide" data-step="note">You decide: which hypotheses go to a field round?</p>
+      <div class="t-user" data-step="type"><span class="t-text">Test all three. We can run 20 interviews.</span></div>
+      {tool_line("draft-tdf-interview-guide", "Step 3 · Diagnose", by_name, 2)}
+      <div class="t-ai" data-step="say"><p>Interview guide ready: questions mapped to the TDF domains behind each hypothesis, with probes and notes for reading aloud in Chichewa.</p></div>
+      <p class="t-gap" data-step="note">interviews in the field</p>
+      <div class="t-user" data-step="type"><span class="t-text">Notes from 20 interviews with women and 6 with health surveillance assistants.</span><span class="t-file">{clip}interview-notes.docx</span></div>
+      {tool_line("synthesize-interview-findings", "Step 4 · Analyze", by_name, 3)}
+      <div class="t-block" data-step="rows">
+        <div class="t-cap" data-row>Barrier diagnosis</div>
+        <div class="t-res is-yes" data-row><span>Forgetting</span><b>supported</b><small>14 of 20 women</small></div>
+        <div class="t-res is-yes" data-row><span>Nausea</span><b>supported</b><small>9 of 20</small></div>
+        <div class="t-res is-no" data-row><span>Husbands' distrust</span><b>not supported</b><small>2 of 20</small></div>
+      </div>
+      {tool_line("select-intervention-levers", "Step 5 · Design", by_name, 4)}
+      <div class="t-ai" data-step="say"><p><b>Barrier:</b> forgetting. <b>Function:</b> Environmental restructuring, the strongest on APEASE. <b>Technique:</b> a prompt or cue: tie the tablet to morning tea. Kept for the next pilot: Education on managing nausea.</p>
+        <p>Next, {sk("design-habit-anchor")} drafts the cue and {sk("design-pilot-feasibility-study")} plans a four-clinic pilot.</p></div>
+    </div>
+  </div>"""
+
+    return f"""<div class="demo reveal" style="--i:2" data-demo>
+  <div class="demo-bar">
+    <span class="demo-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+    <div class="demo-tabs" role="tablist" aria-label="Example">
+      <button class="demo-tab" type="button" role="tab" id="demo-t-skill" aria-controls="demo-p-skill" aria-selected="true" data-demo-tab="skill">Use a skill</button>
+      <button class="demo-tab" type="button" role="tab" id="demo-t-workflow" aria-controls="demo-p-workflow" aria-selected="false" tabindex="-1" data-demo-tab="workflow">Run a workflow</button>
+    </div>
+    <span class="demo-title">claude</span>
+  </div>{skill_panel}{wf_panel}
+  <div class="demo-foot">
+    <span>Illustrative · outputs abridged, numbers invented</span>
+    <span class="demo-foot-actions">
+      <a href="/skills/plan-agency-measurement/" data-demo-for="skill">The skill {ICONS['arrow']}</a>
+      <a href="/workflows/diagnose-to-pilot/" data-demo-for="workflow" hidden>The workflow {ICONS['arrow']}</a>
+      <button class="demo-replay" type="button" hidden>{ICONS['replay']} Replay</button>
+    </span>
+  </div>
+</div>"""
+
+
+def stage_flow(skills: List[dict], taxonomy: dict, by_name: Dict[str, dict]) -> str:
+    """The seven stages as a flow chart. Each node links to the catalog filtered by its stage."""
+    stages = [x for x in taxonomy.get("stages", []) if isinstance(x, dict) and x.get("id") != "other"]
+    by_stage: Dict[str, List[dict]] = {}
+    for s in skills:
+        by_stage.setdefault(s["stage"], []).append(s)
+    steps, panels = [], []
+    for i, st in enumerate(stages):
+        sid, label, desc = str(st.get("id")), str(st.get("label")), str(st.get("description") or "")
+        members = by_stage.get(sid, [])
+        n = len(members)
+        n_txt = f"{n} skill{'s' if n != 1 else ''}"
+        href = f"/skills/?stage={quote(sid)}"
+        link = ""
+        if i < len(stages) - 1:
+            link = f'<span class="flow-link" aria-hidden="true" style="--to: var(--st-{E(str(stages[i + 1].get("id")))})"><i></i></span>'
+        steps.append(
+            f'<li class="flow-step" data-stage="{E(sid)}" style="--i:{i}">'
+            f'<a class="flow-node" href="{E(href)}" data-idx="{i}">'
+            f'<span class="flow-ring">{stage_icon(sid)}</span>'
+            f'<span class="flow-text"><span class="flow-k">{i + 1:02d}</span><span class="flow-l">{E(label)}</span>'
+            f'<span class="flow-n">{n_txt}</span><span class="flow-d">{E(desc)}</span></span></a>{link}</li>')
+        featured = [by_name[x] for x in FEATURED.get(sid, []) if x in by_name and by_name[x]["stage"] == sid]
+        featured += [s for s in members if s not in featured]
+        items = "".join(
+            f'<li><a href="{E(s["url"])}"><b>{E(s["title"])}</b><code>{E(s["name"])}</code></a></li>'
+            for s in featured[:4])
+        panels.append(
+            f'<div class="flow-panel" id="flow-p-{E(sid)}" data-stage="{E(sid)}"{" hidden" if i else ""}>'
+            f'<div class="flow-panel-main"><div class="flow-panel-head"><span class="flow-panel-ic">{stage_icon(sid)}</span>'
+            f'<div><p class="flow-panel-k">Stage {i + 1:02d} · {n_txt}</p><h3>{E(label)}</h3></div></div>'
+            f'<p class="flow-panel-d">{E(desc)}</p>'
+            f'<a class="flow-panel-more" href="{E(href)}">Browse all {n_txt} {ICONS["arrow"]}</a></div>'
+            f'<ul class="flow-panel-skills" aria-label="Example {E(label)} skills">{items}</ul></div>')
+    return (f'<div class="flow" data-flow><ol class="flow-track">{"".join(steps)}</ol>'
+            f'<div class="flow-panels">{"".join(panels)}</div></div>')
 
 
 # ---------------------------------------------------------------------------
@@ -448,107 +628,95 @@ def quoted_examples(skills: List[dict], limit: int = 4) -> List[str]:
 # ---------------------------------------------------------------------------
 
 def build_index(skills: List[dict], taxonomy: dict) -> None:
-    stage_labels = label_map(taxonomy.get("stages"))
-    stage_descs = desc_map(taxonomy.get("stages"))
     by_name = {s["name"]: s for s in skills}
-    counts: Dict[str, int] = {}
-    for s in skills:
-        counts[s["stage"]] = counts.get(s["stage"], 0) + 1
-
     n_skills = len(skills)
-    n_stages = len({s["stage"] for s in skills if s["stage"] and s["stage"] != "other"})
-    n_tests = sum(int(s["eval_count"] or 0) for s in skills)
-    n_authors = len({a.strip() for s in skills for a in s["authors"] if a.strip()})
-
-    examples = quoted_examples(skills)
-    start_cards = []
-    for i, n in enumerate(START_HERE):
-        s = by_name.get(n)
-        if s:
-            start_cards.append(
-                f'<a class="mini" href="{E(s["url"])}"><span class="mini-ic" aria-hidden="true">{i + 1}</span>'
-                f'<span><b>{E(s["title"])}</b><code>{E(n)}</code><span>{E(s["what_it_does"])}</span></span></a>')
-        else:
-            start_cards.append(f'<span class="mini"><span class="mini-ic">{i + 1}</span><span><b>{E(n)}</b><span>Coming soon.</span></span></span>')
-
-    strip = []
-    for i, st in enumerate([x for x in taxonomy.get("stages", []) if isinstance(x, dict) and x.get("id") != "other"]):
-        sid = str(st.get("id"))
-        strip.append(
-            f'<li><button class="stage-btn" type="button" data-stage="{E(sid)}" data-label="{E(str(st.get("label")))}" '
-            f'data-desc="{E(stage_descs.get(sid, ""))}" aria-pressed="false">'
-            f'<span class="stage-k">{i + 1:02d}</span><span class="stage-l">{E(str(st.get("label")))}</span>'
-            f'<span class="stage-n">{counts.get(sid, 0)} skill{"s" if counts.get(sid, 0) != 1 else ""}</span></button></li>')
-    n_meta = sum(1 for s in skills if s["type"] == "meta")
-    stage_default = f"Seven stages, from defining a behavior to scaling what worked, plus {n_meta} meta-skills that work on the library itself."
-
-    cards = "\n".join(card(s, stage_labels) for s in skills)
-    nav_skill = by_name.get("besci-navigator")
-    nav_link = f'<a href="{E(nav_skill["url"])}">besci-navigator</a>' if nav_skill else "besci-navigator"
+    meta = [s for s in skills if s["type"] == "meta"]
+    meta_links = ", ".join(skill_link(s["name"], by_name) for s in meta)
+    nav_link = skill_link("besci-navigator", by_name)
 
     body = f"""
 <section class="hero">
   <div class="hero-grid">
-    <div>
-      <p class="eyebrow reveal" style="--i:0"><span class="dot" aria-hidden="true" style="--stage: var(--accent)"></span>Open library · The Agency Fund × Irrational Labs</p>
+    <div class="hero-copy">
+      <div class="hero-logos reveal" style="--i:0">{logos_html()}</div>
       <h1 class="reveal" style="--i:1">Behavioral science, <span class="accent">one skill</span> at a time.</h1>
       <p class="lede reveal" style="--i:2">Small, single-purpose AI skills that put behavioral-science methods into the daily work of social-sector teams. Each one does one thing a behavioral scientist does, cites its evidence, asks before it answers, and says when to bring in a specialist.</p>
-      <p class="hero-actions reveal" style="--i:3"><a class="btn" href="/install/">Install {ICONS['arrow']}</a> <a class="btn-secondary" href="#catalog">Browse {n_skills} skills</a> <a class="btn-ghost" href="/about/">How it works</a></p>
+      <p class="hero-actions reveal" style="--i:3"><a class="btn" href="#start">Install {ICONS['arrow']}</a> <a class="btn-secondary" href="/skills/">Browse {n_skills} skills</a> <a class="btn-ghost" href="/about/">How it works</a></p>
     </div>
-    <div class="demo reveal" style="--i:2" aria-label="Example: asking the navigator">
-      <div class="demo-bar"><span class="demo-dots" aria-hidden="true"><span></span><span></span><span></span></span><span>claude · besci-navigator</span></div>
-      <div class="demo-body">
-        <div class="demo-line"><span class="demo-prompt" aria-hidden="true">›</span><span><span id="demo-text" data-examples="{E(json.dumps(examples))}"></span><span class="demo-cursor" aria-hidden="true"></span></span></div>
-        <p class="demo-reply"><span class="arrow">↳</span> Describe the problem in plain words. {nav_link} picks the skills and the order, asks at most one question, and says when the library has nothing for a step.</p>
-      </div>
-    </div>
-  </div>
-  <div class="stats reveal" style="--i:4" aria-label="Library at a glance">
-    <div class="stat"><div class="stat-n" data-count="{n_skills}">{n_skills}</div><div class="stat-l">skills</div></div>
-    <div class="stat"><div class="stat-n" data-count="{n_stages}">{n_stages}</div><div class="stat-l">stages covered</div></div>
-    <div class="stat"><div class="stat-n" data-count="{n_tests}">{n_tests}</div><div class="stat-l">test cases</div></div>
-    <div class="stat"><div class="stat-n" data-count="{n_authors}">{n_authors}</div><div class="stat-l">contributors</div></div>
+    {hero_demo(by_name)}
   </div>
 </section>
 
 <section class="section" aria-labelledby="stages-h">
   <div class="section-head">
-    <div><p class="eyebrow">By stage</p><h2 id="stages-h">Where are you in the project?</h2><p>Skills are organized by where in a project they are used. Pick a stage to filter the catalog.</p></div>
+    <div><p class="eyebrow">By stage</p><h2 id="stages-h">Where are you in the project?</h2><p>Skills are organized by where in a project they are used, from defining a behavior to scaling what worked. Pick a stage to browse its skills.</p></div>
   </div>
-  <ul class="stage-strip">{''.join(strip)}</ul>
-  <p class="stage-desc" id="stage-desc" data-default="{E(stage_default)}">{E(stage_default)}</p>
+  {stage_flow(skills, taxonomy, by_name)}
+  <p class="flow-foot">Plus {len(meta)} meta-skills that work on the library itself: {meta_links}.</p>
 </section>
 
-<section class="section start" aria-labelledby="start-h">
+<section class="section start" id="start" aria-labelledby="start-h">
   <div>
     <p class="eyebrow">Start here</p>
-    <h2 id="start-h">Install two meta-skills first</h2>
-    <p>The navigator tells you which skills to run and in what order. The evaluator checks whether a skill is doing its job on the model you use. Everything else can wait until the navigator sends you there.</p>
-    <div class="start-skills">{''.join(start_cards)}</div>
+    <h2 id="start-h">Install the whole library</h2>
+    <p>One install gives your assistant all {n_skills} skills, across the seven stages plus the meta-skills. A skill stays out of the way until a request matches it.</p>
+    <ol class="start-steps">
+      <li><span><b>Install everything</b><span>Pick your tool. In Claude Code it is two commands, and auto-update keeps every skill current.</span></span></li>
+      <li><span><b>Describe your problem</b><span>Ask “Where do I start?” in plain words. {nav_link} picks the skills and the order, and says when the library has nothing for a step.</span></span></li>
+      <li><span><b>Run a skill, or a whole workflow</b><span>Name a method (“decompose this into COM-B barriers”) and its skill fires, or follow one of the <a href="/workflows/">workflows</a> from start to finish.</span></span></li>
+    </ol>
   </div>
   <div>
-    {install_tabs("home")}
-    <p class="muted" style="font-size:.82rem;margin:.7rem 0 0">Then ask: <em>“Where do I start?”</em> and describe your problem. <a href="/install/">All install options</a>.</p>
+    {install_tabs("home", n_skills=n_skills)}
+    <p class="start-note">Want to start small? <a href="/install/">Install only the navigator and the evaluator</a>, or see every install option.</p>
   </div>
-</section>
-
-<section class="section" id="catalog" aria-labelledby="catalog-h">
-  <div class="section-head">
-    <div><p class="eyebrow">Catalog</p><h2 id="catalog-h">All skills</h2><p>Every skill is one thing a behavioral scientist does, with its evidence, its output shape, and its escalation point. Switch to the map to see how skills chain: one skill's output is the next one's input.</p></div>
-    <div class="view-toggle" role="group" aria-label="View">
-      <button type="button" data-view="cards" aria-pressed="true">{ICONS['grid']} Cards</button>
-      <button type="button" data-view="map" aria-pressed="false">{ICONS['map']} Map</button>
-    </div>
-  </div>
-  {filters_html(skills, taxonomy)}
-  <div class="grid" id="grid">
-{cards}
-  </div>
-  <div class="map" id="map" hidden aria-label="Skill chain map"></div>
-  <p id="no-results" class="no-results" hidden>No skills match. <button type="button" class="link-btn" id="f-clear-2">Clear filters</button> or <a href="/propose/">propose the one you need</a>.</p>
 </section>
 """
     page("/", SITE_NAME, "An open library of atomic AI skills for behavioral science, by The Agency Fund and Irrational Labs.", body, page_class="page-index")
+
+
+def build_catalog(skills: List[dict], taxonomy: dict) -> None:
+    stage_labels = label_map(taxonomy.get("stages"))
+    stage_descs = desc_map(taxonomy.get("stages"))
+    counts: Dict[str, int] = {}
+    for s in skills:
+        counts[s["stage"]] = counts.get(s["stage"], 0) + 1
+
+    chips = [f'<button class="stage-chip chip-all" type="button" data-stage="" aria-pressed="true">All stages <span>{len(skills)}</span></button>']
+    for st in [x for x in taxonomy.get("stages", []) if isinstance(x, dict) and x.get("id") != "other"]:
+        sid = str(st.get("id"))
+        chips.append(
+            f'<button class="stage-chip" type="button" data-stage="{E(sid)}" data-label="{E(str(st.get("label")))}" '
+            f'data-desc="{E(stage_descs.get(sid, ""))}" aria-pressed="false">{stage_icon(sid)}{E(str(st.get("label")))} <span>{counts.get(sid, 0)}</span></button>')
+    n_meta = sum(1 for s in skills if s["type"] == "meta")
+    stage_default = f"Seven stages, from defining a behavior to scaling what worked, plus {n_meta} meta-skills that work on the library itself."
+
+    cards = "\n".join(card(s, stage_labels) for s in skills)
+    body = f"""
+<section id="catalog" aria-labelledby="catalog-h">
+<div class="page-head catalog-head">
+  <div>
+    <p class="eyebrow">Catalog</p>
+    <h1 id="catalog-h">All skills</h1>
+    <p class="lede">Every skill is one thing a behavioral scientist does, with its evidence, its output shape, and its escalation point. Switch to the map to see how skills chain: one skill's output is the next one's input.</p>
+  </div>
+  <div class="view-toggle" role="group" aria-label="View">
+    <button type="button" data-view="cards" aria-pressed="true">{ICONS['grid']} Cards</button>
+    <button type="button" data-view="map" aria-pressed="false">{ICONS['map']} Map</button>
+  </div>
+</div>
+<div class="stage-chips" role="group" aria-label="Filter by stage">{''.join(chips)}</div>
+<p class="stage-desc" id="stage-desc" data-default="{E(stage_default)}">{E(stage_default)}</p>
+{filters_html(skills, taxonomy)}
+<div class="grid" id="grid">
+{cards}
+</div>
+<div class="map" id="map" hidden aria-label="Skill chain map"></div>
+<p id="no-results" class="no-results" hidden>No skills match. <button type="button" class="link-btn" id="f-clear-2">Clear filters</button> or <a href="/propose/">propose the one you need</a>.</p>
+</section>
+"""
+    page("/skills/", "All skills", "Search and filter every skill in the Behavioral Science Skills Library, or see how they chain on the skill map.", body, page_class="page-catalog")
+
 
 
 def build_skill_pages(skills: List[dict], taxonomy: dict) -> None:
@@ -606,7 +774,7 @@ def build_skill_pages(skills: List[dict], taxonomy: dict) -> None:
             items = "".join(f"<li>[{E(f['code'])}] {E(f['message'])}</li>" for f in s["errors"] + s["warnings"])
             warnings_html = f'<details class="validator-notes"><summary>Validator notes ({len(s["errors"])} error(s), {len(s["warnings"])} warning(s))</summary><ul>{items}</ul></details>'
 
-        tags = " ".join(f'<a class="tag" href="/?tag={quote(t)}">{E(t)}</a>' for t in s["tags"]) or '<span class="muted">none</span>'
+        tags = " ".join(f'<a class="tag" href="/skills/?tag={quote(t)}">{E(t)}</a>' for t in s["tags"]) or '<span class="muted">none</span>'
         top_label = "Meta skill" if s["type"] == "meta" else stage_labels.get(stage, stage)
         org = ORG_NAMES.get(s["org"], s["org"])
 
@@ -618,7 +786,7 @@ def build_skill_pages(skills: List[dict], taxonomy: dict) -> None:
 
         body = f"""
 <article class="skill-page" data-stage="{E(stage)}">
-<p class="breadcrumb"><a href="/">skills</a><span aria-hidden="true">/</span><span>{E(name)}</span></p>
+<p class="breadcrumb"><a href="/skills/">skills</a><span aria-hidden="true">/</span><span>{E(name)}</span></p>
 <header class="skill-head">
   <p class="eyebrow"><span class="dot" aria-hidden="true"></span>{E(top_label)} · <span class="keep">v{E(s['version'])}</span></p>
   <h1>{E(s['title'])}</h1>
@@ -663,7 +831,7 @@ def build_skill_pages(skills: List[dict], taxonomy: dict) -> None:
       <dt>Org</dt><dd>{E(org) or '<span class="muted">—</span>'}</dd>
       <dt>Version</dt><dd>{E(s['version'])}</dd>
       <dt>Status</dt><dd>{E(status)}</dd>
-      <dt>Stage</dt><dd><a href="/?stage={E(stage)}">{E(stage_labels.get(stage, stage))}</a></dd>
+      <dt>Stage</dt><dd><a href="/skills/?stage={E(stage)}">{E(stage_labels.get(stage, stage))}</a></dd>
       <dt>WEIRD</dt><dd>{E(weird_labels.get(s['weird'], s['weird'])) or '<span class="muted">not stated</span>'}</dd>
       <dt>Tests</dt><dd>{s['eval_count']} in <a href="{GITHUB}/blob/main/skills/{E(name)}/evals/evals.json" rel="noopener">evals.json</a></dd>
       <dt>License</dt><dd>{E(s['license'])}</dd>
@@ -692,7 +860,7 @@ def build_workflows(workflows: List[dict]) -> None:
     else:
         listing = f"""<div class="empty-state">
   <p><strong>No workflows yet.</strong> The first ones will come from <code>besci-navigator</code> in guide mode and from contributors in Phase 2.</p>
-  <p>Want to write one? Copy <a href="{GITHUB}/blob/main/workflows/WORKFLOW-TEMPLATE.md" rel="noopener">the workflow template</a> and open a pull request. Or open the <a href="/?view=map">skill map</a> to see which skills already chain.</p>
+  <p>Want to write one? Copy <a href="{GITHUB}/blob/main/workflows/WORKFLOW-TEMPLATE.md" rel="noopener">the workflow template</a> and open a pull request. Or open the <a href="/skills/?view=map">skill map</a> to see which skills already chain.</p>
 </div>"""
     body = f"""
 <div class="page-head">
@@ -776,7 +944,7 @@ def build_contribute() -> None:
 <div class="steps">
 <section class="step">
   <h2>Claim or propose</h2>
-  <p>Check the <a href="/">catalog</a> for something that already covers it. Then <a href="/propose/">propose the skill</a>, which opens a pre-filled GitHub issue so a maintainer can confirm it is atomic before you write it.</p>
+  <p>Check the <a href="/skills/">catalog</a> for something that already covers it. Then <a href="/propose/">propose the skill</a>, which opens a pre-filled GitHub issue so a maintainer can confirm it is atomic before you write it.</p>
 </section>
 
 <section class="step">
@@ -984,7 +1152,7 @@ def build_404() -> None:
 <div class="page-head">
   <p class="eyebrow">404</p>
   <h1>Page not found</h1>
-  <p class="lede">That page does not exist. Try the <a href="/">catalog</a>.</p>
+  <p class="lede">That page does not exist. Try the <a href="/skills/">catalog</a> or the <a href="/">home page</a>.</p>
 </div>
 """
     write("404.html", layout("Not found", "Page not found.", body, "/404.html"))
@@ -1060,7 +1228,7 @@ def build_data(skills: List[dict], workflows: List[dict], taxonomy: dict) -> Non
     )
     write("feed.xml", feed)
 
-    urls = ["/", "/workflows/", "/install/", "/contribute/", "/propose/", "/upload/", "/whats-new/", "/about/"]
+    urls = ["/", "/skills/", "/workflows/", "/install/", "/contribute/", "/propose/", "/upload/", "/whats-new/", "/about/"]
     urls += [s["url"] for s in skills] + [w["url"] for w in workflows]
     sitemap = (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -1090,6 +1258,7 @@ def main() -> int:
         sys.stderr.write(f"warning: {SRC} not found; building without stylesheet or scripts\n")
 
     build_index(skills, taxonomy)
+    build_catalog(skills, taxonomy)
     build_skill_pages(skills, taxonomy)
     build_workflows(workflows)
     build_install()

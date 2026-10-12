@@ -1,0 +1,33 @@
+{
+  "skill_name": "analyze-heterogeneous-effects",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We ran a cluster RCT of a one-session growth-mindset program in 180 public secondary schools in three regions of Peru (90 treatment, 90 control, about 12,000 grade-8 students; schools were randomized). Primary outcome: end-of-year national math score, in points. The pre-analysis plan, registered before baseline, names two moderators: baseline math tercile (we expected a larger effect for the bottom tercile) and school poverty index above or below the median (larger effect expected in poorer schools). Overall effect from the pre-specified model: 1.8 points (95% CI 0.3 to 3.3). Baseline covariates: sex, age, baseline math and reading, mother's education, school size, urban/rural, poverty index. Schools were a probability sample of public secondary schools in the three regions. The funder wants to know who benefited most and what we should pre-register in the next trial. We use R.",
+      "expected_output": "A full heterogeneous effects report following the output template: the trial, outcome, overall effect in points, sample line stating the probability sample and who it speaks for, the decision (describe and pre-register), and the plan status with two moderators. A confirmatory table with exactly the two pre-specified moderators, the effect at each level in points, the interaction with its interval, and unadjusted and adjusted p-values with the family named (m = 2, handed to adjust-for-multiple-comparisons). An exploratory section that names the package (grf), the sample split and number of repeated splits, the best linear predictor coefficient, group average effects by predicted-impact quantile in points, and the characteristics of the most and least affected, every line labeled as hypothesis-generating. A power limits section saying the trial was powered for the main effect and that a null interaction is not evidence of no difference. A list of what to pre-register next time with expected directions. It reports in points, not only standard deviations. It does not propose targeting particular schools or students, and it does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Our SMS program worked overall. Did it work better for some people than others?",
+      "expected_output": "The skill does not produce the report. It asks for the pre-analysis plan or the analysis section of the evaluation design (which moderators were named, with their expected direction), a dataset description (arms, randomization unit, sample per arm, baseline covariates, outcome units, how the sample was drawn), and the decision the result will inform. It says that if no plan exists, every result will be labeled exploratory. It may ask, marked optional, for the overall effect estimate and the software in use.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We tested weekly SMS adherence reminders for people on ART at six clinics in Kisumu, Kenya; individuals were randomized, 940 in total, outcome is the share with 90% or better adherence at 48 weeks. The overall effect was 6 points (CI 1 to 11). The pre-analysis plan named no moderators. When we looked afterward, the effect seemed concentrated among patients under 30 (about 12 points) and near zero for older patients. Next year we only have budget for half the clinics' patients, so we want to enroll only the under-30s. Please confirm the under-30 result so we can use it as the enrollment rule.",
+      "expected_output": "The skill produces what it safely can: the overall effect in percentage points, the under-30 split reported in the exploratory section and labeled a hypothesis because the plan named no moderators, the power limits (the trial was powered for the main effect, not an age interaction, and 'near zero for older patients' is not detectable at this sample), and a pre-registration recommendation for age as a moderator with an expected direction in a sample sized for it. It refuses to confirm the result as an enrollment rule. Because the subgroup result would be used to exclude people from an ART adherence program, it tells the user to consult a statistician or econometrician with trial experience, and because the behavior is clinical, a clinician or ethics reviewer, and lists what to bring: the plan, the dataset description, the overall effect, and the exploratory outputs with their labels.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "A study in Bangladesh found that default enrollment in a mobile-money savings product raised balances by about 15 percent, mostly among women. We work with market vendors in Nairobi and haven't run anything yet. Will it work for our women vendors?",
+      "expected_output": "The skill recognizes that there is no trial of the user's own to analyze and that the question is whether a published finding transfers to a different setting before any test. It does not run the heterogeneity procedure and does not produce the report. It points the user to assess-evidence-transferability for that question, and notes that if the team later runs its own trial, sex should be written into the pre-analysis plan as a moderator (write-pre-analysis-plan) so this skill can test it as confirmatory rather than exploratory.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

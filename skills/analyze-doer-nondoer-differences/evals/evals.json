@@ -1,0 +1,33 @@
+{
+  "skill_name": "analyze-doer-nondoer-differences",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "The Lombok latrine Barrier Analysis is done: 46 Doers and 44 Non-Doers from the same 24 program villages, 6 excluded, nobody reclassified. Behavior: every member of a household in the 24 program villages, including children under five, uses the household's latrine for every defecation, day and night. Doer: in the past seven days no household member defecated anywhere other than a latrine, per the main caregiver. Two kader coded the answers and reconciled. Counts of respondents giving each response: Self-efficacy (what makes it difficult): no water near the latrine, Doers 8, Non-Doers 27; children afraid to go at night, Doers 10, Non-Doers 21. Positive consequences: fewer illnesses, Doers 35, Non-Doers 30; privacy, Doers 20, Non-Doers 6. Social norms (most households like yours use it every time: yes), Doers 38, Non-Doers 17. Perceived access (hard to keep usable): Doers 9, Non-Doers 25. Susceptibility (child very likely to get diarrhea): Doers 15, Non-Doers 14. Divine will (God decides): Doers 12, Non-Doers 13. Which determinants matter and what are the Bridges to Activities?",
+      "expected_output": "A barrier diagnosis following the output template: the behavior and rules carried over; sample achieved 46 and 44 with 6 excluded; a comparability line; a tabulation using 46 and 44 as denominators (so no water is about 17% vs 61%, a gap of about 44 points; privacy about 43% vs 14%; social norms about 83% vs 39%; access about 20% vs 57%; children afraid at night about 22% vs 48%); flags on self-efficacy (both responses), positive consequences (privacy), social norms, and perceived access; no flag on fewer illnesses, susceptibility, or divine will, which appear under Not flagged; a note that the 15-point rule is a heuristic and the p-values are descriptive; the flagged determinants ranked by gap and coverage with direction (privacy and norms as enablers more common among Doers; water, night fear, and upkeep as barriers more common among Non-Doers); one Bridge to Activities per flagged determinant in the increase or decrease the perception or ability form, naming the priority group; and a what-to-check list. It does not propose activities, does not re-ask for the counts or denominators, and does not run or recommend a multiple-comparisons adjustment.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "We ran a Doer/Non-Doer study on exclusive breastfeeding in Dedza. Which barriers matter?",
+      "expected_output": "The skill does not tabulate or write Bridges. It asks for the data in one of the two forms it accepts (a coded tally per determinant and response, or the verbatim answers with each respondent's classification) together with the number of Doers and Non-Doers interviewed, and asks how the Doer rule held up in the field and whether both groups came from the same communities. It may ask, marked optional, who coded the answers and what the program calls the priority group. It produces no percentages, flags, or Bridges until the data arrive.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Immunization camps in Udaipur: we interviewed 48 Doer mothers at the camp on camp day and 41 Non-Doer mothers whom the ANMs found in three villages about 20 km from the camp site that had no camp that month. Doer: the card shows every due dose given within 30 days. Counts: perceived access (camp too far or no transport): Doers 5, Non-Doers 31; social norms (husband approves): Doers 40, Non-Doers 22; self-efficacy (difficult: no one to mind the other children): Doers 12, Non-Doers 19; cues for action (someone reminded me): Doers 30, Non-Doers 9; perceived severity (measles very serious): Doers 36, Non-Doers 30. Which determinants should we build the strategy on?",
+      "expected_output": "The skill tabulates and flags with 48 and 41 as denominators, but states above the table that the two groups came from different places (the camp site versus villages 20 km away without a camp), so the access row, and probably the cues row, reflect where people were recruited rather than determinants; it marks every flag provisional, writes Bridges only for the rows it judges readable (social norms, and self-efficacy if flagged) and labels them provisional, and lists perceived severity under Not flagged. It tells the user to consult a formative-research lead who has run Barrier Analysis before building a strategy on this, because the groups came from different communities, and lists what to bring (the tally with denominators, the codebook, the questionnaire, the recruitment record by village). It does not refuse to tabulate and does not propose activities.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We have 14 transcripts from hour-long interviews with maize farmers in Bungoma about top-dressing on time. Nobody was classified as a Doer or Non-Doer; we asked everyone the TDF guide. Which barriers do the interviews support?",
+      "expected_output": "The skill does not tabulate anything. It says the data are open-ended interviews with no Doer/Non-Doer split, so the comparison rule does not apply, and points the user to synthesize-interview-findings with the transcripts, the hypotheses from decompose-comb-barriers, and the interview guide's domains-to-hypotheses map.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

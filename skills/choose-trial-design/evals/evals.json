@@ -1,0 +1,33 @@
+{
+  "skill_name": "choose-trial-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We distribute HIV self-test kits through 120 community pharmacies across 10 local government areas in Lagos. We want to test two changes: a subsidy that cuts the kit price from 2,000 to 500 naira, and a peer-referral voucher that lets a buyer give a free kit to a partner. Outcome: share of adult customers offered a kit who buy one, from the pharmacy log. The state program will decide whether to scale the bundle to all 20 LGAs. Constraints: customers of the same pharmacy talk to each other and vouchers travel to partners who may use another pharmacy in the same LGA; procurement can supply 40 pharmacies per quarter and the state wants every pharmacy covered within 12 months; pharmacies can be delayed but not excluded; we can only offer the subsidy at the pharmacy, not assign who buys; we need to know whether the voucher adds anything beyond the subsidy. How should we randomize?",
+      "expected_output": "A full trial design choice following the output template: a constraints table with all six rows filled from the prompt; a designs table ruling out individual randomization (spillovers within pharmacies), ruling in a parallel cluster design at the pharmacy with a waitlist that treats every pharmacy by month 12, ruling in a stepped-wedge, ruling in a 2x2 factorial because two components and the decision needs their separate value, and marking encouragement as not needed because the subsidy is delivered to the pharmacy and the outcome is measured there; a chosen design (a pharmacy-level 2x2 factorial with four arms, stratified by LGA, run for two quarters, then rollout of the winning bundle in quarters three and four) with unit, arms, allocation, blocking, timing, randomization procedure, power cost (design effect, main effects only), analysis implications (cluster-robust, additivity assumption), and an ethics note (kits stay available at full price, delay only, state AIDS agency and ethics board sign-off); a named runner-up (three-step stepped-wedge) with the condition that would flip to it; a hand-off naming what estimate-sample-size needs; and an open question on voucher contamination across pharmacies within an LGA. It does not compute a sample size, does not name the primary outcome's data feasibility, and does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "We want to run an RCT of our savings SMS. What design should we use?",
+      "expected_output": "The skill does not choose a design. It asks the five required questions: the experiment intent (the change, who gets it, the outcome, the decision), how the intervention travels between people, rollout and whether the program can withhold it and who decides, whether the program controls who receives the SMS or only who is invited, and how many separable components there are. It may ask about unit counts and the theory of change, marked optional. No constraints table, no chosen design.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "The county agriculture office in Western Kenya wants to test SMS advice on fertilizer timing. They insist on randomizing at the sub-county level, there are 8 sub-counties, and the governor's office has said no sub-county can be left without the service. Farmers in the same group share phones and advice. What design?",
+      "expected_output": "The skill still produces what it safely can: a constraints table, a designs table showing that 8 sub-counties cannot support a parallel cluster design and that the governor's condition rules out withholding, and a proposed design that randomizes farmer groups within every sub-county (so every sub-county receives the service) or a stepped-wedge across groups, with the spillover reasoning for groups as the unit and a runner-up. Because the unit the office insists on is a government administrative unit and randomization is politically contested, it tells the user to consult an evaluation methodologist and to involve the county authority and an ethics board, and says what to bring: the constraints table, the designs considered, the counts of sub-counties and farmer groups, the rollout calendar, and the theory of change. It does not present an 8-sub-county parallel design as viable.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We have settled on randomizing 60 villages for the sanitation program, 30 per arm. How many households per village do we need to survey?",
+      "expected_output": "The skill recognizes that the design is already chosen and the question is sample size, which is estimate-sample-size's job. It names that skill, says what it will need (the planned effect, the outcome's baseline, an ICC or a range, take-up and attrition assumptions), and does not produce a constraints table or revisit the design.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

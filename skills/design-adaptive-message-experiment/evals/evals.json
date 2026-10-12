@@ -1,0 +1,33 @@
+{
+  "skill_name": "design-adaptive-message-experiment",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We run an SMS refill-reminder program for ART clients at three clinics in Kisumu. We have six reminder variants drafted with design-reminder-schedule and write-social-norm-message (two frames, each sent at three different times before the refill date) plus the current message as control. The reward we can see fast is whether the client picks up the refill within 3 days of the due date, from the pharmacy log, which our data officer exports every Friday. About 400 clients have refills due each week, we can run weekly waves for 8 weeks, and the data officer can run an assignment script. We want to pick the one message to roll out across the county next quarter. Design the adaptive experiment.",
+      "expected_output": "A full adaptive message experiment design following the output template: the intent and decision carried over; the goal named as policy choice and the algorithm as exploration sampling with a one-sentence reason; an arms table with control first and a dimension column (frame, timing); the reward defined as refill pick-up within 3 days, read from the pharmacy log, with the 3-day window as the minimum gap between waves; a batch schedule with an even burn-in wave, an exploration floor, and a fixed control share; an inference plan that says adaptive-phase standard errors are biased and either names a statistician-run estimator with a winner's-curse correction or falls back to estimating the effect in the confirmatory wave; a stopping rule; a confirmatory fixed-allocation wave of the selected arm versus control; a dated persistence check; an implementation note naming the data officer's script and the weekly cadence; open questions. It does not rewrite the messages, does not run a power calculation for a fixed design, and does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "We have a bunch of message versions for our program. Can we run a bandit?",
+      "expected_output": "The skill does not produce the design. It asks for the arms (the message versions pasted in plus the control), the reward (the one outcome observable within days, where it is recorded, and the counting window), the goal (choose the best arm afterward, or most responses during this campaign), and the flow (people per wave, number of waves, who implements assignment). It may ask, marked optional, whether any arm could harm or offend and whether an evaluation design brief exists.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We want to adaptively test five messages to caregivers in Rajasthan to get children to the monthly immunization camp. The outcome we care about is full immunization by 12 months. One of the five messages says that children who miss their vaccines can die. Our field team would assign messages by hand each month from a printed list. Design it.",
+      "expected_output": "The skill produces what it safely can: the arms table with dimensions, the decision the result informs, and the structure of the batch schedule. It says plainly that full immunization by 12 months lags by months, so there is nothing to adapt on between monthly waves, and it does not invent a fast proxy without asking whether camp attendance within days of the message is recorded. It flags the fear message as one that could harm or frighten and says it must not be included until an ethics or program review clears it. It flags hand assignment from a printed list as a risk to the design's validity. It tells the user to consult a statistician with adaptive-design experience and an ethics reviewer, and says what to bring: the arms table, the candidate reward and its window, the batch schedule, and the decision rule. It suggests a fixed design with estimate-sample-size as the alternative if no fast reward exists.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We want to test whether our new WhatsApp onboarding flow beats the old one. Two arms, about 2,000 new users next month, and we need a clean effect estimate because the board will decide on the rollout budget from it.",
+      "expected_output": "The skill recognizes a fixed two-arm product experiment whose purpose is a defensible effect estimate for a funding decision, and says adaptive assignment is the wrong tool for it. It does not produce an adaptive design. It points the user to design-evidential-experiment for the launch-ready configuration (or choose-trial-design if the trial's structure is the question) and to estimate-sample-size for the sample.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

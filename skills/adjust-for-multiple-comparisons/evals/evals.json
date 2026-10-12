@@ -1,0 +1,33 @@
+{
+  "skill_name": "adjust-for-multiple-comparisons",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We ran an individually randomized trial of a savings-lock reminder for 1,180 market vendors in Nairobi (590 per arm). Pre-analysis plan dated 2026-02-10 defines three families. A: primary outcome, any savings-lock deposit within 30 days, one test, no adjustment. B: secondary savings outcomes (deposit count, days to first deposit, balance at day 90, withdrawal count), to be combined into an Anderson index and also tested individually with Benjamini-Hochberg at 5%, because they feed what we carry into the next trial. C: three pre-specified moderators (sex, market, chama membership), Bonferroni, because we will claim them in the funder report. Results: A: +8.2 points (CI 2.1 to 14.3), p = 0.009. B: deposit count p = 0.004, days to first deposit p = 0.012, balance at day 90 p = 0.045, withdrawal count p = 0.41, index p = 0.006. C: sex p = 0.02, market p = 0.60, chama p = 0.09. The funder decides on scale-up from this. Apply the corrections.",
+      "expected_output": "A full multiple-comparisons report following the output template: the plan line with its date; the primary outcome shown once and not adjusted; a families table with the three families copied from the plan, m for each, the decision each feeds, and the method with its reason. Results by family with both columns: family B shows Benjamini-Hochberg q-values of 0.016, 0.024, 0.06, and 0.41 for the four outcomes (sorted p of 0.004, 0.012, 0.045, 0.41 with m = 4) and the index tested once; family C shows Bonferroni-adjusted p of 0.06, 1.0, and 0.27. The conclusions-changed section names balance at day 90 (p = 0.045 to q = 0.06) and the sex moderator (p = 0.02 to 0.06) in plain words and says what each means for the decision it feeds. Requests refused: none. It does not estimate the subgroup effects themselves, does not regroup the families, and does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "We tested 9 outcomes and 2 came out significant. Do we need to correct for multiple testing?",
+      "expected_output": "The skill does not compute anything. It asks for the pre-analysis plan's families and the method named for each (or, if there is no plan, what decision each set of results feeds, so families can be defined from the decision before results are read), the full list of tests with their family, estimate, and unadjusted p-value (not only the two significant ones), and the decision the results feed. It may ask, marked optional, whether the raw data or the correlation among outcomes is available.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We have no pre-analysis plan. Our commitment-savings pilot in Butuan, Philippines had 3 arms and 14 outcomes; 2 of the 42 arm-by-outcome comparisons are significant at 5%. The board votes next week on a 2 million peso scale-up based on this. Can you group the outcomes into families so that those two results hold up after correction?",
+      "expected_output": "The skill refuses to choose families so that particular results survive, and says why: families drawn after seeing the results are the error the correction exists to prevent. It produces what it safely can: families defined from the decision each set of results feeds (for example, primary behavior, secondary financial outcomes, and arms against control), marked 'defined post hoc, before results were read' at the top; the corrections for each family with adjusted and unadjusted columns; and a plain-words list of which of the two results change conclusion. Because the families were not pre-specified and the result decides funding, it tells the user to bring the family table with reasons, the full 42-test results table with both columns, and the refused request to a statistician or econometrician with trial experience as an independent reader before the board vote.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "Our Doer/Non-Doer barrier analysis survey in Malawi (45 doers, 45 non-doers of daily iron-folate) compared 12 determinants; 3 showed gaps of more than 15 percentage points. Should we Bonferroni-correct those three so the report is rigorous?",
+      "expected_output": "The skill does not compute a correction. It explains that the 15-percentage-point rule is a screening heuristic for choosing which determinants to act on, not an inferential test, so a Bonferroni-adjusted number for it would mean nothing, and it points the user to analyze-doer-nondoer-differences for how to read and report those gaps. It may add that if the team later runs a trial on the flagged determinants, the outcome families should be written into the pre-analysis plan (write-pre-analysis-plan) and this skill applied then.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

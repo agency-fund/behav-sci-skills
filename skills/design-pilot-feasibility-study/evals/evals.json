@@ -1,0 +1,33 @@
+{
+  "skill_name": "design-pilot-feasibility-study",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We're a farmer-support NGO in Western Kenya. Our intervention draft: an SMS two weeks before the long rains telling each registered farmer the date to top-dress maize, plus a voucher for the agro-dealer that is only valid that week. Next season we plan a cluster RCT in 60 villages, 15 farmers per village enrolled within 3 weeks, outcome from a follow-up survey at harvest, and our sample size assumes 85% of farmers reached at harvest. We can pilot in 4 villages with 120 farmers over one season, with 2 field officers who can do short interviews. Our biggest worry is whether farmers will redeem the voucher at all. Design the pilot.",
+      "expected_output": "A full pilot feasibility study design following the output template: the intervention and the main design carried over; the sentence that the pilot's effect estimate will not be used to size the main trial; a progression-criteria table with go, amend, and stop bands for recruitment (enrollment per village within 3 weeks), retention (reached at harvest, derived from the 85% assumption), fidelity (SMS delivered on the date; vouchers issued), acceptability (voucher redemption, which gets the most precision because it is the stated worry), and data completeness (harvest survey completed), each with its derivation from the main design; a pilot size argued from the precision of the redemption rate, not from power; a qualitative component interviewing non-redeemers and the agro-dealers; a table of what changes in the main design under each outcome; the report skeleton; open questions including season and village typicality. It does not estimate the intervention's effect, does not run a power calculation for the main trial, and does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "We want to pilot our program before scaling it. What should the pilot look like?",
+      "expected_output": "The skill does not produce the design. It asks for the intervention draft (what is delivered, by whom, to whom, how often, through what channel), the main design the pilot serves (unit of randomization, delivery, outcome collection, planned size) or confirmation that none exists yet, the pilot's resources (people or sites, duration, staff, interview capacity), and the team's biggest worry among recruitment, dropout, delivery, acceptance, and data. It may ask, marked optional, for rates from a prior pilot or similar program.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Our two-clinic pilot in Malawi of a CHW pill-calendar and voice-reminder package for pregnant women found iron-folate adherence went from about 30% to 45% by pill count. We want to design a second, slightly bigger pilot in four clinics, and we'd like to use that 15-point effect to size the main cluster trial. Can you do both?",
+      "expected_output": "The skill designs the second pilot's feasibility criteria for what it safely can (recruitment, retention, fidelity of calls and visits, acceptability of the calendar, pill-count completeness, with go, amend, and stop bands derived from the main design, and interviews with women who dropped out). It refuses to use the 15-point pilot effect as the main trial's power input, explains that a small pilot's effect estimate is noisy and selected for looking good, and routes the sizing to estimate-expected-effect and estimate-sample-size with a statistician. Because the package involves medication in pregnancy, it tells the user that even the pilot needs ethics review and a stopping rule for harm, and says what to bring: the first pilot's participant flow and rates, the criteria table, and the main design.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We want 20 mothers in two villages in Indonesia to try adding an egg a day to their child's complementary feeding for a week, then tell us what they would keep doing and what they changed. How should we set that up?",
+      "expected_output": "The skill recognizes household-level negotiation and trial of a practice, which is formative work, not a program pilot with progression criteria. It does not produce a pilot feasibility design. It points the user to plan-trials-of-improved-practices and says that a feasibility pilot comes later, once the practice to be delivered at scale is settled.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

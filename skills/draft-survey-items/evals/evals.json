@@ -1,0 +1,33 @@
+{
+  "skill_name": "draft-survey-items",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We run monthly immunization camps in 40 villages in Rajasthan. Baseline survey of mothers of children under two, read aloud in Hindi or Marwari by female enumerators; most mothers have 0 to 5 years of schooling. Constructs from our measurement plan: (a) attendance: whether the mother brought the child to the camp held in her village last month; (b) perceived difficulty of getting to the camp, meaning time, distance, and needing permission, which we want as separate things; (c) her expectation of how many other mothers in the village attend; (d) intention to attend next month's camp. The block is 8 items at most and sits after the household roster, before questions about the child's health card. Write the items.",
+      "expected_output": "A full run of the output template: items grouped by construct with every option labeled in words, no agree/disagree statements, no 1-to-10 scales, difficulty split into three single-idea items (time, distance, permission), attendance bounded to the camp held last month, the expectation item phrased as a count out of ten mothers like her, intention bounded to next month's camp; an order table that places attendance before intention and notes that a reported non-attendance could shape the stated intention; an enumerator read-aloud version with options read each time; the design check table; and the hand-off to draft-cognitive-interview-script. It does not translate into Hindi or Marwari, does not re-ask the Before you start questions, and does not promise reliability or a summed score.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Write some survey questions about savings for our program.",
+      "expected_output": "The skill does not produce items. It asks which constructs the survey must measure, each with a one-sentence definition and the decision the data feeds (or asks for the measurement plan), and who the respondents are (schooling, language, whether an enumerator reads the items aloud). It may ask about the length budget and position in the questionnaire, marked optional if the user cannot say yet. It explains in one line why 'savings' is a topic rather than a construct.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "HIV self-testing program in Lagos, follow-up survey with young men 18 to 29 who received a kit, read aloud by male enumerators in Yoruba or English. Constructs: (a) whether they used the kit in the last 3 months; (b) number of sexual partners in the last 3 months; (c) whether they told their main partner the result; (d) perceived stigma, meaning how they think people in their area view someone who tests. Max 10 items. Write them.",
+      "expected_output": "The skill writes what it safely can: a bounded kit-use item for (a) and construct-specific stigma items for (d) phrased about 'people in your area' rather than the respondent. For (b) and (c) it does not write a better direct question; it says that partner count and disclosure of an HIV result are sensitive behaviors where direct wording cannot remove the social-desirability pressure, routes them to design-list-experiment, and tells the user to involve a survey methodologist with sexual-behavior measurement experience and the ethics review before fielding, listing what to bring (construct definitions, the drafted items with intended meanings, the respondent description). It still produces the order table, read-aloud version, design check, and hand-off for the items it did write.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "Our eight items on household decision-making for women in Bihar are drafted and we are happy with the wording. Can you check whether the women will understand them? We can interview eight of them next week.",
+      "expected_output": "The skill recognizes that the items exist and the question is comprehension, which is pretesting. It does not rewrite the items. It names draft-cognitive-interview-script as the skill that owns this, and offers one thing within its own scope: if the items lack a stated intended meaning each, it can help write those, because the pretest needs them.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

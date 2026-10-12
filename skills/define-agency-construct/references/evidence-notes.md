@@ -1,0 +1,65 @@
+# Evidence notes: define-agency-construct
+
+Compiled 2026-10-12 from the literature checks run while drafting the original `plan-agency-measurement`, which this skill was split from: every source linked from Wu, Goldberg & Xu (2026), the literature on defining agency in development economics and psychology, and the literature on agency in human-AI interaction. Verification tags: **[verified-crossref]** means the DOI was resolved through the Crossref API and title, authors, year, and venue matched; **[verified-arxiv]** means the arXiv record was checked; **[verified-url]** means the page was opened on 2026-10-12. Anything not confirmed is marked "unverified, author to confirm". Nothing was added from memory. Measurement, validation, and LLM-as-a-measure sources are in `plan-agency-measurement`'s evidence notes.
+
+## Primary sources
+
+### Wu, Z., Goldberg, B., & Xu, R. (2026, July 1). *Measuring agency in a digital context* [verified-url]
+The Agency Fund (Substack), co-developed with Google Jigsaw. https://theagencyfund.substack.com/p/measuring-agency-in-a-digital-context
+- The working definition ("a person's capability to navigate toward the future they want"), the four reasons agency is hard to measure (latent, multidimensional, culturally situated, context-specific), the two distinctions behind the 2x2 agency framework (end goal versus digital tool; internally experienced versus externally expressed), the three frameworks it names (Bandura, Sen, Jigsaw), and the hypothetical AI-mentor example that `worked-example.md` builds on.
+- Practitioner guidance from the authors' work with partners, not a study. The post does not say which cells of the framework to prioritize.
+
+### The Agency Fund. (2026). *ask-agency-measurement* [source files read locally; the URL is the one the blog links]
+https://github.com/agency-fund/taf-skills/tree/main/ask-agency-measurement. The predecessor of this skill and `plan-agency-measurement`: the coaching style (one question at a time, each with a recommended answer) and the diagnostic questions.
+
+## Defining agency
+
+- **Bandura, A. (2001).** Social cognitive theory: An agentic perspective. *Annual Review of Psychology, 52*(1), 1–26. https://doi.org/10.1146/annurev.psych.52.1.1 [verified-crossref]. Intentionality, forethought, self-reactiveness, self-reflectiveness; direct, proxy, and collective agency. Theory.
+- **Bandura, A. (2006).** Toward a psychology of human agency. *Perspectives on Psychological Science, 1*(2), 164–180. https://doi.org/10.1111/j.1745-6916.2006.00011.x [verified-crossref]. Further reading; the list of core properties was not confirmed from the text.
+- **Sen, A. (1985).** Well-being, agency and freedom: The Dewey Lectures 1984. *The Journal of Philosophy, 82*(4), 169–221. https://doi.org/10.2307/2026184 [verified-crossref; end page from Alkire 2008's reference list]. Agency versus well-being; control versus effective power; agency freedom versus achievement (content via Alkire 2008 and Donald et al. 2017).
+- **Alkire, S. (2008).** *Concepts and measures of agency* (OPHI Working Paper No. 9). University of Oxford. https://ophi.org.uk/publication/WP-09 [verified-url]; also in K. Basu & R. Kanbur (Eds.), *Arguments for a better world*, Oxford University Press, https://doi.org/10.1093/acprof:oso/9780199239115.003.0025 [verified-crossref; editors, volume, and pages: author to confirm]. Sen's definition; autonomy versus ability; existing measures capture control rather than effective freedom; proxy agency as effective power. Conceptual review.
+- **Kabeer, N. (1999).** Resources, agency, achievements: Reflections on the measurement of women's empowerment. *Development and Change, 30*(3), 435–464. https://doi.org/10.1111/1467-7660.00125 [verified-crossref]. Resources, agency, and achievements are indivisible in giving an indicator its meaning. Her often-quoted definition of agency ("the ability to define one's goals and act upon them") was seen only in secondary sources: unverified, author to confirm the exact wording.
+- **Donald, A., Koolwal, G., Annan, J., Falb, K., & Goldstein, M. (2020).** Measuring women's agency. *Feminist Economics, 26*(3), 200–226. https://doi.org/10.1080/13545701.2019.1683757 [verified-crossref]. Goal-setting, sense of agency, acting on goals. Empirical details are from the 2017 World Bank working paper, https://doi.org/10.1596/1813-9450-8148 [verified-crossref]; author to confirm they appear in the 2020 article.
+- **Donald, A. A., & Hernandez-de-Benito, M. (2021, October 26).** *Measuring agency: What we know and where we go from here*. World Bank Data Blog. https://blogs.worldbank.org/en/opendata/measuring-agency-what-we-know-and-where-we-go-here [verified-url]. MAGNET's three dimensions; decision-making counts as agency only if the respondent wants to be involved.
+- **Skinner, E. A. (1996).** A guide to constructs of control. *Journal of Personality and Social Psychology, 71*(3), 549–570. https://doi.org/10.1037/0022-3514.71.3.549 [verified-crossref]. Agents, means, and ends of control; choice is an antecedent of perceived control, not the same thing.
+- **Ryan, R. M., & Deci, E. L. (2000).** Self-determination theory and the facilitation of intrinsic motivation, social development, and well-being. *American Psychologist, 55*(1), 68–78. https://doi.org/10.1037/0003-066X.55.1.68 [verified-crossref].
+- **Ryan, R. M., & Connell, J. P. (1989).** Perceived locus of causality and internalization. *Journal of Personality and Social Psychology, 57*(5), 749–761. https://doi.org/10.1037/0022-3514.57.5.749 [verified-crossref]. **Vaz, A., Pratley, P., & Alkire, S. (2016).** Measuring women's autonomy in Chad using the Relative Autonomy Index. *Feminist Economics, 22*(1), 264–294. https://doi.org/10.1080/13545701.2015.1108991 [verified-crossref]; details from the working paper, author to confirm against the article.
+- **Chen, B., et al. (2015).** Basic psychological need satisfaction, need frustration, and need strength across four cultures. *Motivation and Emotion, 39*(2), 216–236. https://doi.org/10.1007/s11031-014-9450-1 [verified-crossref]. Belgium, China, USA, Peru; individualistic autonomy items dropped for China and Peru.
+- **Snyder, C. R., Sympson, S. C., Ybasco, F. C., Borders, T. F., Babyak, M. A., & Higgins, R. L. (1996).** Development and validation of the State Hope Scale. *Journal of Personality and Social Psychology, 70*(2), 321–335. https://doi.org/10.1037/0022-3514.70.2.321 [verified-crossref]. Hope as agency (I can start and keep going) and pathways (I can find routes).
+- **Lybbert, T. J., & Wydick, B. (2018).** Poverty, aspirations, and the economics of hope. *Economic Development and Cultural Change, 66*(4), 709–753. https://doi.org/10.1086/696968 [verified-crossref].
+- **Malapit, H., et al. (2019).** Development of the project-level Women's Empowerment in Agriculture Index (pro-WEAI). *World Development, 122*, 675–692. https://doi.org/10.1016/j.worlddev.2019.06.018 [verified-crossref]. Intrinsic, instrumental, and collective agency; 13 projects in 9 countries including Mali, Kenya, and India; intrinsic indicators correlated weakly.
+- **Prunkl, C. (2024).** Human autonomy at risk? An analysis of the challenges from AI. *Minds and Machines, 34*(3), Article 26. https://doi.org/10.1007/s11023-024-09665-1 [verified-crossref]. Autonomy as authenticity plus agency; adaptive preferences. Philosophy.
+- **Beacock, I., Xu, R., Murray, L., Anson, P., Goldberg, B., Kumar, D., Lee, J., Park, R., & Sinha, A. (2026).** *AI usage patterns are shaped by perceived gains in human agency* (arXiv:2607.02313) [verified-arxiv]. Five dimensions (instrumental, cognitive, affective, relational, structural); 51 daily chatbot users in the US, Germany, and Singapore; qualitative preprint. The PDF header asks readers not to share or copy it without permission, so this skill paraphrases rather than quotes. That it is the study behind Jigsaw's Medium post is probable but unverified, author to confirm.
+- **Walsh, J., & Madon, T. (2024, April 3).** *How to build human agency*. The Agency Fund (Substack). https://theagencyfund.substack.com/p/how-to-build-human-agency [verified-url]. Adaptive goal formation; navigating complex decision environments; resilience after setbacks. Organizational framing.
+- **Cavazzoni, F., Fiorini, A., & Veronese, G. (2022).** How do we assess how agentic we are? A literature review of existing instruments to evaluate and measure individuals' agency. *Social Indicators Research, 159*(3), 1125–1153. https://doi.org/10.1007/s11205-021-02791-8 [verified-crossref]. 34 studies; almost every one used a different instrument; generic tools not context, culture, or gender specific. Narrative review.
+- **Bulte, E., & Lensink, R. (2019).** Women's empowerment and domestic abuse: Experimental evidence from Vietnam. *European Economic Review, 115*, 172–191. https://doi.org/10.1016/j.euroecorev.2019.03.003 [verified-crossref]. Backlash.
+
+## Agency with respect to the digital tool
+
+- **Bennett, D., Metatla, O., Roudaut, A., & Mekler, E. D. (2023).** How does HCI understand human agency and autonomy? *CHI 2023*, 1–18. https://doi.org/10.1145/3544548.3580651 [verified-crossref]. Systematic review of 161 papers; four aspects to specify.
+- **Limerick, H., Coyle, D., & Moore, J. W. (2014).** The experience of agency in human-computer interactions: A review. *Frontiers in Human Neuroscience, 8*, 643. https://doi.org/10.3389/fnhum.2014.00643 [verified-crossref]. Feeling versus judgment of agency; more automation lowered implicit agency. Lab evidence.
+- **Shneiderman, B. (2020).** Human-centered artificial intelligence: Reliable, safe & trustworthy. *International Journal of Human–Computer Interaction, 36*(6), 495–504. https://doi.org/10.1080/10447318.2020.1741118 [verified-crossref]. Automation and human control as separate axes.
+- **Lee, J. D., & See, K. A. (2004).** Trust in automation: Designing for appropriate reliance. *Human Factors, 46*(1), 50–80. https://doi.org/10.1518/hfes.46.1.50_30392 [verified-crossref].
+- **Parasuraman, R., & Riley, V. (1997).** Humans and automation: Use, misuse, disuse, abuse. *Human Factors, 39*(2), 230–253. https://doi.org/10.1518/001872097778543886 [verified-crossref].
+- **Sharma, M., McCain, M., Douglas, R., & Duvenaud, D. (2026).** *Who's in charge? Disempowerment patterns in real-world LLM usage* (arXiv:2601.19062) [verified-arxiv]. Reality, value-judgment, and action distortion; reliance and dependency as an amplifier; deference is not disempowerment. Preprint by authors partly employed by the platform studied.
+- **Bastani, H., Bastani, O., Sungu, A., Ge, H., Kabakcı, Ö., & Mariman, R. (2025).** Generative AI without guardrails can harm learning: Evidence from high school mathematics. *PNAS, 122*(26), e2422633122. https://doi.org/10.1073/pnas.2422633122 [verified-crossref; full text read]. Turkey, about 1,000 students, classroom-randomized; practice scores rose with an unguarded tutor while unassisted exam scores fell 17%; students misjudged their own learning. Single RCT.
+- **Lee, H.-P., Sarkar, A., Tankelevitch, L., Drosos, I., Rintel, S., Banks, R., & Wilson, N. (2025).** The impact of generative AI on critical thinking. *CHI 2025*, 1–22. https://doi.org/10.1145/3706598.3713778 [verified-crossref]. 319 knowledge workers; confidence in the AI associated with less critical thinking, self-confidence with more. Cross-sectional, WEIRD.
+
+## Corrections to the blog's sources (for the blog's authors)
+
+- **Jigsaw's fourth dimension.** The blog says "social"; the probable underlying preprint (Beacock et al., 2026) says "relational". The Jigsaw Medium post could not be opened. This skill writes "relational (the blog calls it social)".
+- **Kentucky.** The blog says officials processed "1 million+ resident ideas". Jigsaw's project page says 3,940 ideas from nearly 8,000 residents, who weighed in over a million times.
+
+## WEIRD skew, in detail
+
+- **WEIRD evidence:** Bandura's theory; self-determination theory; the HCI agency, trust, and reliance work (Bennett et al.; Limerick et al.; Lee & See; Lee et al.); Jigsaw's ethnography (US, Germany, Singapore).
+- **Non-WEIRD evidence:** the capability approach and its measures (Alkire); women's agency in Sub-Saharan Africa and South Asia (Donald et al.; pro-WEAI in 9 countries including Mali, Kenya, India; the RAI in Chad); Bastani et al. in Turkey.
+- **Cross-cultural cautions:** individualistic autonomy items behaved differently in China and Peru (Chen et al., 2015); joint decision-making is common in many settings and is not automatically less agency.
+
+## Replication status, in detail
+
+- **Long-standing and widely used:** social cognitive theory, the capability approach, self-determination theory, the reliance and trust frameworks, the WEAI family.
+- **Single studies:** Bastani et al.; Lee et al.
+- **Preprints, not peer reviewed:** Beacock et al.; Sharma et al.
+- **Practitioner guidance, not studies:** the blog; Walsh & Madon.
+- **Contested:** what agency is; no agreed definition or instrument (Cavazzoni et al., 2022).

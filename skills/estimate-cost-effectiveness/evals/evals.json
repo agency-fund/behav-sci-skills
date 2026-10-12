@@ -1,0 +1,33 @@
+{
+  "skill_name": "estimate-cost-effectiveness",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We ran a cluster RCT of community health worker home-visit reminders for antenatal iron-folate adherence in 24 health centers in Mchinji and Dedza, Malawi (12 per arm), 1,600 women enrolled at treatment centers over 10 months in 2025. Effect from our pre-specified model: adherence (pill count of 80% or more at 32 weeks) was 43% vs 31%, +12 percentage points (95% CI 5 to 19). Costs: 48 CHWs spent about 4 hours a week for 40 weeks (they are government-stipended, we did not pay them; local wage about $0.75/hour); 4 supervisors 8 hours a month for 10 months at $2.50/hour; a 2-day training for 52 people cost $2,600; 48 bicycles at $90 each (3-year life); printed adherence cards $0.20 each; phone credit $2 per CHW per month; monthly CHW meetings used clinic rooms for free (about $5 a meeting at 24 centers); data entry $600; endline survey and pill counts for the trial $9,000. No cash or in-kind transfers. The ministry wants to compare us with an SMS-only reminder program in another district, per additional adherent woman. Program perspective. USD 2025, average market rate.",
+      "expected_output": "A full cost-effectiveness estimate following the output template: the effect line with its interval and source (this trial), the program perspective with a reason, USD 2025 and the exchange treatment, and no discounting because costs fall within one year (noting the 10% J-PAL convention would apply otherwise). An ingredients table that prices the CHW time at the local wage although it was not paid (marked borrowed), annualizes the bicycles, includes the donated clinic space at market value, keeps the research costs outside the delivery total, and shows a transfers line of none. Ratios: delivery cost per woman reached, cost per additional adherent woman (delivery total divided by 192 additional adherent women), cost per percentage point per 1,000 women, and impact per $100. A sensitivity table with rows for the effect at 5 and 19 points, excluding donated inputs, a higher CHW wage, and the society perspective. Comparability limits that name the fixed-cost share and ask how the SMS program priced its staff time and measured adherence. It does not claim the number will hold at scale and does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "What's the cost-effectiveness of our SMS program? The budget was $40,000.",
+      "expected_output": "The skill does not produce a number. It asks for the effect (the outcome in its units, the estimate with its interval, how many people it applies to, over what period, and whether it comes from the team's own trial or a study elsewhere), for the inputs the program used but did not pay for and which costs were research rather than delivery, and for the decision and comparator with the perspective. It may ask, marked optional, for the funder's currency year, exchange, discount, and transfer conventions. It says that dividing $40,000 by a headline number is not the cost per outcome.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Our community health agents in Lusaka, Zambia sold condoms door to door; the trial found +310 condoms sold per agent per quarter (CI 120 to 500) across 80 agents, and we have a full ingredients list in USD 2025 with no transfers. The ministry wants to decide next week whether to fund this or the antenatal visit program in Copperbelt, which reported a cost per additional antenatal visit. Can you give us a single number that says which program is the better buy?",
+      "expected_output": "The skill produces what it safely can: the full cost-effectiveness estimate for the condom program (ingredients, cost per additional condom sold, impact per $100, sensitivity at the confidence bounds), with comparability limits. It refuses to produce a single number ranking the two programs, explaining that they have different outcomes and that choosing between them needs a value on each outcome (a benefit-cost analysis) or the ministry's explicit weights. It tells the user to bring the ingredients table with its paid and donated marks, the effect with its interval, the conventions used, and the sensitivity table to a health or development economist with costing experience before the funding decision.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We have our cost per additional fully immunized child from the Rajasthan-style camp pilot in two blocks. The state government now wants to run it across the whole district with its own staff. Will the cost per child hold?",
+      "expected_output": "The skill recognizes that the cost-effectiveness estimate already exists and that the question is whether cost and effect survive scale-up with a different implementer and population. It does not recompute the ratio. It points the user to assess-scalability for that question, and may note what from the existing estimate to carry over: the fixed-cost share and the wage and price assumptions that would change under government delivery.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

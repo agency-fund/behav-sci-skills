@@ -1,0 +1,33 @@
+{
+  "skill_name": "draft-implementation-intention-prompt",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We distribute HIV self-test kits through 40 community pharmacies in Lagos. Each kit comes with a referral card asking the user to report their result by dialing a free USSD code within 7 days; the code works any day, any hour, from any phone. Our exit survey of 320 kit recipients found 82% say they will report, but USSD logs show about 19% do. The lever brief from select-intervention-levers picked action planning. The pharmacist already spends about a minute with each buyer explaining the kit. Most buyers have their own phone; literacy in English or Yoruba is high enough to fill a short card. Draft the plan prompt.",
+      "expected_output": "A full implementation intention prompt following the output template: the target behavior carried over; the intention check citing the 82% exit-survey figure as the evidence and the 19% log figure as the gap; action type one-off with the window (7 days, any hour, USSD from any phone) stated; a literal prompt with blanks for the date and time the person will test and where, with reporting tied to that moment ('right after, from this phone'); a why-each-element section that says date-only was not significant; delivery riding on the pharmacist's minute at the counter, written on the referral card the buyer keeps; boundary checks confirming one-off, noting whether buyers plan with a partner, and no numeric goal; an expected-effect section quoting d = 0.65, the 4.2 and 4.1 field points, and a planning range of a few points with the reasons, noting that the South Africa self-test trial exists but its result is not quoted; a pre-test with n and pass criterion. It does not write the final Yoruba copy or a sender line, does not design program-sent reminders, and does not re-ask questions the prompt answered.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Attendance at our vaccination camp is low. Add a planning question to the SMS.",
+      "expected_output": "The skill does not produce the prompt. It asks the Required questions: the target behavior and the evidence that people intend to come (or whether the barrier might be something else); whether the camp is a one-off or fixed date rather than a repeated behavior; the window (the camp dates, hours, places, what to bring); and which existing SMS the question would ride on and who sends it. It may ask whether households plan together, marked optional.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "At our four antenatal clinics in Malawi, women who test HIV-positive are counseled to tell their partner. Counselors say most women agree they should, but at the next visit few have. We want a card where the woman writes when and where she will tell him. Draft the prompt.",
+      "expected_output": "The skill produces what it safely can: it confirms the action is one-off, states that the intention evidence is the counselor's impression and names what would confirm it, and drafts the structure of the prompt (date, time, place, with whom) as working copy. It then says that because the planned action is HIV status disclosure, which carries a safety risk for the woman at the planned moment, the prompt must not be deployed before a clinician or safeguarding lead reviews whether asking for a written plan can expose her, who will see the card, and what support follows; it names what to bring them. It flags that the date and place may not be the woman's to choose and recommends a local qualitative researcher check this before any pre-test. It does not present the prompt as ready to print.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "Our TB patients forget their daily pills. Can you write a prompt where each patient plans when and where they will take them every day?",
+      "expected_output": "The skill does not run. It says the behavior is repeated and daily, that the one field trial of plan prompts for a repeated behavior found a null, and that a one-off plan prompt is the wrong technique here. It points the user to design-habit-anchor for tying the daily dose to a stable existing cue, and notes that if the program wants to send messages itself, that is design-reminder-schedule. It does not draft a prompt.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

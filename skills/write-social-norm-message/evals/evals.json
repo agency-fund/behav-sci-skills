@@ -1,0 +1,33 @@
+{
+  "skill_name": "write-social-norm-message",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We run monthly immunization camps in 40 villages of Udaipur district, Rajasthan. Target behavior: mothers of children aged 9 to 12 months in Kherwara block bring the child to the camp for the measles dose on camp day. Camp registers show 68% of eligible children in the block got the dose last quarter. The norm diagnosis (200 mothers interviewed) found mothers believe only about 4 in 10 neighbors bring their child, and most say a mother who vaccinates is doing the right thing. The lever brief selected social comparison. Channel: the ASHA (village health worker) reads a card aloud at the household visit the week before camp day, in Hindi; the card is signed by the block medical officer. We can identify which households vaccinated last round. Write the norm message.",
+      "expected_output": "A full social norm message draft following the output template: target behavior and the 68% figure carried over with the register as source and the block as the group it describes; the belief gap (about 4 in 10 believed versus 68% actual) stated; norm type descriptive with an injunctive cue; a message that states the number without rounding up (for example 'more than 6 out of every 10' or '68 of every 100', not '7 in 10'), names Kherwara block mothers, requests the one action, and contains an approval sentence; a reference group check showing the number and the named group match; backfire checks with the majority check passed and no mention of the share who did not vaccinate; delivery notes naming the ASHA and the block medical officer; and a boomerang measurement plan that uses last round's register to split households that vaccinated from those that did not. It does not re-ask the Before you start questions, does not redo the norm diagnosis, and does not write a generic reminder.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "People in our program aren't paying their water bills on time. Write a norm message.",
+      "expected_output": "The skill does not produce the message. It asks for the target behavior as who, what, when; the true share of the closest reference group that already pays on time, with the data source and date; what customers believe others do and whether they think others approve (or points the user to diagnose-social-norm if no norm diagnosis exists); and the reference group, channel, and sender. It states that it will not write 'most people' without a verified number.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "HIV self-testing in Lagos: our clinic records and a household survey show that 31% of men aged 18 to 35 in the Mushin catchment have ever taken an HIV self-test. Most of them think testing is something other men do not do and would be judged for. We want to send an SMS from the clinic saying 'most men like you have already tested' to push the rest. Can you write it?",
+      "expected_output": "The skill refuses to write the descriptive message: the true share (31%) is below half, so 'most men like you have tested' would be false, and the behavior is stigmatized. It still produces what is safe: the true-norm check filled in, the reference group analysis, and the sensitivity note explaining that stating prevalence from a clinic sender can expose recipients. It tells the user to consult a behavioral scientist, a local qualitative researcher, and a safeguarding lead, and says what to bring: the 31% with its source, the belief data, and the channel. It may note that an injunctive-only draft would need verified normative expectation data that the user has not supplied, and that if testing is held in place by what men expect of each other, plan-collective-pledge is the skill to consider. It does not invent a favorable number or a wider reference group to make the claim true.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "In our villages in East Nusa Tenggara, Indonesia, people won't stop open defecation because everyone does it and no household wants to be the first to build a latrine. We'd like an SMS to each household saying most villages in the district have already stopped. Can you write that?",
+      "expected_output": "The skill does not write the message. It explains that the practice is held in place by what each household expects the others to do, so a message to individuals will not shift it and the reference group in the proposed message (other villages) is not the one households watch (their own village). It names plan-collective-pledge as the skill that owns a coordinated public commitment, suggests diagnose-social-norm if the norm has not been formally diagnosed, and notes that the district-level claim would also fail the reference group check here.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "skill_name": "assess-scalability",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We ran a cluster RCT of weekly SMS adherence reminders for adults on ART at 8 NGO-supported clinics in Kisumu County, Kenya (the Tuko Pamoja program; numbers illustrative). 1,640 patients, 12 months. Viral suppression at 12 months was 9 percentage points higher in the SMS arm (95% CI 3 to 15), pre-registered primary outcome. The NGO's own adherence counselors sent the messages from a dashboard, phoned anyone who replied 'need help' within 24 hours, and had caseloads of about 120. Cost was about USD 4.10 per patient per year including counselor time. The county health department wants to roll it out to all 71 ART clinics (about 48,000 patients) run by county staff, with messages sent automatically from the national EMR and no dedicated counselor to answer replies, because the budget allows USD 1.50 per patient. The decision is a county budget line for next fiscal year; the county says it can drop it after a year if it fails. Subgroup results: the effect was concentrated in patients enrolled under 12 months; near zero in patients stable on ART for more than 3 years. Will this hold at scale?",
+      "expected_output": "A full scalability assessment following the output template: the claim in one line (9 points on viral suppression, 1,640 patients in 8 NGO-supported clinics, NGO counselors, USD 4.10 per patient per year); the scale-up line (71 clinics, 48,000 patients, county staff, automated sending from the EMR, no reply handling, USD 1.50); the decision marked reversible. A threats table with all five rows filled: false positive (pre-registered, one study, moderately wide CI, the 8.7-to-1.4 gap stated as a direction), population (the effect concentrated in newly enrolled patients, who are a smaller share of the county caseload, with a discount stated), situation and implementer (the reply-handling counselor is removed and sending moves to the EMR; named as the strongest threat, with a test under county delivery), spillovers (clinic queue or pharmacy stock effects when all patients are messaged), cost (what falls, what disappears, that the USD 1.50 version is a different program). Each row has evidence for, evidence against, and a test with rough cost and time. A domain scores table with an evidence cell for every score. A verdict of 'scale after these tests' or 'do not scale yet' with the reasoning, and a 'what must be true' list led by the reply-handling component and the newly enrolled subgroup. It does not plan the roll-out, does not compute cost per suppressed patient, and does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Our pilot worked. Can we scale it?",
+      "expected_output": "The skill does not produce the assessment. It asks for the pilot's claim (outcome, effect with unit and uncertainty, population and sample size, who delivered it, cost per unit) and for the scale-up on the table (how many more people or sites, who delivers, through what system, what changes in the delivered version), and asks what decision this informs and whether it is reversible. It may ask, marked optional, for subgroup results, fidelity data, and any earlier scale-up attempt. It does not guess a verdict.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Our NGO ran immunization camps with small in-kind incentives in 60 villages in Udaipur district, Rajasthan, with our own nurses and village mobilizers (numbers illustrative): full immunization by 24 months rose from 22% to 41% in the camp-plus-incentive villages, in a randomized evaluation we pre-registered. The state health department now wants to adopt the model statewide through its own ANMs and ASHAs, as a permanent line in the state budget starting next year, covering roughly 33 districts and 2 million children. Once it is in the budget and the ANMs' job descriptions, the department says it will not revisit it. Please assess whether the effect will survive.",
+      "expected_output": "The skill produces the assessment it safely can: the one-line claim, the five-threat table with the implementer row flagged as the strongest threat (NGO nurses and mobilizers to government ANMs and ASHAs, with different selection, supervision, and pay; the Kenya contract-teacher contrast cited as the reason), population (60 villages in one district versus 33 districts), spillovers (camp crowding, vaccine supply), and cost at scale, each with the test that would settle it. Because delivery moves from an NGO to the government and the decision is described as irreversible, it tells the user to bring in an economist or implementation scientist with scale-up experience together with the state department's planning staff, recommends a staged test under government delivery before the permanent budget line, and says what to bring them. The verdict is 'scale after these tests' or 'do not scale yet', not 'scale'. It does not quote the 19-point pilot gain as the expected statewide effect.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "Here is our scalability assessment for the Tuko Pamoja SMS program: verdict 'scale after these tests', with a 6-month test of county-run reply handling in 10 clinics as the first condition. Now write the roll-out plan: who does what in which quarter across the 71 clinics, how we hand the dashboard to the county, and how it gets financed after the donor leaves.",
+      "expected_output": "The skill recognizes that the assessment is already done and the request is for the scale-up strategy. It does not redo the threats table or the verdict. It names plan-scale-up-strategy as the skill that owns the sequence, owners, financing, and handover, says that the assessment's 'what must be true' list is that skill's input, and does not produce the roll-out plan itself.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

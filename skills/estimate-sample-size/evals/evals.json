@@ -1,0 +1,33 @@
+{
+  "skill_name": "estimate-sample-size",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We are testing community-led total sanitation triggering in a district in East Nusa Tenggara, Indonesia. Design from choose-trial-design: village-randomized, two arms, 40 households surveyed per village. Outcome: household uses an improved latrine at 12 months, binary, verified by survey; baseline 35% from district health office data. estimate-expected-effect told us to plan for 6 percentage points (the smallest effect worth detecting; central expected effect 8 points). We have no local ICC. Triggering reaches every assigned village; we expect 10% of households not found at endline and will use baseline latrine ownership as a covariate (R-squared around 0.10). We can afford 60 villages. How many do we need, and what can 60 detect?",
+      "expected_output": "A full power calculation following the output template: an inputs table with sources, alpha 0.05 and power 0.80 labeled conventions, the ICC marked as no local estimate with a range used; the individual-level n per arm shown with the two-proportion formula, the design effect 1 + 39 x ICC shown at the central ICC, the attrition and covariate multipliers named, and the required clusters per arm; the script command and its output pasted; the MDES for 30 villages per arm in points and in SD; a sensitivity table over ICC and effect; Type S and Type M risk at 6 and 8 points because both sit below the MDES; a verdict that 60 villages cannot detect 6 points at power 0.80, with the options that change it (more villages rather than more households per village, a baseline measure, accepting a larger MDES, or not running); and a What to check list naming the missing ICC. It does not raise the effect to make 60 villages work, does not re-ask the Before you start questions, and does not choose a different design.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "How many people do we need for our SMS trial?",
+      "expected_output": "The skill does not compute anything. It asks for the effect to plan for and its unit (pointing to estimate-expected-effect if none exists), the outcome type with its baseline rate or mean and SD, the unit of randomization (pointing to choose-trial-design if undecided) with cluster size and any ICC, and the feasible sample; it may ask about take-up, attrition, covariates, and any fixed alpha and power, marked optional. No sample size, no MDES.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We can randomize 8 health centers in Zambia, 4 per arm, about 300 clients each, to test whether community health agents offering HIV self-test kits raise kit uptake. Uptake today is about 4% of clients. We would be happy to detect a 2-point increase. Can we?",
+      "expected_output": "The skill still runs the calculation and shows the arithmetic: with 4 clusters per arm the design effect at any plausible ICC makes 2 points undetectable, the MDES for 4 centers per arm is reported for a range of ICCs, and the verdict is that the feasible sample cannot detect the plausible effect. It then tells the user to consult a statistician for two stated reasons: fewer than about 30 clusters are feasible, so small-sample cluster inference is needed and the design may have to change (randomizing agents or clients within centers, via choose-trial-design), and the outcome is rare (4% baseline), where the two-proportion normal approximation should not be trusted. It says what to bring: the inputs table, the script output, the sensitivity table, and the design.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "For the fertilizer-timing SMS in Western Kenya, should we randomize individual farmers or whole farmer groups?",
+      "expected_output": "The skill recognizes that the unit of randomization is choose-trial-design's decision, says so, and does not compute a sample. It notes that the sample size depends on that choice (the design effect applies only to group randomization) and that it will run once the unit, cluster size, and effect are fixed.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

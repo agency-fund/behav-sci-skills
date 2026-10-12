@@ -1,0 +1,47 @@
+{
+  "skill_name": "plan-agency-measurement",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's our agency definition for our WhatsApp agronomy assistant in Bihar: farmers' self-efficacy for planting and pest decisions, and whether they make those decisions themselves rather than asking the assistant to decide. We care about both the farming goal and how farmers rely on the assistant. We have consented message logs and transcribed Hindi voice notes, and our field team can phone-survey 800 farmers at baseline and again after six months. This is for a report to our funder. Can you show us items from published scales we could use?",
+      "expected_output": "A full plan without re-asking what the prompt answers. The grid uses the 2x2 agency framework with the forms (with respect to the end goal, with respect to the digital tool) and manifestations (thoughts and feelings, choices and actions), and gives each focus cell an on-platform measure (a short voice or WhatsApp check at a decision point, or log signals) and an off-platform measure (the phone survey), each with a moment. The measure details table has instrument, items, source, evidence base, form, and manifestation for each measure. Items from published scales are quoted only if the source was opened; otherwise the cell says 'not accessed' (paywalled or not found) with the citation and a paste-ready query. No items are reproduced from memory or attributed to a scale without a source. The evidence base notes where each instrument was validated and what to check before using it with Bihar farmers. Next steps cover research, use/adapt/build (with draft-survey-items and translate-survey-instrument), testing sized to a funder claim (cognitive interviews, reliability, a human-coded gold standard for any LLM coding of voice notes), interpreting the evidence, and later skills. It recommends a psychometrician or survey methodologist for the funder claim.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "We want GPT to score agency 1 to 5 in our chat logs. How do we set it up?",
+      "expected_output": "Does not design the scoring prompt or a plan yet. Asks which construct the score is meant to capture (with a suggested answer), and, if the user cannot name one, sends them to define-agency-construct first. May note in a line that a 1-to-5 'agency' score has nothing to be validated against until agency is defined for these users.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We run a maternal health chatbot for pregnant women and new mothers in Kenya (Swahili) and Mali (Bambara). We've defined agency as women's confidence and say in decisions about clinic visits and their baby's care. Our plan is to translate a 10-item agency scale that was developed with US college students, add it to the chat, also ask women whether their husband lets them go to the clinic, and report country averages to our funder next quarter. Can you build the measurement plan?",
+      "expected_output": "Builds the plan but does not endorse using the US-developed scale as is: it plans to check what the construct means in each setting, rework or replace items that may not transfer, pretest through cognitive interviews, and collect evidence that could inform item redesign or rethinking the construct. Says country averages cannot be compared until the instrument is shown to measure the same thing in Swahili and Bambara (translation, pretesting, a measurement invariance test). Treats the question about a husband's permission as sensitive: routes it to an ethics review and a researcher experienced in women's safety before fielding, and to design-list-experiment if a direct question would carry pressure. Recommends a psychometrician or survey methodologist for the cross-country comparison and questions the next-quarter timeline. Uses the measure details table with form and manifestation for each measure and looks beyond the in-chat survey for off-platform data.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We're piloting an AI mentor that helps Class 11 students in Delhi government schools develop a business idea over 12 weeks, comparing a mode where it asks questions first with one where it gives suggestions straight away. We've defined agency as students owning and revising their own idea and not leaning on the mentor. We were planning to just run an end-of-course survey. We also have chat logs, weekly teacher observation, and a scored final pitch. What should we measure?",
+      "expected_output": "Does not rely on the survey alone: uses the chat logs (delegation versus pushback; LLM coding of revision marked experimental), teacher observation, and the pitch rubric alongside the survey, placed on the 2x2 agency framework with an on- and off-platform measure per focus cell. For the LLM coding of chats, plans a stratified human-coded gold standard with human agreement checked first, hands the check to audit-llm-qualitative-coding, and recommends a researcher experienced in validating LLM-based measurement. Notes that the students are minors, so using their chat logs needs consent, de-identification, and ethics review. Says the same instruments and coding must run identically in both modes and sends the comparison itself to design-evidential-experiment.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 5,
+      "prompt": "We just need a few WhatsApp questions to check whether our users feel able to question our health bot's advice. No need for published scales, just something we can start piloting.",
+      "expected_output": "Gives a short plan or measure details for the digital-tool, thoughts-and-feelings cell with a few drafted items, each labeled 'drafted example, not from the literature', with the source column naming only the theory (for example, calibrated trust or reliance) and no paper as the items' source. Suggests the moment to ask (right after the bot gives advice) and keeps the check to one to three items. Hands full item drafting and pretesting to draft-survey-items and draft-cognitive-interview-script, and notes that the items need testing before results are relied on. Does not present the drafted items as validated.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 6,
+      "prompt": "An LLM already coded 2,000 of our users' chat transcripts for agency using our codebook. Before we put the results in our report, can we trust the codes?",
+      "expected_output": "Recognizes that auditing codes an LLM has already produced belongs to audit-llm-qualitative-coding and points there, without building a measurement plan. May add one line that the audit needs a blind, hand-coded, stratified subsample.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

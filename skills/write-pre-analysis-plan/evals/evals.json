@@ -1,0 +1,33 @@
+{
+  "skill_name": "write-pre-analysis-plan",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We are about to launch an RCT with 8,000 garment workers in Dhaka on default enrollment into a mobile-money savings wallet. Design brief from plan-evaluation-design: individual randomization stratified by factory and sex; two arms, default enrollment with opt-out versus opt-in; primary outcome is an active savings balance (any balance above zero) at 6 months from the provider's records; smallest effect worth detecting is 5 percentage points, set by the provider. Secondary outcomes we care about: balance amount, number of deposits, and a short survey on financial stress. Proposed subgroups: women, workers under 25, and workers who already had a wallet. The mobile-money provider is co-funding and wants to show usage went up. Nobody has seen any outcome data; baseline is done. We'll register on the AEA registry next week. Write the pre-analysis plan.",
+      "expected_output": "A full pre-analysis plan following the output template: the design carried over verbatim without re-deciding it; one hypothesis with direction; the single primary outcome with its construction, window, and missing-data rule and the 5-point threshold with its source; secondary families (balance amount and deposits as a savings-amount family; financial stress as a separate family) with the correction deferred to adjust-for-multiple-comparisons; the estimator as intention-to-treat with factory and sex strata and baseline wallet status as covariates, heteroskedasticity-robust individual-level standard errors because randomization is individual, attrition and exclusion rules; subgroups each with a theory-based reason (prior wallet holders as confirmatory because a default acts differently on existing users; women and under-25 only with a stated reason, otherwise exploratory); decision rules for above, around, and below 5 points with the provider's stake named as the reason for extra detail; the detailed-versus-flexible section with a commitment to a populated plan; registration steps naming who holds the provider data; open questions. It does not choose a different primary outcome, does not run the multiple-testing correction, and does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Write us a pre-analysis plan for our savings trial.",
+      "expected_output": "The skill does not produce the plan. It asks for the design (the evaluation design brief or trial design with primary outcome, comparison, unit of randomization, strata, smallest effect worth detecting, timing), whether anyone has seen outcome data by arm, the secondary outcomes and every proposed subgroup with its reason, and who has a stake in the result. It may ask, marked optional, for the registry and deadline and a description of the baseline data. If no design exists it points to plan-evaluation-design.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Our midline came in last month and the effect looks much bigger for women than men. Endline is in four months. Can you write the pre-analysis plan now so we can register it before endline, with women as the main subgroup?",
+      "expected_output": "The skill says that outcome data by arm have been seen, so a plan written now is not a pre-analysis plan for those outcomes, and that pre-specifying the women subgroup after seeing it move would be the exact problem a plan exists to prevent. It still produces what it safely can: a draft that records what was seen and when, labels the women subgroup as exploratory on the midline outcome, and pre-specifies only outcomes and tests not yet seen (for example endline-only measures), with the decision rules. It tells the user to consult a statistician or evaluation methodologist and to state in the registry entry what was observed before registration, and says what to bring: the design brief, the midline tabulations that circulated, and the draft plan.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We haven't decided whether the primary outcome should be the number of deposits or the end-of-period balance, and the funder hasn't said what effect size would matter. Can you pick and then write the PAP?",
+      "expected_output": "The skill recognizes that the primary outcome and the smallest effect worth detecting are not chosen, which is plan-evaluation-design's job, and does not choose them or write the plan. It points the user to plan-evaluation-design for the measurement plan (and choose-trial-design if the trial's structure is also open) and says to come back with that brief.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "skill_name": "identify-wise-intervention-target",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Behavior: market vendors in Butuan City who have opened a commitment savings account with our partner rural bank make their weekly deposit when the bank's mobile collector visits the market, every week for the first 12 weeks. Only about a third do. Barrier work so far: decompose-comb-barriers plus 24 vendor interviews; the Motivation (reflective) hypothesis is supported. What vendors said: 'banks are for people with a salary, not for us' (14 of 24); 'the last cooperative ran off with our money, why would this one be different' (11 of 24); 'the collector comes at 2 pm when the market is busiest' (9 of 24); 'I'm not the kind of person who can keep to a plan' (7 of 24). Facts about the setting: the collector is the daughter of a long-standing vendor and is known in the market; the bank has been in the city for 40 years and is regulated; the collector's visit time is fixed by the branch. We have budget for a pilot with 200 vendors. Which psychological intervention fits?",
+      "expected_output": "A full wise-intervention target document following the output template: behavior and barrier evidence carried over; an interpretation table with the four quotes and their counts mapped to candidate questions (belonging, trust, none or structural, ability or self-integrity); a structural test that marks the 2 pm visit time as structural and routes it to select-intervention-levers, and marks the salary and cooperative statements as meaning; one primary question named (trust or belonging, with the reason the other is secondary, not both as a bundle); the moment it becomes live (the first collector visits); an affordance check that uses the stated facts (known collector, regulated bank, fixed visit time) and gives a verdict; a replication picture for the chosen family only, which for trust states that no evidence exists in the sources this skill draws on, and for belonging states the US-only record and the 2023 conditions; a hand-off (select-intervention-levers with the mechanism stated for trust, or draft-belonging-story for belonging) plus what the 200-vendor pilot should pre-register (deposits made, not stated attitudes). It promises no effect size, does not draft any message or exercise, does not list autonomy, competence, and relatedness, and does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Our students give up easily. Should we do a growth mindset intervention?",
+      "expected_output": "The skill does not name a target and does not recommend or reject a growth-mindset intervention. It asks the three Required questions: the behavior as who, what, when, and what barrier evidence exists (routing to define-key-behavior or decompose-comb-barriers if there is none); what the students themselves say about setbacks and about people like them, in their words; and what the school actually offers after any message (feedback, a second attempt, teacher support). It may say in one sentence that the mindset record is contested, but it does not quote an effect size as a promise.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "The regional education directorate in Amhara wants to put a one-hour growth-mindset session into every public secondary school in the region, about 1.2 million students, starting next term, in place of the teacher recruitment it cannot afford. Their evidence is a survey in 12 schools where 60% of students agreed that 'some people are just not good at school'. Interviews from the same schools: 'the teacher is absent half the week' (most students), 'people from my village never finish' (many), 'I am not clever enough' (some). Name the target so we can design the session.",
+      "expected_output": "The skill produces the target analysis as far as the data allow: the interpretation table; a structural test that marks teacher absence as structural and says plainly that a message cannot substitute for it, routing that barrier to select-intervention-levers; a primary question named among the meaning interpretations (belonging or ability) with the reason; an affordance check that fails or is marked unverified because the setting (absent teachers) cannot deliver 'you can improve'; the growth-mindset replication picture with the dossier numbers (d = 0.08; 94% of interventions confounded; Peru range 0.05 to 0.25; Argentina null). It tells the user to bring in an evaluator and a psychologist with intervention experience before any regional rollout, to pre-register a test, and lists what to bring: the interpretation table, the structural test, the affordance check, and the stakes. It does not design the session and does not endorse the rollout as a replacement for teacher recruitment.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We already know the question is belonging: first-year students from northern states at a university in Lagos read every bad grade as proof they should not be there, and the faculty has a peer-mentoring scheme that works. Write the belonging story for the orientation week.",
+      "expected_output": "The skill recognizes that the question is already named and the affordance (a working peer-mentoring scheme) is stated, and that the request is for the exercise itself. It does not re-run the interpretation table or the structural test. It says that drafting the story belongs to draft-belonging-story, which takes this target as input, and it writes no story text. It may note in one sentence that the belonging evidence is US college only and that the orientation-week test should be pre-registered.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "skill_name": "estimate-expected-effect",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We run antenatal care at four rural clinics in Malawi and want to test SMS reminders for daily iron-folate tablets. Pill counts at the third visit put adherence (80% or more of doses) at about 30% today. Our proposal cites the Thakkar et al. 2016 JAMA Internal Medicine meta-analysis of text-message reminders for medication adherence (OR 2.11, 16 RCTs, N = 2,742, bias-adjusted OR 1.68) and the Kenya ART trial where weekly SMS raised the share with 90% adherence by about 13 to 16 points over 48 weeks. The decision is whether to scale SMS from our four clinics to the district's 22 clinics; the SMS costs about $0.40 per woman per month. We have not run a transferability check. What effect size should we plan the test around?",
+      "expected_output": "A full effect-size benchmark following the output template: a source table with both estimates, their source types (meta-analysis; academic field trial), and the conversion of the odds ratios and the Kenya points into percentage points at the 30% baseline and into SD using sqrt(0.3 x 0.7); the five discounts in order, using the bias-adjusted OR 1.68 rather than 2.11, stating that no lab source is present, applying the 8.7 versus 1.4 point academic-to-practitioner reference gap to the Kenya trial, widening the low end because fit was not checked, and noting persistence is not needed while SMS continues; a low/central/high range in both units with the discount named for each row; a separate smallest effect worth detecting tied to the scale-up decision and the $0.40 cost, marked provisional and handing the cost arithmetic to estimate-cost-effectiveness; a single number to hand to estimate-sample-size with the reason; and a What to check list naming phone ownership among pregnant women and the ART-to-iron-folate behavior difference. It never shows OR 2.11 or the Kenya points alone as the expected effect, does not compute a sample size, and does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Mertens says nudges give d = 0.45. What effect should we expect for ours?",
+      "expected_output": "The skill does not produce the benchmark. It asks for the outcome the test will measure with its unit and baseline, the decision the test informs, and what the intervention and setting are, and may note in passing that d = 0.45 is an uncorrected average whose bias-corrected counterpart is about 0.04 so the user knows why the questions matter. It may ask whether a transferability verdict or a cost figure exists, marked optional. No range, no table.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "The ministry wants to roll out an opt-out default for a mobile-money pension contribution to every public-sector salary account in Bangladesh next year. Our evidence is an online experiment with US participants that found a 25-point enrollment increase under a default, plus the UK nudge-unit average for defaults. Baseline enrollment is 8%. There is no field trial in Bangladesh or anywhere similar. Give us the expected effect for the national rollout.",
+      "expected_output": "The skill produces what it safely can: the source table showing the online study as a lab-type source whose size is not carried (0.33 to 0.02 SD lab-to-field shrinkage named), the nudge-unit average as an already-practitioner figure not discounted twice, a range whose low end is near zero and is labeled as resting on high-income benchmarks only, and a smallest effect worth detecting marked provisional. Because the decision is a national policy with no field evidence in a comparable setting, it tells the user to consult a behavioral scientist or evaluation methodologist, recommends a local pilot sized by estimate-sample-size before the rollout, and says what to bring: the source table, the discount arithmetic, the range, and the decision. It does not present a single confident point estimate for the rollout.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "Here is the Kenya ART weekly-SMS adherence trial. Does that study apply to pregnant women taking iron-folate at our clinics in Malawi?",
+      "expected_output": "The skill recognizes that the question is whether one study fits the user's setting, which is assess-evidence-transferability's job, and does not run. It names that skill, says its verdict and discount range are the input this skill would then turn into a planning range, and does not produce a benchmark, a table, or a discount.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

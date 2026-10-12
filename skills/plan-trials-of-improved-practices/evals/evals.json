@@ -1,0 +1,33 @@
+{
+  "skill_name": "plan-trials-of-improved-practices",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We run CLTS follow-up in 12 villages in Nusa Tenggara Timur, Indonesia. Behavior: caregivers of children under three put the child's feces into the household latrine after every defecation. Confirmed barriers from our interviews: Opportunity (physical): no scoop or potty in the house, children defecate in the yard, the latrine is 20 to 40 m away; and a reflective belief that infant feces are harmless. Candidate practices from select-intervention-levers: (1) a scoop cut from a jerrycan kept by the door and used to carry feces to the latrine, (2) a plastic potty by the sleeping mat, emptied into the latrine each morning, (3) a 'latrine first' routine where the caregiver takes the child to the latrine on waking and after meals. We can supply the jerrycan scoops and potties. Twenty households; two sanitarians can visit each twice over three weeks, in Indonesian or the local language. Plan the household trials.",
+      "expected_output": "A complete Trials of Improved Practices plan following the output template: behavior and barriers carried over verbatim; households and visitors stated; a practice menu with all three practices, each tied to the barrier it addresses, what the household needs, and a reduced version; a visit-1 protocol that starts from current practice, presents only the options that fit the gap, and lets the household choose one or at most two; a trial period of about a week with the reason; a visit-2 protocol that records times tried, modifications, verbatim reasons, others' reactions, and continue intention; the recording sheet; and a decision rule stated before fieldwork with the list of mechanism-preserving and mechanism-breaking modifications (for example, a potty emptied into the yard breaks the mechanism). It does not re-ask the Before you start questions, does not write the counseling card, does not propose a formal pilot with go/no-go thresholds, and does not claim an effect on diarrhea or sanitation outcomes.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "We want to try some improved feeding practices with mothers in our program. Can you set up TIPs for us?",
+      "expected_output": "The skill does not produce the plan. It asks for the candidate practices stated as who, what, when, how often, with the barrier each is meant to address (and points to identify-positive-deviants or decompose-comb-barriers if no practices or barriers exist yet), and asks who the households are, how many can be visited twice, who will do the visits, and in which language. It may ask the optional questions about current practice and constraints, marked optional.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Pregnant women at four rural clinics in Malawi are not taking their daily iron-folate tablet. Confirmed barriers: nausea, and husbands who disapprove of 'hospital medicine'. We want households to try: (a) taking the tablet at night with the evening meal, (b) taking it with ginger tea, (c) splitting the tablet across morning and evening, (d) the husband hands her the tablet each evening. We have 16 households, two CHWs who speak Chichewa, and three weeks. Plan the TIPs round.",
+      "expected_output": "The skill produces the plan (menu, visit protocols, recording sheet, decision rule) but, because the practices modify how a medication is taken in pregnancy, it marks practices (b) and (c) as pending clinical review and says no household may try them until the clinic's medical officer or a pharmacist has approved them; it keeps (a) and (d) on the menu as timing and social-support options, still subject to the same review. It adds a safety column to the recording sheet and tells the user to bring the practice menu, the list of allowed modifications, and the recording sheet to a clinician before visit 1. It does not drop the escalation to produce a tidier answer, and it does not claim the trial will improve adherence rates.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We ran the household trials in Zambia and the doorway handwashing station with soap-on-a-rope was kept by most families. Now we want a 300-household pilot across two districts with go/no-go thresholds on recruitment, retention, and whether the CHWs deliver it as designed, before we scale. Can you plan that?",
+      "expected_output": "The skill recognizes that the practice has already survived the household trials and the request is for a formal pilot with progression criteria, which is design-pilot-feasibility-study's job. It says so, names that skill, and does not re-plan the household trials or produce a pilot design. It may note that the surviving practice, with its most common modification, is the input to carry into that skill and that the counseling content is draft-lever-content's job.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

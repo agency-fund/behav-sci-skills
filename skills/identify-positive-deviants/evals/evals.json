@@ -1,0 +1,33 @@
+{
+  "skill_name": "identify-positive-deviants",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "In Gikomba and Toi markets in Nairobi our savings program's M-Pesa data show most female stall vendors deposit into the savings wallet on fewer than 5 trading days a month, but about 1 in 12 deposit on 15 or more days a month, three months running. All vendors pay the same stall fees, use the same agent kiosk inside the market, and have the same wallet terms. We can see deposit records and visit stalls at closing time. Who are the positive deviants and how do we find out what they do?",
+      "expected_output": "A complete output following the template: success defined as 15 or more deposit days a month sustained over three months, verified by M-Pesa records; a shared-constraints screen (stall type, daily turnover band, market, chama membership, other household earners, distance from home) with anyone outside it excluded as a resource deviant; the deviant-selection criteria table; a candidate list structure with anonymized ids and verification columns; an inquiry plan with observation at the end-of-day cash count, interview questions, a matched set of non-deviants from the same markets, and a community verification session that presents practices without names; a practices table with the common, deviant, feasibility, observed/reported, and hypothesis columns, left as placeholders or illustrative rows clearly marked as not findings; open questions; and the what-this-does-not-show statement that spreading practices has weak or null evidence as an intervention. It does not invent findings about what deviant vendors do, does not propose an intervention, and does not re-ask for the outcome, constraints, or data.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Some of our farmers do really well. Can we do a positive deviance thing?",
+      "expected_output": "The skill does not produce criteria or a practices table. It asks what 'do really well' means as a behavior or outcome and what source can verify it, what constraints all the farmers share (land size, inputs received, distance to market, assets), and what data or process can screen for candidates. It may ask who will do the inquiry and whether success is sensitive, marked optional.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "At our ART clinic in Kisumu about 70 percent of patients on the SMS adherence program are virally suppressed. We want to find the suppressed patients in the poorest catchment area, learn what they do to keep taking their pills, and then have them teach the others at the clinic. Set it up.",
+      "expected_output": "The skill produces what it safely can: a success definition (viral suppression as recorded in the clinic file, sustained over consecutive viral-load results), a constraints screen for the poorest catchment, the selection criteria, and an inquiry plan. It flags that viral suppression is a confidential clinical status, that identifying deviants and asking them to teach others discloses status, that community verification could shame patients who are not suppressed, and that the suppression threshold needs a clinical definition. It tells the user to consult the clinic's clinical lead and the ethics committee, and an HIV researcher, and says what to bring. It also says that 'have them teach the others' is an intervention outside this skill, with weak or null evidence for positive deviance as an intervention, and does not design it.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We found the practices the top condom-selling community health agents in Lusaka use. Now design the program to get all the other agents doing the same thing.",
+      "expected_output": "The skill does not design the program and does not rerun the inquiry. It says that testing a practice with a few units first is plan-trials-of-improved-practices and that choosing how to act on a confirmed barrier is select-intervention-levers, points the user there with the practices table, and repeats that positive deviance as an intervention has weak or null outcome evidence, so the program should be tested rather than assumed to work.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

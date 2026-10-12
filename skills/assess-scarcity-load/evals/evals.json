@@ -1,0 +1,33 @@
+{
+  "skill_name": "assess-scarcity-load",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We're a rural bank in Butuan, Mindanao. Behavior: existing clients (mostly small rice farmers and sari-sari store owners) open a commitment savings account, with a named goal, a target amount, and a lock-in date, at the branch, during our June enrollment drive. Take-up has been about 12% (illustrative) and lowest among the farming clients. Income: rice harvest sales in April and October; store owners earn daily; school enrollment fees fall in June; the town fiesta is in August; most farmers repay an input loan at harvest. The ask requires coming to the branch, choosing a goal, deciding an amount, picking a date, and filling a two-page form. We could move the drive, change the form, or both. Is the June timing the problem?",
+      "expected_output": "A complete scarcity load assessment following the output template: the ask broken into its sub-asks (branch visit, goal, amount, date, form); a calendar table with rows for the harvest months, June (school fees), August (fiesta), and the loan repayment, each with its source marked (user-supplied); the ask located in June, two months after the April harvest cash and at the school-fee outflow, with the rating split between farming clients (high) and store owners (medium or low); a demands table counting the goal, amount, and date decisions and saying which the program could hold with a default; recommendations in order (move the drive to just after the April or October harvest and after the loan repayment; default amount and date; enroll now, choose the goal later; reminders last); and an honest 'Is the real constraint money?' answer (partly: farming clients may only have surplus post-harvest). It does not write the enrollment message, does not name the exact calendar date as final (it points to choose-delivery-moment), does not quote a Mani et al. effect size, and does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Our farmers don't follow through on the training sign-up. Is it scarcity?",
+      "expected_output": "The skill does not rate the load. It asks what the sign-up actually requires the farmer to have, remember, calculate, compare, or decide, when it arrives, and by what deadline; and it asks for the farmers' income and expense rhythm (harvest months, input purchases, school fees, loan repayments). It may ask the optional questions about when take-up is lowest and what the program can change, marked optional.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Smallholders in Western Kenya don't buy fertilizer at planting in March. Our ask: buy a 50 kg bag at the agrovet in March; we send three SMS reminders in February and March. Harvest is in August; most households tell us they have no cash from January through April because school fees are due in January and the previous harvest money is gone. Should we add more reminders?",
+      "expected_output": "The skill produces the load map (calendar, where the ask lands, demands, rating high for the tight January-to-April period) and recommends against more reminders, since they add a demand at the tightest moment. Because the user's own calendar says households have no cash at any point before planting, it answers 'Is the real constraint money?' with yes for most households and says the fix is the timing of the purchase offer or credit, not the design of the reminder: it points to choose-delivery-moment for a post-harvest offer and tells the user to bring the calendar, the demands table, and the rating to program leadership and an agricultural economist to decide on offer timing or credit. It does not quote a lab scarcity effect size and does not design the offer itself.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We've mapped the calendar for the Odisha piece-rate workers: they are slack in the two weeks after the monthly payout and tight in the week before. Which exact day should the savings-enrollment SMS go out, and what should it say?",
+      "expected_output": "The skill recognizes that the load map already exists and the request is for the delivery moment and the message, which belong to choose-delivery-moment and draft-lever-content. It says so, names both skills, and does not re-map the calendar or draft the SMS. It may restate the load map in one line as the input to carry over.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

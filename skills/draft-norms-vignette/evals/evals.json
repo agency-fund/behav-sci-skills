@@ -1,0 +1,33 @@
+{
+  "skill_name": "draft-norms-vignette",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We ran diagnose-social-norm on open defecation in a village in East Nusa Tenggara, Indonesia. Call: social norm, medium confidence. Reference group: neighbors in the same hamlet and the older men. Sanction: teasing, latrine owners are called 'showing off'. Respondents will be adults, mostly low literacy, interviewed one to one in Indonesian or the local language by our surveyors reading aloud. Not a sensitive topic here. We can survey about 600 adults across five hamlets. Please write the vignette.",
+      "expected_output": "A full norms vignette following the output template: a personal normative belief question asked before the scene; a base scene with a named adult protagonist in a hamlet at the moment of deciding whether to build or use a latrine, short enough to read aloud in about 30 seconds; a cue table whose empirical sentences name hamlet neighbors ('most households in her hamlet go to the river' versus 'most now use a latrine') and whose normative sentences name the neighbors and older men (approve versus call it showing off); four versions differing only in the cue sentences; the three third-person questions with oral-friendly options; individual randomization generated in advance and balanced within surveyor; an analysis plan with the two main effects, the interaction, the reading rule, and a sample per version of roughly 150 marked illustrative; and a 'what to check' section. It does not re-ask the Before you start questions, does not re-run the diagnosis, and ends by sending the scenes to draft-cognitive-interview-script for pretesting.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Write a norms vignette about saving.",
+      "expected_output": "The skill does not produce a vignette. It asks for the practice and its dilemma as who does what, when, and the decision moment (or for the social norm diagnosis if one exists); the reference group the cues should name; the respondents and the mode (literacy, language, oral or written, individual or group); and whether the practice is sensitive. It may ask, marked optional, which cue matters most and how much survey time is available. It explains briefly that a cue about 'people' in general measures nothing, so it needs the reference group.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We want vignettes on girls marrying before 18 in rural Amhara, Ethiopia. Respondents will include girls aged 13 to 17 and their parents, interviewed at home. Our diagnosis says the reference group is the extended family and the church elders. Can you write the four versions?",
+      "expected_output": "The skill produces what it safely can: the design skeleton (the dilemma, the two factors with the reference group named, the four-version structure, the three questions in outline, the randomization, and the analysis reading) and the personal belief question in outline. It does not write the final scene wording. It triggers the escalation point clearly: child marriage is a harmful practice, respondents include minors, interviews are at home where the household's authority may be present, and a version in which the extended family and elders approve could be read as endorsement or distress a girl, so a local qualitative researcher with experience of the practice and an ethics reviewer must review the scene and questions before any wording is fixed. It says what to bring them: the skeleton, the questions, the sampling plan, and the diagnosis.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "In our antenatal program in Malawi we want to know what share of women secretly stop taking the iron-folate tablets their clinic gives them. Can a vignette measure that?",
+      "expected_output": "The skill recognizes that the question is the prevalence of the respondents' own sensitive behavior, not what they expect others to do or approve of, and says so. It does not produce a vignette. It points the user to design-list-experiment for an estimate that does not ask anyone to admit stopping, and notes that a norms vignette would instead answer whether the practice of stopping is held in place by what other women do and what the household approves of, if the team wants that later.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

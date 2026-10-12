@@ -1,0 +1,33 @@
+{
+  "skill_name": "synthesize-interview-findings",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We finished 16 interviews with maize farmers in Bungoma and Kakamega using the TDF guide: 8 who top-dressed on time per program records and 8 who did not. Behavior: smallholder maize farmers enrolled in the program apply top-dressing fertilizer when the plants reach knee height, four to six weeks after planting. Hypotheses from decompose-comb-barriers: H1 (Opportunity, physical) cash is short at top-dressing time; H2 (Capability, psychological) farmers time by the calendar, not the plant; H3 (Motivation, reflective) farmers do not believe top-dressing pays; H4 (Capability, psychological) the window coincides with weeding and the task is forgotten. We have full English transcripts for 6 and the field officer's notes plus Kiswahili audio for 10; our Bungoma M&E officer speaks Luhya and Kiswahili and can read with you. We decide in ten days how to supply fertilizer next season. Transcripts and notes follow. [transcripts]",
+      "expected_output": "A full interview synthesis following the output template: header with the behavior, 16 interviews, languages, data form, readers, and the decision and date; a framework matrix with 16 rows, columns for H1 to H4 plus discovery columns for the domains without a hypothesis and an other column, every cell carrying a summary in the farmer's terms, a verbatim anchor with respondent id, and a status; a verdict per hypothesis with counts out of 16, quotes, named disconfirming cases, and the pattern by on-time versus late; a list of what came up that no hypothesis predicted; what was never mentioned though asked; the confirmed barriers with COM-B component and the open hypotheses; a trade-off section stating that 6 were read in full and 10 summarized from notes and audio with the M&E officer, and what a fuller analysis would add; and a what-to-check list. It does not choose levers, does not state percentages of farmers, does not call the result thematic analysis or report a kappa, and does not re-ask for the hypotheses or the deadline.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "We did 20 interviews with mothers about the immunization camps. What did we learn?",
+      "expected_output": "The skill does not build a matrix. It asks for the interview data and its form (transcripts, recordings, or notes), language and translation, who interviewed and who the respondents were; for the hypotheses the interviews were meant to test or the guide's domains-to-hypotheses map (pointing to decompose-comb-barriers if none exist); and for the decision the synthesis must inform and its deadline. It may ask, marked optional, about respondent attributes and any prior coding. It produces no verdicts until these arrive.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Dedza, Malawi: 12 interviews with pregnant women about taking the iron-folate tablet every day. Recorded in Chichewa; our enumerator wrote English notes; nobody on the analysis team speaks Chichewa. In two interviews the women said their husbands beat them for taking 'hospital medicine'. Hypotheses: H1 (Opportunity, social) husbands disapprove; H2 (Motivation, automatic) nausea; H3 (Capability, psychological) forgetting. We decide next week whether to add a husband-engagement session. Synthesize the findings.",
+      "expected_output": "The skill builds the matrix from the English notes with every cell marked as resting on notes and translation rather than transcript, gives provisional verdicts on H1 to H3 with counts out of 12, and names the disconfirming cases. It flags that two interviews disclosed violence, says the safeguarding response and the handling rules for that material come before analysis, and does not file the disclosures merely as evidence for H1. It tells the user that a qualitative researcher who reads Chichewa must check the rows the decision depends on (the H1 cells) before the husband-engagement decision, names the safeguarding lead, and lists what to bring (hypotheses, guide, matrix with anchors, disconfirming cases, trade-off section). It does not refuse to produce the matrix and does not design the session.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "Here is our Barrier Analysis tally: 45 Doers and 45 Non-Doers on exclusive breastfeeding, with counts per determinant and response. Which determinants are different between the groups?",
+      "expected_output": "The skill does not build a framework matrix. It says the data are Doer/Non-Doer counts from a Barrier Analysis, which are compared with the 15-point rule in analyze-doer-nondoer-differences, and points the user there with the tally, the group sizes, and the questionnaire.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

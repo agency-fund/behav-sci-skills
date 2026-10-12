@@ -1,0 +1,33 @@
+{
+  "skill_name": "draft-tdf-interview-guide",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We run a Teaching at the Right Level program in Bihar. Target behavior from define-key-behavior: government primary teachers in 60 schools in Samastipur district run the 45-minute level-grouped reading session in the third period every school day, instead of the textbook lesson. decompose-comb-barriers gave us four hypotheses: H1 (Opportunity, physical) the head teacher reassigns the third period to textbook coverage in the weeks before exams; H2 (Capability, psychological) teachers cannot regroup children after the baseline assessment unless the mentor is present; H3 (Motivation, reflective) teachers think grouping by level is unfair to the children in the lowest group; H4 (Opportunity, social) other teachers tease the ones who 'play games' instead of teaching. Respondents: 12 teachers and 4 head teachers, 45 minutes each, in Hindi, interviewed by our district mentors. Write the interview guide.",
+      "expected_output": "A complete guide following the output template: an AACTT line filled from the brief (Action, Actor, Context, Target, Time); an opening with a plain purpose statement, a consent placeholder, and a reconstruction question about the last school day; questions in running order grouped by episode or topic, each labeled with its TDF domain, COM-B component, and the hypothesis it tests or 'discovery', with H1 to H4 each covered by at least two questions and every one of the 14 domains covered at least once; one or two probes per question; a closing; a domains-to-hypotheses map listing all 14 domains; local adaptation notes that bracket 'head teacher', 'mentor', 'third period', and flag Hindi terms for 'level' and 'group'; and a what-to-check list that includes a pilot. It also notes that mentors interviewing the teachers they coach may shape answers and suggests a separate guide block or respondent for the head teachers. It contains no yes/no or scale items, does not re-ask for the behavior, hypotheses, or respondents, does not propose interventions, and does not write a coding plan beyond pointing to synthesize-interview-findings.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Our farmers aren't applying fertilizer on time. Can you write me some interview questions?",
+      "expected_output": "The skill does not write the guide. It asks for the target behavior as who, what, when (checking for AACTT context and target), for the COM-B barrier hypotheses or points the user to decompose-comb-barriers if none exist, and for the respondents, interviewer, language, and interview length. It may ask whether the behavior is sensitive, marked optional. It does not list questions for the 14 domains.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Lagos HIV self-testing. Behavior: men aged 18 to 30 who collect a free HIV self-test kit from one of our partner pharmacies in Alimosho use the kit within 7 days of collecting it. Hypotheses from decompose-comb-barriers: H1 (Motivation, automatic) fear of what the result will be; H2 (Opportunity, social) a partner or housemate seeing the kit; H3 (Capability, psychological) not knowing how to read the result; H4 (Opportunity, physical) nowhere private to test. Respondents: men who collected a kit, interviewed by our peer educators in Pidgin and English, 40 minutes. Write the guide.",
+      "expected_output": "The skill produces the full guide (AACTT line, opening with consent placeholder, labeled questions covering all 14 domains with H1 to H4 each tested by at least two questions, probes, closing, domains-to-hypotheses map, local adaptation notes, what-to-check list). Because the behavior concerns HIV status, a stigmatized topic, it tells the user before any fieldwork to have an experienced qualitative researcher in sexual health and the relevant ethics review body review the questions and the consent process, flags that the H1 and H2 questions need non-judgmental wording and that peer educators who know the respondents create a disclosure risk, and says what to bring them. It still delivers the guide rather than refusing.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We want to interview about 90 mothers in Udaipur district, half who bring their child to the monthly immunization camp and half who don't, asking everyone the same short questions so we can compare the two groups. Can you write the questions?",
+      "expected_output": "The skill does not write a TDF interview guide. It recognizes a Doer/Non-Doer comparison across many short structured interviews and says that draft-barrier-analysis-questionnaire owns it, pointing the user there. It may mention that the 45 Doers and 45 Non-Doers convention lives in that skill and its analysis partner. It does not produce the questionnaire itself.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

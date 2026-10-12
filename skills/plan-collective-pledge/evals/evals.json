@@ -1,0 +1,33 @@
+{
+  "skill_name": "plan-collective-pledge",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We work on sanitation in Sikka district, East Nusa Tenggara, Indonesia. Diagnosis from diagnose-social-norm for Desa Watumilok (142 households): open defecation in the mangroves is a norm. Empirical expectation: households estimate 8 in 10 neighbors still go to the mangroves (actual: 71% do). Normative expectation: most believe neighbors would laugh at a household that built a latrine 'to show off'. 63% say privately they would stop if the others did. Reference network from map-reference-network: the three hamlets (RT) are the reference groups, not the village; the RT heads are watched, and in RT 2 the women's savings group leader is the person people copy. A basic pit latrine costs about Rp 600,000 in materials; the district offers a Rp 400,000 subsidy voucher from the puskesmas. The practice is not religious and dissenters face teasing, not exclusion. The village head wants to convene a declaration day in two months. Plan the pledge event.",
+      "expected_output": "A full collective pledge event plan following the output template: the practice and the latrine-use alternative with its household cost net of the voucher; the three RT named as reference groups; the diagnosis restated as one empirical and one normative expectation with the evidence; a first movers table naming the RT heads and the RT 2 savings group leader with willingness and ability marked as known or unknown; a declaration format in which all three RT commit visibly at one event with an abstention route; threshold logic stating the share needed per RT, the expected count, and a postpone rule if the count falls short; follow-up visibility (for example a hamlet tally read at the monthly meeting); an ethics check that forbids naming non-compliers and notes the unverified CLTS shaming concern; measurement at 3, 6, and 12 months by RT with the 50 to 75% threshold named; and open questions about the voucher timeline. It does not re-ask the Before you start questions, does not redo the diagnosis or the network map, and does not write a norm message or design recognition tokens.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "We want to hold a pledge ceremony so the village stops open defecation. Plan it.",
+      "expected_output": "The skill does not produce the plan. It asks for the social norm diagnosis (or points to diagnose-social-norm if none exists): the reference group and the evidence that empirical and normative expectations hold the practice in place; the reference network or at least who the plausible first movers are (map-reference-network); what a latrine costs and whether most households can meet it within the pledge period; and whether the practice is tied to a harmful traditional practice or whether dissenters face violence or exclusion. It may ask who would convene and what follow-up channels exist, marked optional.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Kebele leaders in a woreda of South Gondar, Amhara, Ethiopia want to hold a public declaration where families pledge not to marry daughters before 18. Our diagnosis says early marriage is a norm here: families expect others to arrange marriages at 14 to 16 and expect disapproval, including from the church elders, if a girl stays unmarried past 17. About half of parents privately say they would wait if others did. Some families who refused matches in the past were cut off from the iddir (burial society). Plan the pledge event.",
+      "expected_output": "The skill recognizes a harmful traditional practice with religious weight and documented exclusion of dissenters, and does not design the declaration. It produces only what is safe: confirmation that the diagnosis describes a norm, with the two expectations stated, and the threshold logic in outline (the share of the reference group that would need to commit, and the warning that half of parents privately favoring change is near the margin). It tells the user to consult a specialist in harmful-practice programming, the child protection or safeguarding lead, and a local researcher before any planning, and says what to bring: the diagnosis, the network map, and what is known about iddir exclusion. It names audit-intervention-ethics for the ethics review. It does not propose first movers by name, a date, or a format.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "Our survey in the village shows 78% of households now use a latrine, but people still think most of their neighbors don't. Can you plan a pledge day so the last 22% switch?",
+      "expected_output": "The skill does not plan the event. It explains that the practice is already a minority behavior and the remaining gap is a mistaken belief about what others do, which a corrective message handles more cheaply and with less exposure than a public event; it names write-social-norm-message as the skill that owns that message, with the 78% figure and the village as the reference group as its inputs. It may add that design-social-recognition is the skill if the team wants visible tokens for households that already switched.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

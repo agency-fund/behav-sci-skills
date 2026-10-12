@@ -1,0 +1,33 @@
+{
+  "skill_name": "specify-intervention-adaptations",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We tested a peer-distributed HIV self-testing program in Lagos (the Mo Wa Mo Ri program; details illustrative). The intervention as written up: a trained peer from the same community hands a self-test kit to a man aged 20 to 35, shows a 3-minute demonstration video in Yoruba or Pidgin on a tablet, walks through the result card, and phones the person 14 days later to ask about the result and refer anyone positive to a named clinic. Our theory of change: the peer hand-over carries trust (men accept a kit from someone like them), the demo carries capability (correct use), the result card carries capability, and the 14-day call carries follow-through (linkage to care for positives). We are now taking it to Ekiti State. The state wants kits distributed by community pharmacies instead of peers, the video re-recorded in Ekiti dialect, the result card unchanged, and the 14-day call dropped because the state will not fund phone credit; a pharmacist would instead tell the client to come back if positive. During the Lagos pilot itself, our monitoring found that about a third of peers skipped the video when the tablet battery was low and explained verbally instead. Please record the adaptations and tell us which ones matter.",
+      "expected_output": "A full adaptation record following the output template: the baseline in one line; the context transfer named (Lagos to Ekiti, peers to pharmacies); a core-component table with four rows (peer hand-over: trust; demo video: capability; result card: capability; 14-day call: follow-through), each marked confirmed since the theory of change names them, plus the adaptable periphery (language of the video, dialect). A modification log with at least four entries filled on every FRAME field: pharmacy distribution (planned, at scale-up, decided by the state, context, program level, substituted); dialect re-recording (planned, content, tailored, fidelity-consistent yes); dropping the 14-day call for a come-back instruction (planned, decided by the state for cost, removed, fidelity-consistent no); peers skipping the video (unplanned, during delivery, decided by frontline workers, provider level, substituted, fidelity-consistent uncertain). Flags for the dropped call and for the pharmacy substitution of the peer, each naming the mechanism lost and that the Ekiti version is a different intervention until shown otherwise; the skipped video flagged as unplanned drift the Lagos evaluation must account for. A transfer plan section with rationale, stakeholder-planned changes, a pilot, and who keeps the log. A closing 'what to check' naming the dropped call as the modification that matters most. It does not design fidelity indicators, does not rewrite the intervention description, and does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "The field team changed some things in our program. Is that OK?",
+      "expected_output": "The skill does not produce the record. It asks for the baseline (the intervention as tested, from draft-intervention-description or an intervention draft, with its theory of change), for the core components and the mechanism each carries (offering to derive them provisionally from the theory of change if the team cannot name them), and for the modifications themselves: who made each, when, and the stated reason. It may ask, marked optional, whether the program is moving to a new context and whether fidelity monitoring data exist. If there is no written baseline, it says to run draft-intervention-description first.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "To hit the unit cost Ekiti State demands for the HIV self-testing roll-out, we are dropping both the peer distributor (pharmacies hand out kits instead) and the 14-day follow-up call. Our theory of change says the peer carries trust and the call carries linkage to care for anyone who tests positive. Record it and tell us it's fine.",
+      "expected_output": "The skill records both modifications with every FRAME field (planned, at scale-up, decided by the state and the team, context and content, program level, removed or substituted, reason cost), judges both not fidelity-consistent because the theory of change would no longer predict acceptance by the target men or linkage of positives, and flags both as core components removed for cost. It says plainly that the Ekiti program is a different intervention from the one tested in Lagos and that the Lagos evidence does not apply to it. Because a core component is being removed for cost and the dropped component concerns result counseling and referral of people who test positive, it tells the user to bring in an implementation scientist and the original designers, and a clinical or HIV-program specialist for the referral pathway, and lists what to bring them. It does not say the change is fine.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We never wrote up the Lagos HIV self-testing program properly; the protocol is spread across training slides and WhatsApp messages. Can you write a complete description of the program as we delivered it, so the Ekiti team can replicate it?",
+      "expected_output": "The skill recognizes that the request is for the baseline intervention description, not an adaptation record. It does not reconstruct the program from the fragments itself. It names draft-intervention-description as the skill that writes the item-by-item description of the intervention as delivered, says that the adaptation record starts from that document, and offers to open the record once the description exists.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

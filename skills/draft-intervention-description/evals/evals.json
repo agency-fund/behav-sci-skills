@@ -1,0 +1,33 @@
+{
+  "skill_name": "draft-intervention-description",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We need to write up our tax-compliance letter program in Guatemala for the funder and for a municipal tax office that wants to copy it. What we have: the lever brief (the technique was 'information about others' approval' and a descriptive norm, addressing the barrier that people believed most of their neighbors didn't pay), the three letter versions in Spanish from draft-lever-content with their fidelity trace, the mailing contractor's dispatch logs for 12,000 letters sent over two weeks in March, our fidelity plan (a back-check phone survey of 300 recipients on receipt and recall, plus a check of 50 returned envelopes), the back-check results (about 78% recalled receiving a letter, illustrative), and an adaptation record showing that in week two the contractor switched from the municipal envelope to a plain envelope because the municipal ones ran out. The letters are in our shared drive in Spanish and English. It's not going to a journal.",
+      "expected_output": "A full intervention description following the output template: the sources line listing each document; all twelve TIDieR items filled as delivered, with the item 2 table carrying the technique labels verbatim from the lever brief in plain words with no taxonomy numbers, the mechanism, and the barrier; item 3 listing the three letters with languages and the shared-drive location; items 4 to 8 covering dispatch, the contractor, mail as the mode, the municipality, and the two-week window with 12,000 letters; item 9 stating the planned variation (three versions) and item 10 carrying the envelope switch from the adaptation record with when, who, why, and whether it touched an essential component; item 11 from the fidelity plan and item 12 from the back-check and envelope-check results only, with sample and period; a rebuild check for every item; and Open questions. It does not rewrite the letters, does not classify the envelope switch itself, does not assess scalability, and does not re-ask the Before you start questions. Because it is not going to a registry or journal, it does not escalate for a CONSORT-SPI check.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Write up our intervention for the funder report.",
+      "expected_output": "The skill does not produce the description. It asks for the design documents (the intervention draft with its fidelity trace, the lever brief, delivery notes, training materials, or the team's own written account if nothing exists in writing), whether the intervention has been delivered and what delivery data exist (fidelity plan and data, logs, adaptation record), and where the description will go beyond the funder report. It may ask where the materials live and whether anything cannot be shared, marked optional.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We ran a smoking-cessation commitment-contract program in Mindanao: smokers deposited money for six months and got it back if a urine test at month six was clean, with a referral to the municipal health center for nicotine patches for anyone who asked. We're registering the trial retrospectively and submitting the paper to a health journal next month. I have the protocol, the contract form in Cebuano and English, the health center's referral log, our enrollment and deposit records, the fidelity plan and its data, and the adaptation record. Please write the intervention description.",
+      "expected_output": "The skill produces the full twelve-item description from the documents provided, with the deposit contract and the referral named as separate active ingredients in plain words with their mechanisms, item 3 listing the contract form in both languages, item 10 from the adaptation record, and items 11 and 12 separated with item 12 drawn only from the fidelity data. Because the description is going into a trial registry and a journal, it tells the user to have a methodologist or trial statistician check it against CONSORT-SPI 2018 and the journal's requirements, and because the intervention includes a referral for nicotine replacement, it tells the user to have a clinician check that items 4 and 8 describe the referral and the product accurately. It points to draft-sifa-declaration for the AI-use disclosure. It says what to bring the specialists. It does not refuse and does not produce only a partial description.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We're launching a mobile-money savings program in Bangladesh where new wallet users are enrolled by default into a weekly auto-deposit. Can you write the SMS messages that tell people they've been enrolled and how to opt out?",
+      "expected_output": "The skill recognizes that the request is to write the intervention's messages, not to describe an intervention that has been designed or delivered, and that this belongs to draft-lever-content (and the default itself to select-default-option). It does not produce an intervention description. It names draft-lever-content, says that this skill can document the program once the messages and delivery exist, and may note that the messages' fidelity trace will be one of this skill's inputs then.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

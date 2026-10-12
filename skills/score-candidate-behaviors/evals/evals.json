@@ -1,0 +1,33 @@
+{
+  "skill_name": "score-candidate-behaviors",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Goal: raise maize yields among smallholder farmers in three sub-counties of Western Kenya (about 4,000 farmers in our program) by the 2027 long rains. From a farmer workshop we have nine candidate behaviors: farmers buy fertilizer right after harvest when they have cash; farmers apply top-dressing fertilizer within three weeks of planting; farmers plant within a week of the first rains; farmers use certified seed instead of saved seed; farmers space rows at the recommended width; farmers join a group to bulk-buy inputs; farmers 'improve soil management'; farmers buy and apply fertilizer at planting; farmers dry and store maize in hermetic bags. What we can score on: our agronomist's view of impact plus a 2025 evidence scan brief we ran; a baseline survey of 600 farmers with adoption rates for most practices; for likelihood we have not asked farmers, except that the workshop had 20 farmers who voted on which they'd try. Which should we go after?",
+      "expected_output": "A complete scoring document following the output template: the goal and population carried over; 'improve soil management' sent back as an outcome and 'buy and apply fertilizer at planting' split or sent back as compound, with reasons; the remaining candidates rewritten as who does what, with what, where, when; a matrix with impact, likelihood, and prevalence each carrying a basis label (agronomist and evidence scan brief as data or expert for impact, the baseline survey as data for prevalence, the 20-farmer workshop vote as audience input for likelihood where it applies and team guess elsewhere); a headroom-adjusted impact column that shows the adjustment; a quadrant description in words; a shortlist of two to four in which any position resting on a team guess is flagged; and a 'What would change this ranking' section naming the farmer likelihood ratings still missing and how to get them. It does not define the winner as a target behavior brief, does not run APEASE, and does not propose interventions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "We've got a bunch of behaviors we could target. Which one should we pick?",
+      "expected_output": "The skill does not score anything. It asks for the goal in one sentence with the population it is for, the candidate list stated as who does what (with what, where, when), and what the scores can rest on (evidence for impact, whether the audience has been asked about likelihood, whether prevalence data exist). It may ask, marked optional, about constraints that remove candidates and whether an audience and context brief exists. It does not invent a candidate list.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Goal: increase HIV self-test uptake among men 20 to 35 in two Lagos local government areas. Candidates from our team: men pick up a self-test kit at a pharmacy; men order a kit by SMS for delivery; men test at home within 48 hours of receiving a kit; men tell their partner the result; men who test positive attend a clinic within a week; men persuade a friend to also test; pharmacists offer the kit unprompted to male customers. We have kit-distribution numbers from the pharmacies (illustrative: 1,200 kits over six months), but no idea how many were used. Nobody has asked the men anything; all likelihood is our guess. We want to commit the next grant to one of these. Rank them.",
+      "expected_output": "The skill produces the matrix with basis labels, the quadrant description, and a shortlist, and states in its first line that every likelihood score is a team guess so the ranking is a hypothesis for the audience to check. It flags that 'men tell their partner the result' and 'men persuade a friend to also test' involve disclosure and coercion risk and that 'men who test positive attend a clinic' involves clinical follow-up, and tells the user to consult a behavioral scientist or a local qualitative researcher before scoring or committing to those, saying what to bring. It names the missing prevalence data (kits used, not kits distributed) and the audience likelihood questions as what would change the ranking. It still shortlists what it safely can among the lower-risk candidates, and hands the top one to define-key-behavior rather than defining it.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We've decided: the behavior is mothers in our Butuan commitment-savings program deposit at least 200 pesos into the locked account every payday. Can you write it up properly, who does what when, and check it against APEASE?",
+      "expected_output": "The skill recognizes that one behavior has already been chosen and that the request is to define it precisely and check it with APEASE. It does not build a scoring matrix. It says that stating the behavior as who, what, when and scoring it with APEASE is define-key-behavior's job and hands the behavior to that skill as input. If the user mentioned runner-up candidates, it may note they can be kept as the shortlist in define-key-behavior's output.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "skill_name": "design-feedback-report",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We support 85 primary health facilities in Ekiti State, Nigeria, to keep complete patient records. Our lever brief chose feedback on behavior for a confirmed barrier: record officers do not know how complete their own facility's registers are each month and assume everyone is about the same. The state HMIS gives us, per facility, the share of outpatient visits with a complete record (date, diagnosis, treatment, age, sex) each month; data quality is good except for three facilities with intermittent power. We want to send a monthly SMS to each facility's record officer; the LGA monitoring officer would also like to see them. About 20 facilities are already above 90%, 30 are around 60-75%, and the rest are below 50%. Design the feedback report.",
+      "expected_output": "A full feedback report specification following the output template: the behavior and the information gap carried over; a task-level headline metric (share of visits with a complete record, which the officer can move by their own work) with any outcome metric labeled secondary or omitted; a comparison chosen with a reason (own past, or a standard such as 90%, with a stated reason for not using a peer comparison among 85 facilities whose officers know each other, or a peer comparison with a close reference group plus an explicit injunctive cue); report content that states the number, the comparison, the gap, and one next action, with no rank, label, or praise of the person; monthly cadence matched to the HMIS cycle with a recurring budget and a statement of expected decay if it stops; separate top (above 90%: injunctive cue, own-past line) and bottom (below 50%: gap to the next step, small action) designs; a 'who sees it' section that handles the LGA monitoring officer by specifying what they may and may not do with it; a pilot on a subset with a comparison group, read separately for top and bottom facilities; a check on the three facilities with power problems. It does not re-ask the Before you start questions, does not write the final SMS text, and does not design a certificate or public recognition.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Our CHWs are underperforming. Design a feedback report for them.",
+      "expected_output": "The skill does not produce the specification. It asks for the behavior as who, what, when and whether a lever brief chose feedback for a confirmed barrier (since 'underperforming' may be a supply, pay, or skill problem feedback cannot fix); what individual-level data exist, how often, and how reliable; and who will see each CHW's report, including whether supervisors could use it in appraisal. It may ask, marked optional, about the distribution of performance and the channel. It stops there.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "In our reading program in Bihar, teachers get a monthly SMS with the number of reading sessions the monitor recorded for them. The district education officer now wants the same monthly numbers sent to block education officers so they can 'act on it', and says they will be part of the annual teacher appraisal. The data come from two monitor visits a month. How should we set up the report?",
+      "expected_output": "The skill produces what it safely can: a specification with the session count as the task-level headline, a standard or own-past comparison with the reason, a task-focused report skeleton, monthly cadence after the second visit, and top and bottom designs. It flags that a two-visit count is a thin basis for any individual number. Because the report would feed appraisal, it says plainly that feedback used in appraisal is monitoring, not feedback, that people respond by gaming the number, and that it will not design the appraisal use; it tells the user to bring an HR, labor, or ethics reviewer and program management together to agree written rules of use before any pilot, and lists what to bring. It does not simply comply with the appraisal request.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We want to give the ten community health workers with the most home visits each quarter a certificate and announce their names at the district meeting. Can you design that?",
+      "expected_output": "The skill recognizes that the request is a public, visible reward for top performers, not a private, repeated report of a person's own performance to them. It does not run: it names design-social-recognition as the skill that owns public recognition and visible tokens, and may note in one line that the two can coexist but that a league table announced publicly is the kind of ranking a feedback report should avoid. It does not produce a feedback report specification.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

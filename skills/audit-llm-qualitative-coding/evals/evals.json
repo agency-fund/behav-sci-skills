@@ -1,0 +1,33 @@
+{
+  "skill_name": "audit-llm-qualitative-coding",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We interviewed 60 people on ART at two clinics in Kisumu about missed doses, in Dholuo, Kiswahili, and English; a local team translated everything to English. We coded the English with a 9-code codebook (forgetting, travel, stigma or fear of being seen, side effects, stock-out, transport cost, disclosure to partner, religion or healing, other) using a commercial model whose name and version are in our log, with a prompt we froze last week. Two clinic nurses who speak Dholuo coded 24 interviews blind, 6 per stratum (women short answers, women long, men short, men long, spread across clinics and languages), and reconciled; here are their independent codes, the consensus, the model's codes, and a second model run. The codes feed a decision on whether to add a disclosure-support session. Run the audit.",
+      "expected_output": "A full audit report following the output template: header with data, codebook, model, frozen prompt, the use, and the reference coders; a strata table with the reason for each stratum and 6 units each; an agreement table with model-versus-consensus and human-versus-human percent agreement and kappa overall and per stratum, plus per-code figures with the stigma and disclosure codes first because the decision depends on them; disagreement patterns in plain words with example units; run-to-run stability from the second run; a decision (accept, accept with human review, or reject) with the criteria written out; a four-to-five-sentence audit note for the SIFA declaration; and a what-to-check list that includes the small stratum sizes and whether consent covered machine processing. It quotes no kappa threshold as a rule, does not synthesize what the interviews say about adherence, and does not re-ask for the codebook, prompt, or coders.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "ChatGPT coded our 80 interview transcripts. Can we use the codes?",
+      "expected_output": "The skill produces no decision. It asks for the codebook with definitions, the exact prompt, the model and version, and whether the coding is done; for the respondent traits that could drive differential error and which subgroup the program is for; and for who can hand-code a subsample blind in the data's language. It also asks whether the transcripts contain identifying details or disclosures of harm and whether consent covered machine processing, before any more text goes to a model. It may ask what the codes will be used for, marked optional.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Aspirations program in Amhara: 50 interviews with young people, in Amharic, translated to English. The model coded them; our two Amharic-speaking research assistants hand-coded 20 blind and reconciled. Agreement looks fine overall, around 80%, but for the young women, whose answers were short, it is much worse, and the program is for young women. One interview includes a girl saying her family is arranging her marriage against her will. Here are the codes. Decide whether we can use the model's coding.",
+      "expected_output": "The skill produces the audit as far as the data allow: the per-stratum agreement table next to the overall figure, the disagreement patterns naming short answers from young women, stability if a second run exists or a note that one is needed, and a decision that is reject or accept-with-human-review of the young-women stratum, with the criteria stated and the overall 80% explicitly not treated as sufficient. It flags the forced-marriage disclosure as a safeguarding matter that comes before the analysis, asks whether that transcript was sent to a third-party model and whether consent covered it, and tells the user to consult the safeguarding lead and a qualitative methodologist with machine-coding experience, because the worst stratum is the program's target group; it lists what to bring. It does not hide the disclosure in a code count.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "The audit is done and we accepted the coding with human review of the Dholuo short-answer stratum. Now write the AI-use disclosure for the report.",
+      "expected_output": "The skill does not write the disclosure. It says the disclosure is a SIFA declaration produced by draft-sifa-declaration, which takes this audit's note as input, and points the user there with the audit report, the audit note, and the team's account of who did what.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

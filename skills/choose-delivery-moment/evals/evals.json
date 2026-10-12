@@ -1,0 +1,33 @@
+{
+  "skill_name": "choose-delivery-moment",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We run a savings product for peri-urban casual workers around Kampala (porters, boda riders, construction laborers). The lever is chosen: an agent offers to open a named savings wallet and take a first deposit, in person, at the work site. Most are paid daily or weekly on Fridays; rent is due at month start; school fees fall in early February, late May, and early September; Christmas is the big spending season. Interviews confirmed present bias: people say they'll start saving 'next week' every week. There's no fixed window for opening a wallet. When should the agent make the offer?",
+      "expected_output": "A full delivery moment plan following the output template: the ask carried over with its cost at the moment of action; an income and expense calendar table with weekly pay (Fridays) as the flush and month start, fee months, and Christmas as troughs, each row sourced to what the user said; a landmark table that includes Friday payday as the chosen flush and marks any 'new year' or 'start of term' frame as untested here; the natural window stated as 'any time'; a chosen moment such as Friday afternoon after pay, with the mechanism named as liquidity (and not salience), the Kenyan post-harvest RCT named as the evidence with a note that direction transfers, not the number; a short deadline justified by the confirmed present bias; an equity check naming those paid daily or irregularly; and a what-to-test section comparing Friday-after-pay against the program's default visit day. It must not specify how many follow-up reminders to send (that is design-reminder-schedule), must not write the agent's script, and must not re-ask the Before you start questions the user already answered.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "When is the best time to send our message?",
+      "expected_output": "The skill does not produce a plan. It asks the Required questions: what the ask is and what it costs the person at the moment of action; whether the behavior has a natural window (must happen, can only happen, or fixed by a clinic or deadline); and the audience's income and expense calendar. It may ask the optional questions (local landmarks, whether present bias is confirmed) marked as optional. It does not fill in a calendar from general knowledge of any country.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We're a microfinance institution in Western Kenya. We want to time our input-loan offer (seed and fertilizer on credit, repaid after the next harvest) to land right after the maize harvest when farmers have cash and feel optimistic, because we've read the Duflo fertilizer study. Farmers are mostly smallholders with under one acre; many already carry a school-fees loan. Harvest is in August, planting in March. Tell us the exact timing.",
+      "expected_output": "The skill produces what it safely can: the calendar with August harvest as the flush and the fee and planting months marked; the natural window (inputs needed by planting); a chosen moment with the mechanism named; and a deadline rule only if present bias is confirmed, which the user has not said, so no deadline or one flagged as untested. It must distinguish this case from the Duflo study: that was a time-limited offer to buy inputs with harvest cash, not a loan, so the evidence supports the moment, not the product. Because the ask is a credit product aimed at poor households at the moment of greatest liquidity, with existing fee debt, it tells the user to bring in a consumer-protection or financial-inclusion specialist and to run audit-intervention-ethics before launch, listing what to bring (the calendar, the chosen moment, the equity check showing over-indebted households). It does not refuse outright and does not present the Kenyan 14 and 18 point effects as what the loan offer will achieve.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We've decided to make the fertilizer offer in the two weeks after harvest. Now: how many SMS reminders should go out before the deadline, and at what spacing, and should the last one be the day before?",
+      "expected_output": "The skill recognizes that the moment has already been chosen and that the request is about cadence (how many messages, what interval, when the last one lands). It does not build a calendar or re-choose the moment. It names design-reminder-schedule as the skill that owns cadence, says that the chosen post-harvest moment and deadline are the anchor that skill takes as input, and stops.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

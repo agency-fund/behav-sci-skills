@@ -1,0 +1,33 @@
+{
+  "skill_name": "audit-process-friction",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Behavior: men aged 18 to 30 in Lagos who receive our SMS collect a free HIV self-test kit from a partner pharmacy within two weeks and report the result by USSD. Illustrative numbers from last quarter: about 3,000 SMS a month, roughly 400 kits logged as collected, about 90 results reported. The process as we understand it: an SMS with a code and a second SMS listing 25 pharmacies; the man picks one and travels there; shows the code and a photo ID; fills a one-page form (phone number, age, address); the pharmacist explains the kit; he takes it home and uses it; then dials a USSD code, enters the result and the 12-digit kit serial number. A field officer can walk through the whole thing at three pharmacies next week. Where are we losing people?",
+      "expected_output": "A complete process friction audit following the output template: behavior carried over; the process fixed from the first SMS to the reported result; a step log that includes the choice of pharmacy, the trip, the queue, the ID, each form field, the explanation, the private moment at home, and the USSD chain, each with time, money, documents, the decision demanded, who controls it, a tag with a written reason, and completion loss (3,000 to about 400, and 400 to about 90, with 'no data' between the steps where there are none); totals for one person; a removable list ordered smallest first, starting with program-controlled deletions such as the address field and the serial-number entry, then movable steps such as pre-selecting the nearest pharmacy, and listing a clearer SMS last; steps kept with the safety or consent reason (the pharmacist's explanation); an expected-effect section that cites the FAFSA assistance-versus-information result and applies the DellaVigna and Linos discount without promising a number; and a barrier diagnosis under Opportunity (physical). It marks the field officer's walk-through as the planned evidence and the time cells as estimates until then. It does not redesign the program, propose an RCT, or invent per-step drop-off numbers, and it does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Hardly anyone finishes registering for our savings product. Can you do a sludge audit?",
+      "expected_output": "The skill does not produce the step log. It asks for the behavior as who, what, when and the completion point (what counts as registered), the process as the team understands it from the first touchpoint to completion, and whether someone can walk through it as a user or only reconstruct it. It may ask the optional questions about counts and who controls each step, marked optional.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Enrollment in our maternal cash transfer in Ekiti State, Nigeria, currently needs: the mother's National Identification Number, the child's birth certificate, a consent form that a nurse reads aloud and the mother thumbprints, a photo, and two separate visits to the primary health center (registration, then verification). Only about half of eligible mothers who start finish (illustrative). We want to cut it to one visit and drop the consent reading and the birth certificate, since both slow things down. Audit it and tell us what to remove.",
+      "expected_output": "The skill produces the audit (step log, tags with reasons, removable list, expected effect, barrier diagnosis) and proposes the smallest removals it can defend: batching the two visits into one, and moving the photo and the NIN check to the first contact. It refuses to tag the consent reading as removable without a safeguarding or ethics review, because that step protects the mother, and it flags the birth certificate as a possible eligibility requirement controlled by the state program rather than the team, to be confirmed by a legal or compliance officer before it is proposed to the owner. It names those specialists and says to bring them the step log with tags and reasons, the removable list, and the completion counts. It does not quote a completion-gain number.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "Our learning app funnel last month: 10,000 installs, 6,200 sign-ups, 2,100 completed the first lesson, 400 finished the course. Where is the problem?",
+      "expected_output": "The skill recognizes this as a digital product funnel with observed per-stage drop-off numbers, which is diagnose-funnel-weak-link's job. It says so, names that skill, and does not produce a step log. It may note that if the team later wants to walk through the sign-up flow as a user to count its fields and decisions, this skill can do that part.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

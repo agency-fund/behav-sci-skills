@@ -284,6 +284,43 @@ io_types:
     description: "A launch-ready experiment configuration: hypothesis, experiment type, randomization unit and arms, primary and guardrail metrics, power inputs, stopping rule, delivery mapping, and analysis plan."
     user_suppliable: false
 
+  - id: agency-definition
+    label: Agency definition
+    description: "What a team means by its users' agency, stated precisely, matched to established constructs and theories, and placed on the 2x2 agency framework (forms: the end goal or the digital tool; manifestations: thoughts and feelings, or choices and actions), with the cells the team chose to focus on."
+    user_suppliable: true
+  - id: theory-of-change
+    label: Theory of change
+    description: "The causal chain from activities to the target behavior to the outcome, with the assumption and evidence behind each link."
+    user_suppliable: true
+  - id: social-norm-diagnosis
+    label: Social norm diagnosis
+    description: "Whether a practice is held in place by empirical and normative expectations, with the reference group and the evidence behind the call."
+    user_suppliable: false
+  - id: effect-size-benchmark
+    label: Effect-size benchmark
+    description: "The effect size a test should plan for, discounted for publication bias and lab-to-field shrinkage, with the sources behind it."
+    user_suppliable: false
+  - id: power-calculation
+    label: Power calculation
+    description: "Sample size, minimum detectable effect, and the assumptions behind them: variance, intracluster correlation, take-up, attrition."
+    user_suppliable: false
+  - id: scalability-assessment
+    label: Scalability assessment
+    description: "Whether a piloted effect is likely to survive scale-up, with the named threats and what to test before scaling."
+    user_suppliable: false
+  - id: adaptation-record
+    label: Adaptation record
+    description: "Planned and unplanned modifications to an intervention, each classified and checked against the intervention's core components."
+    user_suppliable: false
+  - id: fidelity-plan
+    label: Fidelity monitoring plan
+    description: "Indicators, sampling frequency, and feedback loop for monitoring adherence, dose, and quality of delivery."
+    user_suppliable: false
+  - id: intervention-description
+    label: Intervention description
+    description: "An item-by-item description of an intervention as delivered, complete enough for another team to replicate it."
+    user_suppliable: false
+
 # Suggested free-form tags. Any tag is allowed; these keep spelling consistent.
 suggested_tags:
   - com-b
@@ -312,3 +349,24 @@ suggested_tags:
   - research-transparency
   - funnel
   - evidential
+  - social-norms
+  - defaults
+  - reminders
+  - incentives
+  - commitment-devices
+  - habit-formation
+  - scarcity
+  - sludge
+  - framing
+  - barrier-analysis
+  - tdf
+  - survey-design
+  - list-experiment
+  - growth-mindset
+  - belonging
+  - heterogeneity
+  - multiple-comparisons
+  - cost-effectiveness
+  - implementation-science
+  - scaling
+  - llm-assisted-analysis

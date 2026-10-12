@@ -1,0 +1,33 @@
+{
+  "skill_name": "draft-barrier-analysis-questionnaire",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Target behavior: mothers of children aged 0 to 12 months in 40 villages of Udaipur district bring the child to the monthly immunization camp on camp day for each scheduled dose. Doer: the child's immunization card shows every dose due so far was given at a camp within 30 days of its due date (we check the card). Non-Doer: at least one due dose is missing by more than 30 days. Exclude: no child under 12 months, or no card and no recall. Our ANMs will interview in Hindi and Mewari, about 20 minutes each. We think distance and husbands' opinions matter. Write the Barrier Analysis questionnaire.",
+      "expected_output": "A complete questionnaire following the output template: the behavior verbatim; the Doer, Non-Doer, and exclusion rules carried over, with Doer status marked as verified by the card; the determinant list declared as Kittle's twelve; a screening block whose classification uses the card rather than a yes/no question; a minimal respondent-details block; twelve determinant sections each with matched Doer and Non-Doer wording and a probe, including self-efficacy, social norms, and positive and negative consequences; perceived access and social norms carrying sharper probes about distance and husbands because the user named them; a closing; fieldwork notes with the 45 and 45 sample from the same villages and a pilot; local adaptation notes that flag Mewari terms and that an ANM who runs the camp interviewing mothers about the camp will shape answers; and a what-to-check list. It does not drop divine will, policy, or culture, does not pre-code answer options, does not compare or analyze, and does not re-ask for the behavior, the rules, or the enumerators.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "We want to do a Doer/Non-Doer study on handwashing. Write the questionnaire.",
+      "expected_output": "The skill does not write the questionnaire. It asks for the behavior as who, what, when with a recall window (handwashing when, with what, by whom), for the Doer, Non-Doer, and exclusion rules or offers to propose them marked as proposed, and for who administers, in what language, and how long. It may ask about hypotheses and sensitivity, marked optional. It does not produce the twelve determinant questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Lagos: men aged 18 to 30 who collect a free HIV self-test kit from our partner pharmacies in Alimosho use it within 7 days. Doer means he says he used it; Non-Doer means he says he didn't. Our peer educators will ask the questions at the pharmacy when men come back. Write the Barrier Analysis questionnaire.",
+      "expected_output": "The skill produces the full questionnaire (screening, respondent details, twelve matched determinant pairs, closing, fieldwork notes, adaptation notes, what-to-check), but flags before fieldwork that self-reported Doer status for a stigmatized behavior is unreliable and that the Doer definition is contested (opened the kit, completed the test, read the result), proposes a tighter rule or a verification step marked as proposed, and notes that peer educators asking at the pharmacy create a disclosure risk. It tells the user to consult a formative-research lead with HIV or sexual-health experience and the ethics review body, and lists what to bring. It still delivers the questionnaire rather than refusing.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We finished 46 Doer and 44 Non-Doer interviews on latrine use in Lombok. Here are the counts per determinant for each group. Which determinants matter?",
+      "expected_output": "The skill does not redraft the questionnaire and does not compute or compare the counts. It says the comparison is the job of analyze-doer-nondoer-differences, which holds the comparison rule, and points the user there with the tabulations.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

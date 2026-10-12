@@ -1,0 +1,4 @@
+# Changelog
+
+## 0.1.0 - 2026-10-12
+First draft. Drafted with Claude for Zezhen Wu's review from the blog post "Measuring agency in a digital context" (Wu, Goldberg & Xu, The Agency Fund and Google Jigsaw, 2026), the earlier `ask-agency-measurement` skill in agency-fund/taf-skills, and a literature check of the blog's sources plus related work on agency measurement, reliance on AI, and LLM-based measurement. Reworked before first commit in an author interview with besci-skill-creator: defining agency moved to the new `define-agency-construct`; this skill now takes a definition placed on the 2x2 agency framework, maps on- and off-platform measures onto it, gives each measure its instrument, items (searched or drafted and labeled), source, evidence base, form, and manifestation, and ends with next steps for research, adaptation, testing, and interpretation. Six evals; not yet reviewed.

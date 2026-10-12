@@ -1,0 +1,33 @@
+{
+  "skill_name": "design-social-recognition",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We run monthly immunization camps in 90 villages in Udaipur district, Rajasthan. Behavior: mothers bring their child to the camp for each scheduled dose by the month it is due, through the measles dose at nine months. Completion is recorded by the ANM on the child's immunization card and in the camp register. map-reference-network found that the people mothers track are the other members of their weekly self-help group and their mother-in-law; both groups see timely vaccination as 'looking after the child properly', and the diagnose-social-norm run found the behavior valued but invisible: nobody knows who has completed. Vaccination is not stigmatized here. Self-help groups meet weekly in the village; the ANM and the ASHA attend the camp. Budget is about 15 rupees per child. About a quarter of the catchment is in hamlets more than 5 km from the camp site, and the ASHA says those mothers miss doses because of distance, not choice. We can compare with 90 villages that get camps but no token, and we have the register data. Design the recognition.",
+      "expected_output": "A full social recognition design following the output template: the behavior and the card-plus-register verification carried over, with the rule that the token follows the record; a stigma screen with verdict proceed and the reason; the reference group (self-help group members and mothers-in-law) and a signal line naming where they will see the token (the weekly meeting, the home); a token chosen with reasons (visible at the self-help group meeting, locally meaningful, within 15 rupees, hard to get without completing, not already carrying a party, caste, or program meaning), with staged recognition for each timely dose if the design uses stages; a completion rule that defines timely by the due month and gives late completers an open path; a non-recipient section that names the quarter of mothers in distant hamlets as involuntary non-completers, says what lacking the token will be read as, and sets mitigations (outreach or hamlet-level camp days before launch, no public naming, no mark on the child); delivery by the ANM at the camp with the spoken line sent to draft-lever-content and a stock plan; a measurement plan with the verified timely-completion rate as uptake, a check for tokens without a register match, interview questions about teasing or exclusion of mothers without a token, the 90 comparison villages, pre-registration, and an expected effect below 14.4 points; an evidence statement quoting Sierra Leone (+14.4 points, about 56% to 71%, verified as a registry record only) and Zambia (public recognition, effect size unverified). It does not re-ask the Before you start questions, does not add a cash or lentil incentive, and does not write the ANM's full script.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Give our community health agents a badge when they hit their monthly target. Design it.",
+      "expected_output": "The skill does not design the badge. It asks the Required questions: the target behavior as who, what, when, and how hitting the target is verified and by whom; whose regard the agents actually track (other agents, supervisors, the community, their household) and whether hitting the target is admired among them, pointing to map-reference-network if unknown; whether agents would want it known that they did or did not hit the target, and any concern about shaming; and where the reference group would see the badge. It may say in one sentence that public recognition for agents has one LMIC trial behind it (Zambia), but it produces no design.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "At our ART clinic in Kisumu, about 30% of patients collect their antiretroviral refill late. The clinic-in-charge wants to give a colored wristband to patients who collect on time for three months running, so other patients and the community see who is adherent. Please design the wristband scheme.",
+      "expected_output": "The skill does not design the wristband. It runs the stigma and privacy screen on the stated facts, records that a visible band would disclose HIV status and treatment to anyone who learns what it means, gives the verdict stop, and says plainly that visibility is the harm here. It produces what is safe: the behavior and verification rule carried over, the screen with its verdict, a note that late refills are a confirmed problem that belongs to select-intervention-levers with a private lever (for example a reminder or a refill-scheduling change) rather than a visible token, and a statement that any recognition would have to be private to the patient and clinician, which is a different lever outside this skill. It routes to audit-intervention-ethics and tells the user to bring in an ethics or safeguarding lead and a clinician before anything visible is considered, listing what to bring: the behavior and verification rule, the stigma screen, and the refill data. It writes no token design.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We want to send 100 shillings of airtime to every mother in our Kisumu program whose child is fully vaccinated by 12 months. How much should it be and should it be conditional? Can you set it up?",
+      "expected_output": "The skill recognizes that the reward is airtime, a financial incentive, not a visible token, and does not design a recognition scheme. It says the request belongs to design-incentive-scheme, which sets the size, form, condition, verification, and removal plan of a payment, and produces no token design. It may note in one sentence that a visible token is a separate lever and that combining the two is an open question rather than a free bonus.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

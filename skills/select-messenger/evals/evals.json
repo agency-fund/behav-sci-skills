@@ -1,0 +1,33 @@
+{
+  "skill_name": "select-messenger",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We run monthly immunization camps in 36 villages of Udaipur district, Rajasthan. Target behavior: mothers of children under two in Kherwara block bring the child to the camp on camp day each month. Field interviews confirmed the barrier is information: most mothers did not know the camp date or that the camp had moved to the anganwadi center; they said they would have come had they known. Audience brief: mothers are home most mornings, about half of households have a phone held by the husband, the ASHA visits each hamlet roughly monthly, and the sarpanch announces things at the panchayat meeting that few women attend. Messengers we could field: the ASHA (our default), the anganwadi worker, the sarpanch, a mother who vaccinated on time, community-nominated people, and an SMS from the block office. We cover enough villages to split them. Who should deliver the camp-date message?",
+      "expected_output": "A full messenger choice following the output template: the target behavior and the information barrier carried over verbatim with Type: information; a candidate table with at least the six named candidates plus a community-nominated hub row, each rated high/medium/low on reach, similarity, authority, trust, and cost with a basis column that marks staff impressions as 'assumed'; a written nomination round (the question wording, who is asked per village, the tally rule, status planned); a choice weighted reach-first because the barrier is information, with a stated power test (none of the leading candidates control anything mothers need, or the sarpanch flagged if chosen); a pairing that notes SMS can sit beside the messenger with the cadence deferred to design-reminder-schedule and the husband-held phone noted; a comparison plan assigning nominated messengers to some villages and the ASHA default to others with the camp register as the outcome; and a 'What to check' list. It does not write the message text, does not set the SMS cadence, and does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Who should send our savings messages?",
+      "expected_output": "The skill does not produce a messenger choice. It asks for the target behavior and the confirmed barrier with its type (information, norm, or trust), noting that if the barrier is supply or cost no messenger will help; who the audience is and which channels and people already reach them; and which messengers the program could actually field with their cost and whether any holds power over the audience. It may ask, marked optional, whether a reference-network map exists and whether a side-by-side comparison is feasible.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We're a payroll-linked savings program for workers at three garment and food-processing factories in peri-urban Kampala. Target behavior: enrolled workers keep a monthly deduction into a savings account for six months. Interviews confirmed a trust barrier: workers doubt the money will be there when they want it, because a previous scheme at one factory collapsed. The factory owners are keen and want to deliver the message themselves at the Monday line meeting; they say the workers trust them. Other options are our field officer, a worker who has saved for a year already, and a line supervisor. Pick the messenger.",
+      "expected_output": "The skill produces the candidate table, the nomination round, and the choice, weighting authority and trust first because the barrier is trust. It runs the power test on the factory owner and writes that the owner controls workers' wages and jobs, so apparent trust may be compliance and uptake may reverse or workers may feel unable to decline. It names the peer saver or the field officer as the preferable deliverer, or at minimum flags the owner as unsafe to choose without review, and recommends a comparison across the three factories or line groups. It tells the user to involve a safeguarding lead and a behavioral scientist before any owner-delivered message, and lists what to bring: the candidate table, the power test, and the comparison plan. It still produces what it safely can rather than refusing outright.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "At our four rural clinics in Malawi, pregnant women stop taking iron-folate tablets after a few weeks. We think it's about what other people around them expect. Whose opinion actually counts for these women when they decide whether to keep taking the tablets? Their husbands? Mothers-in-law? The church?",
+      "expected_output": "The skill recognizes that the question is whose behavior and approval the women track for this practice, which is a reference-group question, not a messenger choice. It names map-reference-network (diagnose stage) as the skill that owns it, notes that diagnose-social-norm should have confirmed a norm first, and says that once the reference map exists this skill can take its influencers and gatekeepers as candidate messengers. It does not produce a candidate table or a messenger choice.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

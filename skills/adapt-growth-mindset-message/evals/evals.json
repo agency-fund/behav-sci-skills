@@ -1,0 +1,33 @@
+{
+  "skill_name": "adapt-growth-mindset-message",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We run remedial math classes in 60 government upper-primary schools in Bihar for Grade 6 and 7 students who scored below the Grade 4 level on our baseline. Behavior: those students attend the daily remedial hour for the full 10-week block. identify-wise-intervention-target named ability as the primary question: in 40 interviews, 26 students said things like 'maths is for the sharp ones, I am not sharp'; the structural test cleared cost and distance. Affordance: the remedial teachers are our own trained instructors, they give each student a worked problem back every day, and there is a level test at week 5 and week 10. Peer norms: we don't know. Delivery: one 60-minute session in Hindi in the first week of the block, on paper, run by our instructors; many students read slowly. We can measure the week-10 level test and daily attendance, and we can hold 30 schools back as a comparison. Adapt the lesson for us.",
+      "expected_output": "A full adapted lesson following the output template: target behavior and the students' words carried over; recipients defined as the baseline-below-Grade-4 group (lower achievers by construction); a 'What this lesson does not fix' line even if it says none was found beyond the cleared structural test; a norms check that records the daily worked-problem feedback and the two level tests as teacher affordance and marks peer norms unverified with a pre-test question added; a core lesson with the three claims (ability grows with practice; struggle is information, not a verdict; strategies and help are part of effort) and local examples rather than US ones; a saying-is-believing letter task with an oral or facilitator-assisted variant for slow readers; delivery as one 60-minute session in week one, no boosters; a measurement plan naming the week-10 level test and attendance as outcomes, the 30 comparison schools, pre-registration before delivery, and an expected effect of a few hundredths of a standard deviation; an evidence statement quoting d = 0.08 (k = 43, N = 57,155), 94% confounded, the Peru range 0.05 to 0.25 SD, and the Argentina null; a pre-test with n and pass criterion. It does not re-ask the Before you start questions, does not promise an effect for all students, does not draft a belonging story, and labels the Hindi copy as working copy to be drafted natively.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Our students think they are bad at math. Write us a growth mindset lesson.",
+      "expected_output": "The skill does not write the lesson. It asks the Required questions: the target behavior as who, what, when, and the evidence in students' own words that they read setbacks as proof of fixed ability (or points to identify-wise-intervention-target if the question has not been named); who will receive it and whether lower achievers can be reached specifically; what teachers do after a poor result and what peers say about trying hard; and the delivery format, language, and deliverer. It may say in one sentence that the record is contested, but it quotes no effect size as a promise and produces no lesson text.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "The Ministry of Education wants to drop the planned remedial reading program in 1,800 primary schools in Malawi because it costs too much, and put a one-hour growth-mindset session in its place for all Standard 5 pupils next term. The evidence they have is the national learning assessment showing most pupils read below grade level. They want the session adapted to Chichewa and ready in four weeks. Please produce it.",
+      "expected_output": "The skill produces what it safely can and no more. It says that a national learning assessment is not evidence that pupils read failure as a verdict on fixed ability, so the entry condition is not met and identify-wise-intervention-target or field interviews are needed first; it states plainly that the session cannot replace remedial reading teaching and writes that under 'What this lesson does not fix'; it writes the evidence statement with the dossier numbers (d = 0.08; 94% of interventions confounded; Peru 0.05 to 0.25 SD; Argentina null at 202 schools) addressed to the Ministry's decision-maker; it may sketch the three claims and the saying-is-believing task as a draft contingent on the entry condition, flagged as not for delivery. It tells the user to bring in an education economist or evaluator and a psychologist with school-intervention experience before any national rollout, recommends a pre-registered test rather than a replacement decision, mentions audit-intervention-ethics for a lesson pitched as a fix for structural disadvantage, and lists what to bring: the assessment data, any interview evidence, the norms facts, and the evidence statement. It does not endorse the swap.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "First-year students from rural districts at our polytechnic in Kumasi drop out in the first term. In interviews they say 'people from the villages don't last here' and 'the city students already know each other'. The dean wants a growth mindset session at orientation. Can you adapt one?",
+      "expected_output": "The skill recognizes that the students' words are about belonging ('people like me do not last here'), not about fixed ability, and does not adapt a growth-mindset lesson. It says that the question as stated belongs to draft-belonging-story, or to identify-wise-intervention-target if the team wants the target confirmed first, and writes no lesson text. It may note in one sentence that a mindset lesson addresses 'can I get better at this?' and that none of the quotes say that.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

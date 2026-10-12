@@ -1,0 +1,33 @@
+{
+  "skill_name": "audit-intervention-ethics",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We're an NGO running a mobile-money savings program for garment workers in Gazipur, Bangladesh. Here is the draft from select-default-option: workers at two partner factories are enrolled by default into a 5% deduction from their monthly wage into a bKash savings wallet in their own name. They can opt out by filling in a form at the factory HR office within 30 days of the first payslip that shows the deduction. Workers get a printed notice in Bangla with that payslip and one SMS. Factory HR delivers the notice; we run the wallets and see balances. Workers are adults; about a third have less than primary schooling and some do not read. We will track enrollment, opt-outs, and balances. Is this ok to run?",
+      "expected_output": "A full intervention ethics audit following the output template: the intervention in one paragraph with Mechanism: default and the employer-to-worker relationship named; a six-row test table with a rating and reason per row, in which transparency is rated pass or concern (a plain disclosure exists and the effect likely survives it), autonomy is rated concern or fail (opting out requires a form at the employer's HR office within a window, which is visible to the employer and hard for workers who do not read), welfare is rated concern (the wallet is in the worker's name but a 5% deduction can hurt liquidity-constrained workers, and the expected effect is discounted), fairness and equity is rated concern (non-readers and workers without phones), dignity pass, and consent and data concern (the employer sees who opted out; the NGO sees balances; workers are not told whether they are in a trial). Four flags, with coercion noted as a risk if HR pressures workers and children marked none pending age checks. Verdict REVISE with numbered changes (an opt-out route that does not go through the employer, such as an SMS or a call to the NGO; a spoken explanation for non-readers; the employer not seeing opt-out status; a statement of what data the NGO holds), each pointing to select-default-option as the skill that makes it. Questions for the ethics board if the two factories will be compared as a trial. It does not rewrite the notice and does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Is our savings nudge ethical?",
+      "expected_output": "The skill does not produce an audit. It asks for the draft with its mechanism named (a default, a message, a pledge, an incentive, a recognition scheme, a reminder), explaining that the ethics of a message and of a default differ; who delivers it and to whom, including the relationship and whether any of the audience are children or dependent on the deliverer; and what the audience will be told and not told. It may ask, marked optional, what data are collected and what outcome the intervention serves. If the user cannot name the mechanism it points them back to the skill that produced the draft.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Our HIV self-testing program in Lagos wants to raise testing among young people through six community pharmacies. Draft from design-social-recognition: anyone who returns a used self-test kit to the pharmacy gets a green wristband, and each pharmacy keeps a 'Tested This Month' board by the counter with the first names and photos of people who returned kits. Peer mobilizers, some of them 16 and 17, encourage friends to return kits and get their photo up. Mechanism is public recognition. Can you check the ethics?",
+      "expected_output": "The skill produces the full audit rather than refusing: the intervention in one paragraph with the recognition mechanism and the pharmacy-to-young-person relationship; a test table in which dignity and consent and data are rated fail (the board makes a health-related act public with names and photos, exposes who has not tested, and includes minors; a wristband also signals testing status in public), fairness and equity concern, autonomy concern (declining the photo is visible to peers). Flags: children yes (minors as mobilizers and as people photographed). Verdict STOP for the board and the photo element as drafted, or REVISE only if the board and photos are removed and any wristband is opt-in and does not signal a result; required changes point to design-social-recognition. It tells the user that the organization's ethics board, a data-protection officer, and a safeguarding lead must review before anything launches, because HIV-testing status of minors is involved, and lists what to bring: the one-paragraph description, the test table, the flags, and the verdict.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "For our smoking-cessation program with workers in Mindanao we're choosing between a deposit contract, where smokers put in their own money and forfeit it if they fail a urine test, and SMS reminders. Which is the more ethical option? We haven't designed either yet.",
+      "expected_output": "The skill recognizes that no draft exists and the team is still choosing the lever. It says that select-intervention-levers owns that choice, including its APEASE acceptability and side-effects scoring and its flags on Coercion and Restriction, and that this skill reviews a finished draft with a named mechanism. It may note in one or two sentences that a forfeitable deposit and a reminder differ in the autonomy and welfare questions they will raise, so the team should expect an audit of whichever draft emerges (from design-commitment-device or design-reminder-schedule), but it does not produce the test table or a verdict.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

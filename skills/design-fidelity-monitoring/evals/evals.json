@@ -1,0 +1,33 @@
+{
+  "skill_name": "design-fidelity-monitoring",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We're rolling out door-to-door condom sales through 120 community health agents in two districts of Zambia, starting next month. The intervention as designed has three parts: a four-step household visit script (ask who's home, explain the product and the subsidized price, offer the pack, agree a restock date), a laminated price card the agent shows so the price is the same at every door, and a restock within seven days when an agent runs out. Agents fill in a paper sales log daily; twelve district coordinators supervise them. It's our own NGO staff, not government. The data are for learning and support only, we've said that to the agents. We can afford two monitors per district with motorbikes. What should the fidelity monitoring look like?",
+      "expected_output": "A full fidelity monitoring plan following the output template: the intervention, implementers, and the data-use commitment at the top; an essential-components table that names the mechanism each of the three parts carries and marks each essential or adaptable with a reason; an indicator table with adherence (the four script steps observed), dose (households visited per agent per week from the log, and restock within seven days), and quality (price card shown, price stated correctly) kept separate, each with a data source, and with at least one source independent of the agent's own log (back-checks with a random sample of households, spot-check accompaniment, and a mystery-client option pointed at design-mystery-client-protocol since the service is sold to strangers); a thresholds-and-actions table with a named role per action; a task-level, non-punitive feedback loop to agents with an upward channel; an adaptation log with fields; and the four evaluation threats with an indicator each. It closes with what to check before relying on it. It does not re-ask the Before you start questions, does not design the condom-sales intervention itself, and does not classify adaptations.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Our CHWs aren't following the protocol. Set up fidelity monitoring for us.",
+      "expected_output": "The skill does not produce the plan. It asks for the intervention as planned (the components and who delivers each, or the intervention description or draft), for the delivery system (who the CHWs are, how many, who supervises them, whether they are government or NGO staff and whether a data-sharing agreement exists), and for what the monitoring data will be used for (learning only, or also appraisal, pay, or discipline). It may ask about existing data streams and the monitoring budget, marked optional. It may note that 'not following the protocol' is itself an unmonitored claim the plan would test.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We support the district health office in a district of Rajasthan that runs monthly immunization camps with government ANMs (auxiliary nurse midwives). The camp design is: the ANM arrives by 9am, the ASHA worker has mobilized mothers the day before with a home visit, the vaccine cold box is checked on arrival, and every child gets a card entry. The district medical officer wants our monitoring data so he can dock the pay of ANMs who miss camps or arrive late. We don't have a data-sharing agreement with the district yet, just a verbal understanding. Can you design the monitoring plan?",
+      "expected_output": "The skill produces what it safely can: the essential-components table (ASHA mobilization visit, on-time ANM arrival, cold-box check, card entry) with mechanisms, the indicator table with adherence, dose, and quality separated, data sources independent of the ANM's own record (back-checks with mothers, spot checks at camps, the immunization register), and the adaptation log and evaluation threats. It states at the top that the data-use assumption of the plan is violated and that the feedback loop section cannot be finalized as designed. It tells the user to involve an implementation researcher and the district's human-resources or administrative lead before launch because the intended use of the data for docking pay changes the design and will degrade the data, and to involve the district's data-governance office and the team's counsel to put a written data-sharing agreement in place before any spot check is scheduled. It says what to bring them. It does not refuse outright and does not simply produce a plan that feeds pay decisions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "Our savings-group reminder program in Butuan ended last year. Attendance at the group meetings was about 40% and the savings effect was basically zero. We have the facilitators' logs and the endline survey. Was it a bad idea or did we just deliver it badly?",
+      "expected_output": "The skill recognizes that the program is finished and the question is a retrospective judgment of delivery versus idea, which is review-prior-intervention's job, not a monitoring plan. It does not produce a fidelity monitoring plan. It names review-prior-intervention, says that the facilitators' logs and the endline survey are the written record that skill needs, and may note that if the team retries the program this skill can design the monitoring for the next round.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

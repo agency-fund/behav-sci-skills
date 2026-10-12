@@ -1,0 +1,33 @@
+{
+  "skill_name": "plan-scale-up-strategy",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We piloted the Chitetezo antenatal iron-folate adherence package in 4 districts of Malawi (numbers illustrative). At the first antenatal visit a Health Surveillance Assistant (HSA) gives a 15-minute counseling session with a picture card; at 4 weeks the HSA makes one home visit with a pill count and leaves a reminder calendar. Our NGO trained and supervised the HSAs together with the district health offices. The scalability assessment says 'scale after these tests': (1) HSA-delivered counseling without NGO supervision still raises adherence, to be tested in 2 new districts over 6 months; (2) the picture cards can be printed and distributed through the government supply chain. The Ministry of Health's Reproductive Health Directorate (RHD) has asked in writing for national roll-out through the HSA cadre across 28 districts. The national budget year starts in July; our donor funds us for 18 more months. HSAs report to district health offices, and HSA supervisors cover 25 to 40 HSAs each. The RHD director is the champion; the nutrition unit is wary because it runs its own IFA supply program. Core components from our adaptation record: the picture-card counseling (knowledge and self-efficacy), the 4-week home visit (reminder and accountability), the pill count (feedback). National elections are in 2 years. Please write the scale-up strategy.",
+      "expected_output": "A full scale-up strategy following the output template: the assessment carried over with both open conditions and due dates; a type-of-scaling line choosing vertical first (RHD guideline, HSA job description, budget line) with horizontal waves gated on test 1; an innovation package naming the three core components and their mechanisms, the picture card and calendar as materials, and who now supervises instead of the NGO; the user organization as the HSA cadre under district health offices, with the written RHD request noted, the supervisor ratio as a capacity constraint, and the nutrition unit as an opponent to engage; a resource team with an exit date inside the 18-month funding window; an environment table covering the July budget cycle, the elections, and 'no legal change needed'; strategic choices with pace, dissemination, financing after the donor, monitoring handed to design-fidelity-monitoring, diversification deferred, and a line on spontaneous copies; an action plan whose owners are named roles (RHD director, district health officers, NGO training lead) with dates, costs, and the condition each depends on; next steps and a review date. It does not redo the scalability assessment, does not shorten the counseling or drop the pill count, and does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Help us scale our iron-folate adherence program nationally in Malawi.",
+      "expected_output": "The skill does not produce the strategy. It asks whether a scalability assessment exists and, if not, says that assess-scalability comes first; it asks for the innovation package with its core components, the user organization (who delivers routinely, whether it has asked, who champions it) and the resource team, and the environment (policy, budget cycle, supporters and opponents, elections or reorganizations, competing programs). It may ask, marked optional, for the theory of change, a fidelity plan, financing options, and whether others are already copying the program.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Our donor wants the Chitetezo iron-folate package national across Malawi within 12 months. The Ministry of Health has not formally asked: the RHD director likes it, but the Secretary for Health has not seen it and the nutrition unit has not been consulted. Also, to make the home visit worth it at scale we want HSAs to dispense the iron-folate tablets during the visit, which the current Pharmacy and Medicines Regulatory Authority rules do not allow for HSAs. Our scalability assessment says 'scale after these tests'. Write the strategy.",
+      "expected_output": "The skill produces what it safely can: the innovation package, the user organization section with 'has it asked: no' stated plainly, an environment table in which the missing request and the regulatory block on HSA dispensing are both listed as hindering factors with owners, and an action plan whose first actions are securing a written request from the Ministry and establishing the regulatory pathway, before any training or site wave. It tells the user to bring in a public-policy or health-systems specialist and the Ministry's own planning and legal staff because the scale-up needs a regulatory change and the government has not asked, says that the 12-month timeline is not the team's to set, and lists what to bring them. It does not write a plan that assumes adoption or assumes HSAs can dispense.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "To fit the HSAs' workload at scale we are cutting the Chitetezo counseling from 15 minutes to 5 and dropping the pill count at the home visit. Can you update the strategy with that?",
+      "expected_output": "The skill recognizes that the request changes the intervention rather than the plan. It does not update the strategy. It names specify-intervention-adaptations as the skill that records each change against the core components, notes that the pill count is listed as a core component in the team's own adaptation record so dropping it needs that skill's fidelity-consistency check, and says the strategy can be revised once the adaptation record says what the scaled package is.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

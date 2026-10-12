@@ -1,0 +1,33 @@
+{
+  "skill_name": "draft-theory-of-change",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We run a community health agent program in two districts of Zambia's Copperbelt. Outcome we're accountable to the funder for: fewer unintended pregnancies among women 18 to 35 in our catchment by end of 2027. Activities: 60 community health agents trained for two days on counseling; each agent gets a stock of condoms to sell at a small margin; agents do home visits in their zone roughly twice a month; a supervisor collects sales data monthly. Population: agents are mostly women 25 to 45 from the villages; the outcome is for women 18 to 35 and their partners. Evidence we have: 8 months of sales data (illustrative: median agent sells 30 packs a month, a quarter sell under 5); a 2024 evidence scan brief we ran with assess-evidence-base that found the condom social-marketing literature mostly from urban settings and flagged it as not tested in rural Zambia. Write our theory of change.",
+      "expected_output": "A complete theory of change following the output template: the outcome carried over verbatim; the agents' activities as delivered; a causal chain table in which every link has an assumption in if-then-because form, an evidence cell drawn only from the sales data and the evidence scan brief supplied (no other citations), and a strength rating from the four labels; the chain passes through named behaviors for both agents (stock, visit, sell) and couples (buy, use at every act), each listed under 'Behaviors the chain depends on' with its link number and marked confirmed or inferred; the social-marketing evidence rated at most 'tested elsewhere' with the WEIRD-skew flag carried over; a weakest-links section that names the link from condom purchase to consistent use as unmeasured; a closing checklist. It does not pick the one target behavior, does not propose an evaluation design, and does not re-ask the Before you start questions.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Can you write a theory of change for our program?",
+      "expected_output": "The skill does not produce the chain. It asks the three required questions: the outcome the program is accountable for (what changes in whose lives, by when), the activities as delivered (what, by whom, to whom, how often), and the population the activities reach and the outcome is for. It may also ask, marked optional, what evidence the team already has for any link and which behaviors the team already believes the chain runs through. It does not guess a program or fill the table with placeholders.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Our Ministry of Health partner in Malawi wants to scale our antenatal iron-folate adherence program nationally next year and needs a theory of change for the cabinet paper. Outcome: lower maternal anemia at delivery. Activities: clinics hand out a month's supply at each visit; community health workers do monthly village visits and remind women to take the tablet daily; we send a weekly SMS to women with phones. Population: pregnant women at 40 rural clinics; CHWs and clinic nurses deliver. Evidence: our own pill counts from four pilot clinics (illustrative: under a third of women adherent); no evidence scan done; the CHW reminder link is something we believe works but have not tested. Please draft it.",
+      "expected_output": "The skill produces the full chain with assumptions, evidence cells limited to the pill counts (every other cell 'none supplied'), strength ratings, the behaviors the chain depends on (women take one tablet daily; nurses dispense; CHWs remind; the SMS is sent), and the weakest links. Because the chain will justify a national scale-up decision and its critical links (reminder to daily tablet-taking, tablet-taking to lower anemia at delivery in this population) are rated 'assumption' or 'plausible mechanism', and because the behavior is medication in pregnancy, it tells the user to involve an evaluation specialist and a maternal-health clinician before the chain goes into the cabinet paper, and says to bring the chain table, the pill-count data, and the weakest-links section. It recommends running assess-evidence-base to fill the empty cells. It does not invent evidence for the reminder link or rate it higher than 'assumption'.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "Here is our theory of change for the M-Pesa vendor savings program in Nairobi (table attached in the conversation). It runs through three behaviors: vendors deposit at the end of the day, vendors keep a written cash count, and vendors attend the weekly chama. Which one should we actually target first?",
+      "expected_output": "The skill recognizes that the chain already exists and that the request is to choose one target behavior from the behaviors the chain depends on. It does not redraft the chain. It says that selecting and defining one behavior as who, what, when and scoring it against the alternatives is define-key-behavior's job, and hands the three behaviors (with their link numbers) to that skill as input. If the list were long, it would mention score-candidate-behaviors as the step for ranking many candidates first.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

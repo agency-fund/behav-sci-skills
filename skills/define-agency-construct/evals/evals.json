@@ -1,0 +1,47 @@
+{
+  "skill_name": "define-agency-construct",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We run a WhatsApp agronomy assistant for smallholder farmers in Bihar. Farmers send Hindi voice notes about pests, weather, and inputs, and the assistant replies with voice advice. About 30,000 farmers use it monthly. Our funder wants to know whether the assistant builds farmers' agency or makes them dependent on it. When we say agency we mean farmers feel confident making their own planting and pest decisions, and bounce back after a bad season instead of giving up. Can you help us pin down what we're actually trying to measure?",
+      "expected_output": "Produces the definition document without re-asking what the prompt already answers. Quotes the team's words, then matches each part to a construct and theory in a table: feeling confident about planting and pest decisions to agricultural (domain-specific) self-efficacy in Bandura's social cognitive theory; making their own decisions to decision-making or autonomy (capability approach or Donald et al.); bouncing back after a bad season to self-reactiveness, persistence, or hope. Places the constructs on the 2x2 agency framework, naming the forms (with respect to the end goal, with respect to the digital tool) and manifestations (thoughts and feelings, choices and actions), and marks the digital-tool column as open with an example, since the funder's question about dependence lives there. Asks or records which cells the team wants to focus on and leaves the choice with them, with one line on what the open cells would catch. Writes concrete erosion signs (asking the assistant to decide, following advice without adapting it, being unable to act when it is unavailable) and does not treat every use of the assistant as dependence. Does not choose instruments or write survey items. Ends with a paste-ready instruction for plan-agency-measurement.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "How do I measure agency for my app?",
+      "expected_output": "Does not produce a definition or a plan. Asks one question at a time, starting with what the app does and who uses it, with a suggested answer or example so it reads as coaching rather than a form. May say in a line that agency has to be defined for specific users and a specific goal before it can be measured. Does not list frameworks, scales, or survey items yet.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Our WhatsApp AI assistant helps public-school teachers in Brazil plan lessons. We have 40,000 weekly active teachers and an average of 12 messages per session, and 87% rate the replies 4 or 5 stars. Our board wants to say in the annual report that the assistant increases teacher agency. Can we use these numbers for that?",
+      "expected_output": "Says plainly that weekly actives, messages per session, and star ratings measure engagement and satisfaction, not agency, and explains briefly why (heavy use and high ratings can coexist with no change in what teachers decide or do, and heavy reliance can itself be a sign of agency going down). Does not endorse the claim. Then asks, one question at a time with a suggested answer, what the board means by teacher agency in teachers' own work (for example, adapting lesson plans to their students rather than pasting the assistant's plan). If it continues to a definition, the team's meaning is matched to theory and placed on the 2x2 agency framework.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "Our theory of change says our AI career mentor will 'unlock young people's potential and agency' in Lagos. It's 18 to 25 year olds looking for their first job, on WhatsApp. Our new funder says that's too vague. Help us pin it down.",
+      "expected_output": "Treats 'unlock potential and agency' as too abstract to measure and does not accept it as the definition. Asks what a young person with more agency would think, feel, choose, or do differently in their job search, in which situations, by when, offering a suggested answer (for example, applying to jobs they chose themselves, tailoring applications, persisting after rejections, judging the mentor's advice). Asks about the end goal off the platform if it is not clear. Once the team answers, matches each part to a construct and theory and places it on the 2x2 agency framework; it does not invent the team's meaning for them.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 5,
+      "prompt": "We run a maternal health chatbot for pregnant women and new mothers in rural Mali (Bambara) and Kenya (Swahili). We want to define women's agency for our evaluation. A lot of decisions about clinic visits and spending are made by husbands and mothers-in-law, and we're not sure how to handle that. What should 'agency' mean for us?",
+      "expected_output": "Asks for the team's own meaning if it is not given, then matches it to frameworks suited to women's agency in these settings (Donald et al.'s goal-setting, sense of agency, and acting on goals; Sen's capability approach via Alkire, including whether a woman wants to be involved and could be if she wished; Kabeer). Treats joint decision-making as not automatically less agency and does not import individual autonomy as the only form. Notes that what counts as agency may differ between the Mali and Kenya settings. Recommends bringing in a psychologist, economist, or anthropologist with experience defining women's agency in these settings, because the construct is multifaceted and culturally situated, and says what to bring (the definition document, the team's own words, the population description, the theory of change). Does not choose measures or write items.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 6,
+      "prompt": "We've already defined agency for our farmer chatbot as farmers' self-efficacy for planting decisions and how often they make those decisions without asking the bot. What should we measure, in the app and in our phone survey?",
+      "expected_output": "Recognizes that the constructs are already defined and the question is how to measure them, which belongs to plan-agency-measurement. Does not rebuild the definition. Points the user to plan-agency-measurement, suggesting they bring the two constructs and the decision the measures will support.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

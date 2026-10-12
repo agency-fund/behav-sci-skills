@@ -284,6 +284,10 @@ io_types:
     description: "A launch-ready experiment configuration: hypothesis, experiment type, randomization unit and arms, primary and guardrail metrics, power inputs, stopping rule, delivery mapping, and analysis plan."
     user_suppliable: false
 
+  - id: agency-definition
+    label: Agency definition
+    description: "What a team means by its users' agency, stated precisely, matched to established constructs and theories, and placed on the 2x2 agency framework (forms: the end goal or the digital tool; manifestations: thoughts and feelings, or choices and actions), with the cells the team chose to focus on."
+    user_suppliable: true
   - id: theory-of-change
     label: Theory of change
     description: "The causal chain from activities to the target behavior to the outcome, with the assumption and evidence behind each link."

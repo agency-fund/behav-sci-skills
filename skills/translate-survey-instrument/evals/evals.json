@@ -1,0 +1,33 @@
+{
+  "skill_name": "translate-survey-instrument",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We run a program in Zambia where community health agents sell condoms door to door. We are adding five work-motivation items to the quarterly agent survey, which supervisors read aloud in Bemba (Copperbelt) and Nyanja (Lusaka). English items: (1) In the last month, how often did you feel proud of your work as an agent? never / sometimes / often / always. (2) How much do people in your community respect the work you do? not at all / a little / a lot. (3) In the last month, how many times did someone refuse to talk to you because of what you sell? (number). (4) If you could, would you keep doing this work next year? no / not sure / yes. (5) How fair is the commission you earn for what you do? not fair / somewhat fair / fair. They measure pride (1), perceived respect (2), stigma exposure (3), intention to continue (4), and fairness of pay (5). Not a published scale. We have two program officers who are native Bemba speakers, one Nyanja-speaking supervisor from Lusaka, and an M&E lead who knows the constructs and reads both languages. We can hold a half-day meeting. No donor requirement for back-translation. Translate these for us.",
+      "expected_output": "A full run of the output template for each target language: scope decisions per item (flagging 'respect' and 'fair' as adapt candidates and 'proud' as a possible concept flag), the forward-translation and reconciliation table, a back-translation decision stated with its reason (not required and the committee reads both languages, so not done, or done only for flagged items), the enumerator version, the item-by-item decision log, and a pretest plan handed to draft-cognitive-interview-script. It notes that Nyanja has only one available translator and either asks for a second or marks the single-translator plan as an assumption. Any Bemba or Nyanja wording it proposes is marked as a draft for the translators, not presented as the translation. It does not re-ask the Before you start questions, does not rewrite the English items, and does not describe the result as validated.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Can you translate our survey into Swahili?",
+      "expected_output": "The skill does not produce a translation or a process document. It asks for the items verbatim with response options and instructions, the source language and whether it is a published scale, the target dialect and region and who the respondents are (schooling, read aloud or self-completed), what each item intends to measure, and who is available to translate and sit on the reconciliation committee. It may ask whether a funder or ethics board requires back-translation, marked optional.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We are a maternal health NGO in Amhara, Ethiopia. We want the PHQ-9 in Amharic so that health extension workers can screen mothers at postnatal visits and refer anyone scoring 10 or above to the district counselor. Items are the standard nine with 'not at all / several days / more than half the days / nearly every day'. Respondents are rural mothers, many with no schooling; items are read aloud. We have an Amharic-speaking psychiatric nurse, two bilingual program officers, and a health extension worker who can join a meeting. Translate it.",
+      "expected_output": "The skill produces what it safely can: scope decisions, the plan for two or more independent forward translations (the nurse as the construct-knowledgeable translator), committee reconciliation with the health extension worker as the population member, a back-translation decision, the decision log format, and a pretest plan. Because the instrument is a clinical screener whose cut-off will drive referrals, it tells the user that a translated PHQ-9 does not carry the cut-off of 10 with it, that the cut-off needs local validation before referral decisions rest on it, and that a psychometrician or clinical researcher should be involved; it says what to bring them (decision log, divergent items, pretest results). It also flags any symptom item whose concept the committee cannot place in Amharic as a validation question, not a translation question. It does not claim the Amharic version is validated.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "Our Chichewa questionnaire for pregnant women in Mchinji is already translated and the team is happy with it. Can you check whether the women will actually understand it? We can interview ten of them next week.",
+      "expected_output": "The skill recognizes that the translation exists and the question is comprehension, which is pretesting, not translation. It does not re-translate or produce a committee process. It names draft-cognitive-interview-script as the skill that owns this, and offers one thing within its own scope: if no decision log exists for the current translation, it can help reconstruct one so the pretest can tell translation problems from comprehension problems.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "skill_name": "design-mystery-client-protocol",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We work with a mobile money provider in peri-urban Dhaka, Bangladesh. We're testing a default enrollment into a savings wallet that agents are supposed to offer every new customer, plus explain the cash-in fee out loud. The agent survey says 90% do both; we don't believe it. We have a list of 150 agents, they're private contractors paid on commission, not government staff. We can send mystery shoppers and our organization has an ethics board. We want a baseline now and a repeat three months after the agent training. Can you design the protocol?",
+      "expected_output": "A full mystery client protocol following the output template: two scripted cases (a walk-in customer opening an account, a customer cashing in a fixed amount), each with an opening line, answers to likely questions, and safety rules (exact cash carried, nothing consumed, the shopper's own real ID or a plan agreed with the firm, and how any account opened is closed); an essential-action checklist built from the provider's service standard (offer the savings wallet, state the fee aloud, correct fee charged) with recorded-only lines for time and any extra charge; local shoppers matched to typical customers and trained to a consistency standard; an ethics plan with justification for deception, agent-level advance consent with an opt-out through the firm, aggregate-only reporting agreed in writing with the firm, and data handling; sampling of all 150 agents with one visit per case at baseline and at three months, spaced so no shopper repeats a kiosk; a detection record and an agent end-survey; and an analysis plan with adherence per visit, comparison before and after, and clustering by agent. The non-health paragraph is applied rather than a clinical checklist. It does not re-ask the Before you start questions and does not turn this into a monthly fidelity monitoring plan.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Can you set up a standardized patient study for our clinics?",
+      "expected_output": "The skill does not produce a protocol. It asks for the provider behavior as who does what for which client, and the setting; whether a healthy adult can present the case with words alone without taking any medicine or undergoing a procedure; and what ethics review the organization can reach and whether the providers are public employees. It may ask, marked optional, for the provider list, the budget per visit, repeat visits, and the guideline to build the checklist from.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We want to measure quality of care at government primary health centers in Haryana, India, for our ambassador program. Cases: a child under five with fever (we want to check malaria testing), and an adult with chest pain. Our standardized patients will take whatever is prescribed so we can send the drugs to a lab. The state health department wants results per facility and per doctor. Please design it.",
+      "expected_output": "The skill produces what it safely can: the adult chest-pain case can be scripted if a clinician confirms it is safe to present, with strict refusal rules; the child fever case cannot be presented by a healthy adult (no child may be used), so it is marked out of scope and consented observation or record review is suggested for it; it refuses the plan for standardized patients to take prescribed drugs and replaces it with buying and keeping the drugs as evidence; and it drafts the ethics plan and a checklist from the national guideline marked for clinical review. It triggers the escalation point clearly: the providers are public employees and per-doctor results would reach their employer, so a written reporting agreement with the state health department (aggregate by facility type or anonymized) is required before any visit, a clinician must review the chest-pain case for harm, and the organization's ethics board decides on the deception. It says what to bring them.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We train our own community health agents in Zambia to counsel on condom use before selling condoms. We want a monthly check that they are following the counseling script, ideally with someone posing as a buyer. Can you set that up?",
+      "expected_output": "The skill recognizes that this is continuous monitoring of the program's own delivery against its own script, not a one-off measurement of provider practice as an outcome, and says so. It does not produce a mystery client protocol. It points the user to design-fidelity-monitoring, noting that a posed buyer can be one indicator inside that plan and that the ethics and no-harm rules from this skill still apply if it is used.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

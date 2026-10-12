@@ -1,0 +1,33 @@
+{
+  "skill_name": "design-list-experiment",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We run an SMS adherence program for people on ART at six clinics in Kisumu, Kenya. At every visit the nurse asks 'did you miss any doses this week?' and 95% say no, which nobody believes. We want to estimate the real share who missed doses on two or more days in the past 7 days. Interviews are face to face in Dholuo or Swahili by our own enumerators, not clinic staff; respondents are adults, many with primary schooling only. We can afford about 1,800 interviews at endline, and the estimate is for the whole sample only, not by clinic. We'd like to keep the nurse's direct question too. Can you design the list experiment?",
+      "expected_output": "A full list experiment design following the output template: a go-or-no-go section that states a prior on under-reporting and whether 1,800 is a plausible multiple of a direct-question sample for a whole-sample estimate; one plain sensitive item with the 7-day window and 'two or more days' wording; three to five control items on everyday topics with expected prevalences, a negatively correlated pair, and explicit floor and ceiling reasoning; individual-level randomization generated in advance and balanced within enumerator; a read-aloud script with the 'how many, not which' instruction, a practice list, and a counting aid for low-literacy respondents; the direct question kept and asked after the list; sample size inputs handed to estimate-sample-size without computing an N; an analysis plan with the design-effect test, floor and ceiling diagnostics, the list-versus-direct comparison, and the list R package. It does not re-ask the Before you start questions, does not compute a sample size, and does not drift into measuring what others do or approve of.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Our survey self-reports look too good. Can you make a list experiment?",
+      "expected_output": "The skill does not produce a design. It asks for the sensitive behavior as who, what, recall window, and why it is sensitive in this setting; the population and survey mode (literacy, language, face-to-face or phone, interviewer present); and the affordable sample and whether the estimate is for the whole sample, subgroups, or arms. It may ask, marked optional, whether a direct question will also be asked and what survey the items sit in. It briefly explains that the design spends sample fast and that counting is the hard part, so these answers decide feasibility.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We're working with the tax authority in Guatemala City on compliance letters to small businesses. We want to estimate what share of the businesses in our sample under-declare sales to the tax authority. Sample is 400 business owners, face to face, the tax authority will see the results by district. Design the list experiment please.",
+      "expected_output": "The skill produces what it safely can: the go-or-no-go reasoning (400 respondents is not a multiple of a direct-question sample, so the list estimate would be too noisy, and district-level estimates are out of reach), a draft sensitive item and control items with floor and ceiling reasoning, and the analysis logic. It then triggers the escalation point clearly: under-declaring is illegal, the results go to the tax authority by district, and a district-level prevalence can be used against the surveyed businesses even though no individual is identified, so the question is whether to measure this at all. It tells the user to consult the organization's ethics board and a survey statistician before fielding, and says what to bring: the items, the prior on under-reporting, the sample, the mode, and the plan for who sees which results.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "In our girls' education program in Amhara, Ethiopia, we want to know whether mothers think their neighbors approve of girls staying in school past 15. Can you write that as a list experiment?",
+      "expected_output": "The skill recognizes that the question is about what respondents believe others approve of (a normative expectation), not about the respondent's own sensitive behavior, and says so. It does not produce a list experiment. It points the user to draft-norms-vignette, which measures empirical and normative expectations with scenario versions, and notes that if the team later needs the share of mothers who themselves withdrew a daughter from school, a list experiment could be designed for that.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "skill_name": "design-habit-anchor",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We work in 40 villages in Nusa Tenggara Timur, Indonesia, that have been declared open-defecation free under CLTS, and we now want mothers of children under two to wash their hands with soap before feeding the child, every time, and keep doing it after our facilitators leave. The lever brief chose habit formation for a confirmed barrier: mothers know and intend to, but it does not happen consistently and nothing in the moment prompts it. From household interviews, the fixed daily things mothers named are: lighting the stove in the morning, fetching water from the tap stand, the midday meal, bathing the child in the late afternoon, and the evening prayer. Soap is in the house but usually by the bathing area, not where food is prepared. No reminders are running. Design the habit anchor.",
+      "expected_output": "A full habit anchor plan following the output template: the behavior carried over and shrunk to a minimum repeatable version (one handwash with soap before the child's feed, not a full routine); frequency noted as several times a day, with a comment on what that means for the timeline; a cue chosen from the mothers' own candidates with the stability table completed for each check, and rejected cues listed with the check each failed (for example the evening prayer, which is not immediately before a feed; fetching water, which varies in time); a note that soap must be moved to where food is prepared, since the behavior's requirement is not present at the cue moment; a link statement in the mother's words; a tick sheet specified for low literacy and kept where the cue happens; a two-to-three-month repetition period with the reason (median 66 days, range 18 to 254, 96 volunteers, self-report) and the missed-day message; supports to fade stated as none; a persistence check at the end of the period and one to three months after facilitators leave, with the self-report automaticity item labeled as such; and the limits of the timeline evidence stated plainly. It does not re-ask the Before you start questions, does not cite 21 days, does not write the leaflet text, and does not design an SMS schedule.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Help us build a savings habit in 21 days for our clients.",
+      "expected_output": "The skill does not produce the plan. It says first that 21 days is not an evidence-based timeline (the one timed study found a median of 66 days with a range of 18 to 254) and that it will plan on two to three months. It then asks for the behavior as who, what, when and how often it must happen; three to five fixed daily things the clients already do, from the clients themselves rather than the team; and whether what the behavior needs (the phone, the account, the cash) is present at that moment. It may ask, marked optional, whether reminders already run. It stops there.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "At our ART clinic in Kisumu, Kenya, patients on once-daily antiretrovirals get a daily SMS at 8 pm. The donor funding for SMS ends in two months and we want patients to keep taking the dose at the same time without it. From counseling sessions, patients mention the evening news on the radio, the evening meal, and locking the door at night as fixed daily things. Pills are kept in the bedroom. Can you anchor the dose to one of these so we can stop the SMS?",
+      "expected_output": "The skill produces what it safely can: a plan that shrinks the behavior to the single daily dose, evaluates the three cues with the stability table (noting, for example, that the evening meal time may vary and that locking the door is close to where the pills are kept), writes the link statement, specifies a tick sheet, sets a two-to-three-month repetition period, plans the SMS fade and the persistence check. Because the behavior is an antiretroviral regimen where a missed dose matters and a missed day during the repetition period is expected, it tells the user to involve the clinic's clinician or adherence counselor before the SMS is stopped, to decide what else protects against misses, and says that the habit anchor is a support rather than a safeguard. It lists what to bring. It does not present stopping the SMS in two months as safe on the strength of the anchor alone.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We need parents in rural Rajasthan to bring their child to the immunization camp on the 15th of next month. How do we make that a habit?",
+      "expected_output": "The skill recognizes that the behavior is a one-off or rare action (a dated camp visit), not a daily repeated behavior, so there is no run of repetitions for a cue to attach to. It does not run: it names draft-implementation-intention-prompt as the skill for a one-off action with a date, time, and place, and may add that design-reminder-schedule handles the prompt timing. It does not produce a habit anchor plan.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

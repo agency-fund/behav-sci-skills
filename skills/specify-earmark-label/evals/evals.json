@@ -1,0 +1,33 @@
+{
+  "skill_name": "specify-earmark-label",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Target behavior: female stall vendors in Nairobi's Gikomba and Toi markets set aside part of the day's surplus for the January school fees (about KES 15,000 per child, due the first week of January). The diagnosis is confirmed from interviews: the money sits in the main M-Pesa wallet, gets used for stock purchases midweek, and when relatives see a large balance after a transfer they ask for help and vendors feel they can't refuse. M-Pesa offers a named savings sub-account. Vendors say they do not want anything locked because stock emergencies happen. Specify the earmark.",
+      "expected_output": "A full earmark label specification following the output template: the confirmed barrier carried over; the target expense with amount, child, and due date; the pot chosen as the named M-Pesa sub-account with the reason, and visibility stated; a label text that names fees, the child, the amount, and the date; a soft raiding rule with no penalty, explicitly because the vendors asked for nothing locked; a lock-or-label decision that chooses the label and routes any future lock to design-commitment-device; a liquidity check that treats stock emergencies as the buffer need; a kin-pressure check naming who asks and what the field team confirms with a few interviews; delivery of the label at opening, in balance messages, and on withdrawal; measures (balance at the due date, fees paid, emergency coping); and a pre-test with n and a pass criterion. It must not add a condition or matching payment, must not design a lock, must not write the SMS wording, and must not quote a '76%' figure for Tayssir.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "People aren't saving. Can we just label the account?",
+      "expected_output": "The skill does not produce a specification. It asks the Required questions: what the target expense is, with amount, due date, and who it is for; what the confirmed barrier is (spent on other things, given to kin, or never set aside, pointing out that a label does nothing for the third); and where the money sits now and which vehicles exist. It may ask the optional questions (kin pressure, own money or transfer) marked as optional.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We run a monthly unconditional cash transfer to mothers in rural Malawi, paid by mobile money. We want to label it 'for the baby's clinic visits and medicine' so it isn't spent on other things. Most households have no savings at all and borrow for any emergency; husbands typically decide on spending and several mothers told us they hide money. Can you write the earmark spec?",
+      "expected_output": "The skill produces what it safely can: the barrier and target expense carried over, a pot and label on the transfer itself with the label stated at enrollment and in each payment message, a soft raiding rule, and a liquidity check. The liquidity check must flag that a label for future, non-urgent health spending in households with no emergency buffer is the documented backfire condition from the Kenya trial (earmarking for preventive health reduced savings), and propose softening (an emergency allowance or a smaller labeled share) rather than presenting the label as safe. Because the money is a program transfer and the kin pressure runs along gender lines with mothers hiding money, it tells the user to bring in a gender or safeguarding specialist and a local researcher, and policy review for the transfer's public meaning, and lists what to bring (the barrier, the pot specification, both checks). It does not add a condition and does not refuse to draft.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We've labeled the transfer 'for school'. Now we want to pay it only to households whose children attend at least 80% of school days, checked against the school register each month. How do we set that up?",
+      "expected_output": "The skill recognizes that the request adds a verified condition to the transfer, which turns the labeled transfer into a conditional one. It does not produce a specification. It names design-incentive-scheme as the skill that owns conditions, their verification, their cost, and their removal plan, notes that in the Morocco evidence a label alone produced large school-participation gains and that conditionality added almost nothing, so the team should weigh the monitoring cost against that, and stops.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "skill_name": "design-incentive-scheme",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We distribute HIV self-test kits through pharmacies in Alimosho, Lagos, to adults 18 to 35. The lever brief selected Incentivization (BCT 10.1 material incentive) for the confirmed barrier: people don't come back to report their result because the return trip costs a fare (about NGN 600) and an hour, and they see no reason to return if negative. Verification: the pharmacy counselor records each return against the kit serial number, about 3 minutes. Counselors are there six days a week. Budget: NGN 1,500 per return for 2,000 returns over a six-month pilot with a fixed end. Typical daily income is around NGN 7,000. Recipients are ordinary kit users, not staff. Specify the incentive.",
+      "expected_output": "A full incentive scheme specification following the output template: the behavior carried over; the verification line naming the register, the serial number, the cost per check, and stating that the result itself is not rewarded; the confirmed barrier and the supply check; a reward table with size written as a multiple of the fare and a share of daily income, cash at the counter as certain and immediate (not a lottery), paid at verification, the exact condition, and the recipient; a monitoring decision; a removal plan with the end date, stop or taper, expected decay, and a follow-up measure months after the end; a crowding-out check; an ethics section with coercion as a share of income, fairness to non-recipients, and review through audit-intervention-ethics and an ethics committee because the behavior is HIV testing; a cost line routed to estimate-cost-effectiveness; and what to test. It must not write the counter script or SMS, must not re-ask the Before you start questions, and must not present the Rajasthan RR 6.7 or Baird's 60% as the expected effect here.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Attendance at our training sessions is low. How much should we pay people to come?",
+      "expected_output": "The skill does not produce a specification or an amount. It asks the Required questions: the one behavior as who, what, when, and how attendance will be verified and at what cost; the confirmed barrier and the lever brief that chose Incentivization (and notes that if the barrier is supply or scheduling an incentive will not fix it); who pays, the budget per person and total, and the end date; and the audience's daily income and the hassle cost of attending. It may ask whether attendees are staff or volunteers, marked optional.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "We want to pay pregnant women at four rural clinics in Malawi MWK 2,000 a week for taking their iron-folate tablet every day, based on their own report at the monthly CHW visit. Most households live on less than MWK 1,500 a day. We'd also like to pay the CHWs a bonus per adherent woman. We have donor funding for one year. Design the scheme.",
+      "expected_output": "The skill produces what it safely can and escalates. It states that daily pill-taking by self-report is not a verifiable behavior and that paying for it rewards the report, so it proposes a verifiable proxy (for example, attending the monthly visit with the pill bottle for a count, or collecting the next month's supply) and sizes the reward against the hassle of that proxy, flagging that a weekly amount above a day's household income is coercive for this population. It writes the removal plan around the one-year funding end and the expected decay. It tells the user to bring in a clinician (medication in pregnancy; the risk that counting pills induces pill dumping), an ethics review through audit-intervention-ethics for payments to very poor households, and a legal and HR review before paying CHWs per adherent woman, noting the crowding-out and fairness risks for paid versus unpaid CHW work, and lists what to bring. It does not refuse outright and does not simply accept the self-report design.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We don't want to pay anyone. We want to give mothers a colored bracelet when their child completes the vaccine schedule on time, so other mothers at the clinic can see it. How should we set that up?",
+      "expected_output": "The skill recognizes that the reward is non-financial and visible, and that its mechanism is signaling to others rather than payoff. It does not produce an incentive scheme specification. It names design-social-recognition as the skill that owns a visible token tied to verified completion, says that verification of on-time completion will still be needed there, and stops.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

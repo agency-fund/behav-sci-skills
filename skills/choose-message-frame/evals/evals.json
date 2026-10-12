@@ -1,0 +1,33 @@
+{
+  "skill_name": "choose-message-frame",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We send SMS to about 9,000 smallholder maize farmers in Bungoma and Kakamega counties in Western Kenya, reminding them to apply top-dressing fertilizer in the three weeks after emergence. The lever brief chose prompts and cues for a confirmed barrier (they know the window but miss it). draft-lever-content gave us a working draft in Kiswahili: 'Apply your top-dressing this week to protect your harvest. Visit your agrovet by Friday.' Our comms lead wants to change it to 'If you miss top-dressing this week you will lose up to a third of your harvest', because losses hit harder. Messages go per phone number, so we can randomize. Which frame should we use?",
+      "expected_output": "A full message frame decision following the output template: the behavior carried over; classified as prevention (applying fertilizer reduces the risk of a poor harvest, it does not reveal one) with the reason; vehicle classified as message; default frame gain, with the meta-analytic number (r = 0.083 favoring gain for prevention) quoted; paired variants on top of the existing draft that hold the facts, the one action, the sender, and the length constant and change only the frame, with the loss variant kept to the benefit foregone rather than a fear appeal; an A/B test plan randomized by phone number with the behavior (fertilizer applied in the window, or agrovet purchase) as the primary outcome, not intention; the expected difference stated honestly as at most r = 0.083 and possibly zero, with a decision rule to keep gain if nothing is detected; a required cold pre-test of both variants with 5 to 10 farmers. It does not re-ask the Before you start questions, does not quote the lab or working-paper numbers alone, does not write the final Kiswahili copy, and does not drift into reminder timing (design-reminder-schedule).",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "Should our messages use loss framing? Everyone says loss aversion is stronger.",
+      "expected_output": "The skill does not produce the frame decision. It says the evidence does not support the assumption in general and that the answer depends on two things it needs first: the behavior as who, what, when and whether it prevents a bad outcome or detects one, and whether the vehicle is a message or money. It asks for the existing draft if one exists, and optionally whether a test is feasible and what is known locally about loss language. It stops there.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Our program in Zambia pays community health agents a monthly stipend top-up of ZMW 300 if they complete 40 household visits. Our finance lead proposes paying the full ZMW 300 at the start of the month and deducting ZMW 7.50 for every visit short of 40, so agents feel each missed visit as a loss. The visits are counted from the supervisor's register. Can you set this up as a loss contract?",
+      "expected_output": "The skill produces what it safely can: it classifies the vehicle as money and the behavior as a task to be completed (prevention-type for the frame logic), states that loss-framed contracts show about 0.02 SD in the field (Ferraro & Tracy, 2022) and that the teacher-bonus case fell to 0.124 SD on publication with no second-wave effect (Fryer et al., 2022), sets the default as gain (pay on completion), and writes the gain variant with a loss variant marked as not recommended. Because the loss frame would be applied to a stipend the agents treat as theirs, it tells the user to bring a labor-law or ethics reviewer in before any loss contract is piloted, citing the Uganda finding that most workers preferred gain contracts and that the loss contract carried a welfare cost, and lists what to bring. It does not set the stipend amount or the visit threshold (design-incentive-scheme) and does not present the clawback as a settled design.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "prompt": "We have decided on a gain frame for the SMS inviting men in Lagos to collect a free HIV self-test kit from the pharmacy. Please write the message in Yoruba and English with the pickup location and opening hours.",
+      "expected_output": "The skill recognizes that the frame decision is already made and the request is to write the full message. It does not run: it names draft-lever-content as the skill that writes the copy, the fidelity trace, and the pre-test, and notes in one line that self-testing is a detection behavior for which the evidence gives no frame preference, so the gain choice is reasonable but untested. It may add that a stigmatized diagnosis means both variants should be reviewed locally. It does not write the message.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

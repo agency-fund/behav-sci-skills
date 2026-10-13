@@ -4,7 +4,7 @@ package_skills.py — build downloadable .skill archives for every skill.
 
 Writes to dist/ (git-ignored):
   dist/<name>.skill                 one zip per skill, the skill folder at the top level
-  dist/behav-sci-skills-all.skill   every skill folder in one zip
+  dist/besci-skills-all.skill   every skill folder in one zip
   dist/manifest.json                name, version, sha256, size for each archive
 
 A .skill file is a plain zip; Claude Desktop and claude.ai accept it as an upload.
@@ -56,7 +56,7 @@ def main(argv=None) -> int:
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "skills": [],
     }
-    all_path = os.path.join(args.out, "behav-sci-skills-all.skill")
+    all_path = os.path.join(args.out, "besci-skills-all.skill")
     with zipfile.ZipFile(all_path, "w", zipfile.ZIP_DEFLATED) as bundle:
         for folder in folders:
             skill = bv.parse_skill(folder)

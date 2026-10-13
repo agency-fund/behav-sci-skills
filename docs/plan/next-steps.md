@@ -4,13 +4,13 @@ Ordered. "Owner" follows the MOU's roles: Michael (TAF) leads skill development,
 
 ## A. Make the repository live (this week)
 
-1. **Push the initial commit** to `agency-fund/behav-sci-skills` and confirm CI runs green on GitHub. Owner: Michael.
-2. **GitHub setup** per `docs/deployment.md` §1: create the `behav-sci-maintainers` team and add admins from both orgs; create labels `skill`, `submitted-via-site`, `skill-proposal`, `bug`; branch protection on `main` (one approval, CI required, no force push); allow Actions to write and open PRs. Owner: Michael, with Chaning added as admin.
+1. **Push the initial commit** to `agency-fund/besci-skills` and confirm CI runs green on GitHub. Owner: Michael.
+2. **GitHub setup** per `docs/deployment.md` §1: create the `besci-maintainers` team and add admins from both orgs; create labels `skill`, `submitted-via-site`, `skill-proposal`, `bug`; branch protection on `main` (one approval, CI required, no force push); allow Actions to write and open PRs. Owner: Michael, with Chaning added as admin.
 3. **Fill `MAINTAINERS.md`** with GitHub handles. Owner: Michael, Chaning.
 4. **Vercel project** per `docs/deployment.md` §2–3: import the repo, set `CONTRIBUTOR_KEY`, `GITHUB_TOKEN` (fine-grained PAT on a bot or maintainer account), `GITHUB_REPO`, `GITHUB_BASE`, `SITE_URL`; confirm `/api/submit` answers 405 to GET and the site renders. Give IL access to the Vercel project. Owner: Michael.
-5. **Update the site URL** wherever the default `behav-sci-skills.vercel.app` appears if the real URL differs (`.github/ISSUE_TEMPLATE/config.yml`, `CITATION.cff`, `README.md`, `SITE_URL` env). Owner: Michael.
+5. **Update the site URL** wherever the default `besci-skills.vercel.app` appears if the real URL differs (`.github/ISSUE_TEMPLATE/config.yml`, `CITATION.cff`, `README.md`, `SITE_URL` env). Owner: Michael.
 6. **Cut `v0.1.0`**: bump `.claude-plugin/plugin.json` if needed, `git tag v0.1.0 && git push --tags`, confirm the release carries the four `.skill` zips so the site's download links work. Owner: Michael.
-7. **Verify installs** on Claude Code (`/plugin marketplace add agency-fund/behav-sci-skills`), on Claude Desktop (zip upload), and with `npx skills add`. Record what each tool does about updates and correct `docs/deployment.md` §5 and the install page where the current wording is uncertain (Codex, Copilot). Owner: Michael, Joe.
+7. **Verify installs** on Claude Code (`/plugin marketplace add agency-fund/besci-skills`), on Claude Desktop (zip upload), and with `npx skills add`. Record what each tool does about updates and correct `docs/deployment.md` §5 and the install page where the current wording is uncertain (Codex, Copilot). Owner: Michael, Joe.
 
 ## B. Dogfood the process (Oct–Nov 2026, MOU Phase 1)
 

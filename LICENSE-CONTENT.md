@@ -12,7 +12,7 @@ You may copy, redistribute, adapt, and build on the content for any purpose, inc
 
 For a single skill:
 
-> *Skill title* (version x.y.z) by *Author(s)*, from the Behavioral Science Skills Library, The Agency Fund and Irrational Labs. CC BY 4.0. https://github.com/agency-fund/behav-sci-skills/tree/main/skills/*skill-name*
+> *Skill title* (version x.y.z) by *Author(s)*, from the Behavioral Science Skills Library, The Agency Fund and Irrational Labs. CC BY 4.0. https://github.com/agency-fund/besci-skills/tree/main/skills/*skill-name*
 
 See `docs/citing.md` for academic citation formats.
 

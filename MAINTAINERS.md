@@ -1,6 +1,6 @@
 # Maintainers
 
-People who review and merge pull requests, hold admin rights, and keep the library running. Fill in GitHub handles and add people as they join; this file is the source for the `behav-sci-maintainers` GitHub team.
+People who review and merge pull requests, hold admin rights, and keep the library running. Fill in GitHub handles and add people as they join; this file is the source for the `besci-maintainers` GitHub team.
 
 | Name | Organization | GitHub | Role | Since |
 |---|---|---|---|---|

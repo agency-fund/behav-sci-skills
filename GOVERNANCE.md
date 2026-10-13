@@ -6,7 +6,7 @@ This document records how the Behavioral Science Skills Library is owned, mainta
 
 The library is co-owned by The Agency Fund and Irrational Labs, jointly. Neither organization may relicense, rename, or shut down the library without the other's agreement.
 
-The repository lives in TAF's GitHub organization at `agency-fund/behav-sci-skills`. Admin rights are held by named people from each organization, listed in `MAINTAINERS.md`.
+The repository lives in TAF's GitHub organization at `agency-fund/besci-skills`. Admin rights are held by named people from each organization, listed in `MAINTAINERS.md`.
 
 Code is licensed under MIT. Skill content and reference material are licensed under CC BY 4.0. See `LICENSE` and `LICENSE-CONTENT.md`.
 

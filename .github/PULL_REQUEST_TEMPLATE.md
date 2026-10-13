@@ -13,6 +13,7 @@
 - [ ] Any "Not applicable:" section gives a real reason
 - [ ] `evals/evals.json` has at least three realistic prompts with expected output shapes
 - [ ] `CHANGELOG.md` top entry matches `metadata.version`
+- [ ] If this answers an expert review, the CHANGELOG entry cites it ("Addresses expert review #42") and this PR says "Closes #42"
 - [ ] Evidence is cited, with WEIRD skew and replication status stated
 - [ ] I have read `DISCLOSURE.md` and understand that skill content may be processed by third-party AI systems when others use it
 

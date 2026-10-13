@@ -9,15 +9,38 @@
   "functions": {
     "api/submit.py": {
       "maxDuration": 30,
-      "memory": 1024
+      "memory": 1024,
+      "includeFiles": "{api/_common.py,scripts/**,taxonomy.yaml}"
+    },
+    "api/auth.py": {
+      "maxDuration": 15,
+      "includeFiles": "{api/_common.py,api/_review_issue.py,scripts/besci_validate.py,taxonomy.yaml,skills/*/SKILL.md}"
+    },
+    "api/review.py": {
+      "maxDuration": 30,
+      "includeFiles": "{api/_common.py,api/_review_issue.py,scripts/besci_validate.py,taxonomy.yaml,skills/*/SKILL.md}"
+    },
+    "api/reviews.py": {
+      "maxDuration": 30,
+      "includeFiles": "{api/_common.py,api/_review_issue.py,scripts/besci_validate.py,taxonomy.yaml,skills/*/SKILL.md}"
+    },
+    "api/health.py": {
+      "maxDuration": 10,
+      "includeFiles": "{api/_common.py,api/_review_issue.py,scripts/besci_validate.py,taxonomy.yaml,skills/*/SKILL.md}"
     }
   },
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
       ]
     }
   ]

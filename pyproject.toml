@@ -6,4 +6,6 @@ requires-python = ">=3.10"
 dependencies = [
   "pyyaml>=6.0",
   "markdown-it-py>=3.0",
+  "google-auth>=2.30",
+  "requests>=2.31",
 ]

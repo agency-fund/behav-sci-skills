@@ -801,6 +801,68 @@ html.js .tab-title { position: absolute; width: 1px; height: 1px; margin: -1px; 
 .file-list span { color: var(--fg-3); font-size: 0.875rem; white-space: nowrap; }
 #version-history > h3 { margin: 2rem 0 0.4rem; font-size: 1.125rem; letter-spacing: -0.015em; }
 #version-history > .tab-intro + h3 { margin-top: 0; }
+
+/* Review this skill: the action row and side panel (feedback.js). The panel sits
+   above the workflow tray; under 800px it becomes a bottom sheet. */
+.skill-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1rem; margin: 1.5rem 0 0; }
+html:not(.js) .skill-actions { display: none; }
+.skill-actions .btn svg { width: 18px; height: 18px; }
+.skill-actions-note { margin: 0; color: var(--fg-2); font-size: 0.9375rem; }
+.skill-actions-note a { color: var(--fg); }
+.fb-panel { position: fixed; z-index: 55; top: calc(var(--header-h) + 12px); right: 12px; bottom: 12px; width: 440px; max-width: calc(100vw - 24px); display: flex; flex-direction: column; border: 1px solid var(--border-2); border-radius: var(--r-card); background: var(--surface); box-shadow: var(--shadow); }
+.fb-panel[hidden] { display: none; }
+.fb-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.9rem 1rem 0.8rem 1.25rem; border-bottom: 1px solid var(--border); }
+.fb-title { margin: 0; font-size: 1.25rem; letter-spacing: -0.025em; }
+.fb-title:focus { outline: none; }
+.fb-close svg { width: 18px; height: 18px; }
+.fb-body { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 1.1rem 1.25rem 1.5rem; font-size: 0.9375rem; }
+.fb-body > p { margin: 0 0 0.85rem; }
+.fb-target code { font-size: 0.875rem; }
+.fb-fine { color: var(--fg-3); font-size: 0.875rem; }
+.fb-error { padding: 0.6rem 0.8rem; border: 1px solid color-mix(in srgb, var(--bad) 45%, transparent); border-radius: var(--r-row); background: color-mix(in srgb, var(--bad) 9%, transparent); color: var(--fg); }
+.fb-google { min-height: 48px; margin: 1.1rem 0; }
+.fb-links { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; }
+.fb-form { display: grid; gap: 1.15rem; }
+.fb-form > p { margin: 0; }
+.fb-field { min-width: 0; margin: 0; padding: 0; border: 0; }
+.fb-field legend, .fb-field > label { display: block; margin-bottom: 0.4rem; padding: 0; font-size: 0.9375rem; font-weight: 600; }
+.fb-opt { font-size: 0.875rem; font-weight: 400; color: var(--fg-3); }
+.fb-hint { margin: -0.1rem 0 0.5rem; color: var(--fg-3); font-size: 0.875rem; }
+.fb-field > .fb-radio { display: flex; align-items: center; gap: 0.55rem; margin: 0; padding: 0.3rem 0; font-weight: 400; cursor: pointer; }
+.fb-radio input { margin: 0; accent-color: var(--accent); }
+.fb-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.fb-chip { position: relative; cursor: pointer; }
+.fb-chip input { position: absolute; opacity: 0; pointer-events: none; }
+.fb-chip span { display: inline-block; padding: 0.3rem 0.75rem; border: 1px solid var(--border-2); border-radius: 999px; color: var(--fg-2); font-size: 0.875rem; transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast); }
+.fb-chip:hover span { color: var(--fg); }
+.fb-chip input:checked + span { color: var(--fg); border-color: var(--fg); background: var(--surface-3); }
+.fb-chip input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+.fb-form textarea, .fb-form input[type="text"] { width: 100%; padding: 0.6rem 0.75rem; border: 1px solid var(--border-2); border-radius: var(--r-row); background: var(--bg); color: var(--fg); font: inherit; font-size: 0.9375rem; }
+.fb-form textarea { resize: vertical; line-height: 1.5; }
+.fb-form textarea:focus, .fb-form input[type="text"]:focus { outline: none; border-color: var(--accent-text); box-shadow: 0 0 0 3px var(--accent-ring); }
+.fb-form .btn { justify-self: start; }
+.fb-fallback { padding-top: 1rem; border-top: 1px solid var(--border); }
+.fb-fallback p { margin: 0 0 0.75rem; }
+@media (max-width: 800px) {
+  .fb-panel { top: auto; left: 0; right: 0; bottom: 0; width: auto; max-width: none; max-height: calc(100dvh - var(--header-h)); border-radius: var(--r-card) var(--r-card) 0 0; }
+}
+
+/* The Reviews tab */
+.reviews-block > h3 { margin: 0 0 1rem; font-size: 1.25rem; letter-spacing: -0.02em; }
+.review-list { display: grid; gap: 0.75rem; }
+.review-card { padding: 1rem 1.2rem 1.1rem; border: 1px solid var(--border); border-radius: var(--r-card); background: var(--surface); }
+.review-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.75rem; }
+.review-head span, .review-head time { color: var(--fg-3); font-size: 0.875rem; }
+.review-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin: 0.6rem 0; }
+.review-state { padding: 0.15rem 0.65rem; border: 1px solid var(--border-2); border-radius: 999px; font-size: 0.8125rem; font-weight: 600; line-height: 1.5; }
+.state-answered { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 50%, transparent); }
+.state-open { color: var(--accent-text); border-color: color-mix(in srgb, var(--accent) 55%, transparent); }
+.state-declined, .state-closed { color: var(--fg-3); }
+.review-parts { margin: 0 0 0.5rem; color: var(--fg-3); font-size: 0.875rem; }
+.review-excerpt { margin: 0; color: var(--fg-2); white-space: pre-line; }
+.review-answer { margin: 0.75rem 0 0; padding: 0.6rem 0.8rem; border-radius: var(--r-row); background: var(--surface-2); font-size: 0.9375rem; }
+.review-link { margin: 0.75rem 0 0; font-size: 0.9375rem; }
+.reviews-foot { margin: 1rem 0 0; font-size: 0.9375rem; }
 @media (max-width: 900px) {
   .skill-layout { grid-template-columns: 1fr; gap: 1.5rem; }
   .skill-side { position: static; }

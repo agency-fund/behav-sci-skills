@@ -21,6 +21,7 @@ import json
 import os
 import re
 import shutil
+import subprocess
 import sys
 from typing import Dict, List, Optional
 from urllib.parse import quote
@@ -43,6 +44,8 @@ DIST = os.path.join(ROOT, "site", "dist")
 SKILLS_DIR = os.path.join(ROOT, "skills")
 WORKFLOWS_DIR = os.path.join(ROOT, "workflows")
 NON_WORKFLOW_FILES = {"README.md", "WORKFLOW-TEMPLATE.md"}
+# The OAuth client behind the "Sign in with Google" button on skill pages (public, not a secret).
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "")
 FONTS = "https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Geist+Mono:wght@400;500&display=swap"
 
 MD = MarkdownIt("commonmark", {"html": True, "linkify": False}).enable(["table", "strikethrough"])
@@ -86,6 +89,7 @@ ICONS = {
     "clip": icon("paperclip"),
     "replay": icon("arrow-counter-clockwise"),
     "plus": icon("plus"),
+    "pencil": icon("pencil-simple"),
 }
 
 # One icon per stage, drawn in the stage's color.
@@ -101,7 +105,7 @@ STAGE_ICON_NAMES = {
 }
 
 # Icons app.js and workflow.js draw at runtime, as <use href="#i-name">.
-SPRITE_ICONS = ["plus", "check", "x", "caret-up", "caret-down", "dots-six-vertical", "arrow-right", "link-simple", "copy", "download-simple"]
+SPRITE_ICONS = ["plus", "check", "x", "star", "star-fill", "caret-up", "caret-down", "dots-six-vertical", "arrow-right", "link-simple", "copy", "download-simple"]
 
 
 # The chain drawn on the home page's map teaser: the first five skills of diagnose-to-pilot.
@@ -216,6 +220,31 @@ def link_issue_refs(text: str) -> str:
 def shift_headings(html_text: str, by: int) -> str:
     """Demote headings so a rendered file nests under the page's own h2/h3."""
     return re.sub(r"<(/?)h([1-6])\b", lambda m: f"<{m.group(1)}h{min(6, int(m.group(2)) + by)}", html_text)
+
+
+def build_commit() -> str:
+    """The commit this site is built from. Expert reviews link to SKILL.md at this
+    commit, so a review stays tied to the exact text the reviewer read."""
+    sha = os.environ.get("VERCEL_GIT_COMMIT_SHA", "")
+    if not sha:
+        try:
+            sha = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, timeout=5).stdout.strip()
+        except (OSError, subprocess.SubprocessError):
+            sha = ""
+    return sha if re.match(r"^[0-9a-f]{7,40}$", sha) else ""
+
+
+def changelog_refs(changelog: Optional[str]) -> Dict[str, dict]:
+    """Issues cited in the CHANGELOG, as {"42": {"version": "0.2.0", "text": <the sentence>}}.
+    The skill page uses this to say which version answered an expert review. When
+    an issue is cited in several entries, the earliest version wins."""
+    refs: Dict[str, dict] = {}
+    for m in re.finditer(r"^## (\d+\.\d+\.\d+)[^\n]*\n(.*?)(?=^## |\Z)", changelog or "", flags=re.M | re.S):
+        version, entry = m.group(1), m.group(2)
+        for sentence in re.split(r"(?<=[.!?])\s+|\n", entry):
+            for n in re.findall(r"(?<![\w/&#`\[])#(\d{1,6})\b", sentence):
+                refs[n] = {"version": version, "text": " ".join(sentence.split())[:280]}  # newest first, so the oldest overwrites
+    return refs
 
 
 def changelog_dates(changelog: Optional[str]) -> List[str]:
@@ -1084,6 +1113,7 @@ TAB_INTROS = {
     "scripts": "Code the skill runs during its steps, so results such as calculations come from code rather than from the AI working them out.",
     "assets": "Files the skill uses as starting points, such as templates. They ship with the skill but aren't instructions.",
     "version-history": "What changed in each version, newest first. An entry that answers an issue or review links to it.",
+    "reviews": "Expert reviews come from behavioral scientists at The Agency Fund and Irrational Labs and are kept as issues on GitHub. Each one shows whether a later version of the skill answered it.",
 }
 
 # Purpose lines for reference files whose opening paragraph describes the case, not the file.
@@ -1265,6 +1295,7 @@ def build_skill_pages(skills: List[dict], taxonomy: dict) -> None:
         for t in s["consumes"]:
             consumers.setdefault(t, []).append(s)
 
+    commit = build_commit()
     for s in skills:
         name = s["name"]
         status = s["status"] or "draft"
@@ -1324,6 +1355,22 @@ def build_skill_pages(skills: List[dict], taxonomy: dict) -> None:
         tabs.append(("version-history", "Version history", "",
                      tab_intro("version-history", "Version history", s, "CHANGELOG.md") + changelog_html, changelog_toc))
 
+        # Reviews: feedback.js fills the list from /api/reviews; the GitHub link works without it.
+        gh_reviews = f"{GITHUB}/issues?q=" + quote(f'is:issue label:expert-review in:title "{name}"')
+        reviews_html = f"""{tab_intro("reviews", "Reviews", s)}
+<section class="reviews-block" id="expert-reviews" aria-labelledby="expert-reviews-h">
+  <h3 id="expert-reviews-h">Expert reviews</h3>
+  <div class="review-list" data-expert-reviews><p class="muted">Expert reviews of this skill are kept as <a href="{E(gh_reviews)}" rel="noopener">issues on GitHub</a>.</p></div>
+  <p class="reviews-foot"><a href="{E(gh_reviews)}" rel="noopener">See all expert reviews of this skill on GitHub</a></p>
+</section>"""
+        tabs.append(("reviews", "Reviews", "", reviews_html, [("expert-reviews", "Expert reviews")]))
+
+        # What feedback.js needs: the skill, the build commit, and which version answered which issue.
+        page_data = json.dumps({
+            "name": name, "title": s["title"], "version": s["version"], "stage": stage, "repo": REPO,
+            "commit": commit, "google_client_id": GOOGLE_CLIENT_ID, "changelog_refs": changelog_refs(s["_changelog"]),
+        }, ensure_ascii=False).replace("</", "<\\/")
+
         warnings_html = ""
         if s["warnings"] or s["errors"]:
             items = "".join(f"<li>[{E(f['code'])}] {E(f['message'])}</li>" for f in s["errors"] + s["warnings"])
@@ -1365,6 +1412,8 @@ def build_skill_pages(skills: List[dict], taxonomy: dict) -> None:
         for i, (key, label, count, panel_html, toc_items) in enumerate(tabs):
             on = i == 0
             cnt = f'<span class="ptab-count">{E(count)}</span>' if count else ""
+            if key == "reviews":
+                cnt = '<span class="ptab-count" data-review-count></span>'  # filled in by feedback.js
             selected = ' aria-selected="true"' if on else ' aria-selected="false" tabindex="-1"'
             tab_buttons.append(f'<button class="ptab" role="tab" type="button" id="t-{key}" data-tab="{key}" aria-controls="{panel_id(key)}"{selected}>{E(label)}{cnt}</button>')
             default = " data-default" if on else ""
@@ -1380,7 +1429,12 @@ def build_skill_pages(skills: List[dict], taxonomy: dict) -> None:
   <div class="badges">{pill(stage_labels.get(stage, stage) or 'no stage', 'stage', stage)}{pill('v' + s['version'], 'version')}{pill(s['type'] or 'atomic', 'meta' if s['type'] == 'meta' else 'type')}{pill(status, status)}{pill(org, 'org') if org else ''}</div>
   {banner}
   <p class="skill-what">{E(s['what_it_does'])}</p>
+  <div class="skill-actions">
+    <button class="btn" type="button" data-panel-open="review" aria-controls="fb-panel">{ICONS['pencil']} Review this skill</button>
+    <p class="skill-actions-note">Expert review, for staff at The Agency Fund and Irrational Labs. <a href="#expert-reviews" data-review-summary hidden></a></p>
+  </div>
 </header>
+<script type="application/json" id="skill-data">{page_data}</script>
 
 <div class="skill-tabs" data-tabs="skill" data-tabs-url="tab">
 <div class="ptabs-bar"><div class="ptabs" role="tablist" aria-label="Parts of this skill">{''.join(tab_buttons)}</div></div>
@@ -1416,7 +1470,7 @@ def build_skill_pages(skills: List[dict], taxonomy: dict) -> None:
 </div>
 </article>
 """
-        page(s["url"], s["title"], s["what_it_does"] or s["description"][:200], body, page_class="page-skill")
+        page(s["url"], s["title"], s["what_it_does"] or s["description"][:200], body, page_class="page-skill", scripts=("/feedback.js",))
 
 
 def build_workflows(workflows: List[dict], skills: List[dict], taxonomy: dict) -> None:

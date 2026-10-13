@@ -1,0 +1,80 @@
+name: Expert review
+description: Review one version of a skill (staff at The Agency Fund and Irrational Labs). The website usually files these for you.
+title: "[Expert review] <skill-name> v<version> by <your name> (<TAF or IL>)"
+labels: ["expert-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The easiest way to review is the **Review this skill** button on the skill's page on the website. It files this issue for you, and you don't need a GitHub account. Use this form only if that button isn't working.
+
+        Keep the title in the form above: `[Expert review] define-key-behavior v0.1.0 by Jane Doe (IL)`. Maintainers and their tools sort reviews by it.
+  - type: input
+    id: skill
+    attributes:
+      label: Skill
+      description: The skill's name, as shown under its title.
+      placeholder: define-key-behavior
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version reviewed
+      description: The version on the skill's page, without the "v".
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: content
+    attributes:
+      label: Content reviewed
+      description: Optional. A link to the exact SKILL.md you read, if you have one.
+  - type: dropdown
+    id: verdict
+    attributes:
+      label: Verdict
+      options:
+        - Ready to publish
+        - Publish after small changes
+        - Needs substantial revision
+        - Not suitable for the library
+    validations:
+      required: true
+  - type: checkboxes
+    id: parts
+    attributes:
+      label: Parts this concerns
+      options:
+        - label: What it does
+        - label: When to use it
+        - label: Before you start
+        - label: What it draws on
+        - label: How to do it
+        - label: Output template
+        - label: Where it goes wrong
+        - label: When to bring in a specialist
+        - label: Test cases
+        - label: References
+        - label: Scripts
+        - label: Whole skill
+  - type: textarea
+    id: review
+    attributes:
+      label: Review
+      description: What works, what's wrong or missing, and what you would change. Quote the line you mean when you can.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence or sources
+      description: Optional. Studies or sources behind your points.
+  - type: input
+    id: reviewer
+    attributes:
+      label: Reviewer
+      description: Your name and organization.
+      placeholder: Jane Doe, Irrational Labs
+    validations:
+      required: true

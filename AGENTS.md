@@ -18,9 +18,10 @@ uv run scripts/snapshot_catalog.py       # regenerates the navigator's catalog
 uv run scripts/build_site.py             # site/dist/ (gitignored)
 uv run scripts/package_skills.py         # dist/*.skill (gitignored)
 uv run python scripts/test_submit.py     # upload-endpoint tests, no network
+uv run python scripts/test_feedback.py   # sign-in and expert-review tests, no network
 ```
 
-CI runs the first five on every pull request. Run them before you finish.
+CI runs the validator, the sync check, the site build, packaging, and test_feedback on every pull request. Run them all before you finish.
 
 ## Rules
 
@@ -36,6 +37,7 @@ CI runs the first five on every pull request. Run them before you finish.
 10. **Do not commit** `site/dist/`, `dist/`, `.venv/`, `__pycache__/`, or `*-workspace/`.
 11. **Keep `SKILL.md` under 500 lines.** Move detail to `references/`.
 12. **Taxonomy changes** go in the same pull request as the skill that needs them.
+13. **Answering an expert review**: cite the issue in the new version's CHANGELOG entry ("Addresses expert review #42 (Jane Doe): ...") and put "Closes #42" in the pull request. The site uses the CHANGELOG citation to mark the review answered. See `docs/expert-reviews.md`.
 
 ## Where things are
 
@@ -48,7 +50,7 @@ CI runs the first five on every pull request. Run them before you finish.
 | `taxonomy.yaml` | stages, types, statuses, WEIRD statuses, verbs, io types, suggested tags |
 | `scripts/` | validator, sync check, site builder, snapshot, packager, zip safety, inbox unpacker, submit tests |
 | `site/src/` | site assets; the builder generates pages from skills |
-| `api/submit.py` | the site's upload endpoint (Vercel Python function) |
+| `api/` | the site's server functions on Vercel: upload (`submit.py`), Google sign-in (`auth.py`), expert reviews (`review.py`, `reviews.py`), database check (`health.py`); `_common.py` and `_review_issue.py` are shared code; `schema.sql` is the Supabase schema |
 | `.claude-plugin/` | marketplace and plugin manifests; one plugin, all skills |
 | `.github/` | CI, inbox unpack, snapshot commit, release zips, PR and issue templates |
 | `docs/` | spec, taxonomy, citing, deployment, ADRs, plan and session records |

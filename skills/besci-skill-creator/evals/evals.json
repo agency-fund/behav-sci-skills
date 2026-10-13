@@ -3,7 +3,7 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "I'm a behavioral scientist at Irrational Labs. I want to turn the 'saying-is-believing' technique from Walton & Cohen's belonging work into a skill for the behav-sci-skills library. Users would be NGO program staff designing a storytelling intervention. Can you help me build it? I'm in Claude Code.",
+      "prompt": "I'm a behavioral scientist at Irrational Labs. I want to turn the 'saying-is-believing' technique from Walton & Cohen's belonging work into a skill for the besci-skills library. Users would be NGO program staff designing a storytelling intervention. Can you help me build it? I'm in Claude Code.",
       "expected_output": "The skill starts the interview rather than drafting. It asks for the one-sentence 'what it does' first (or proposes one and asks for confirmation), checks it for 'and', then moves to trigger phrasings. It asks one question per turn with a recommended answer. It does not produce SKILL.md until the atomicity gate, trigger rule, before-you-start, evidence, procedure, output template, failure modes, escalation, and evals have been covered. When it does draft, it writes the full folder, runs the validator, and reports results in the output template.",
       "files": [],
       "assertions": []

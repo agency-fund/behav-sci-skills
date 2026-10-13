@@ -30,10 +30,10 @@ import besci_validate as v  # noqa: E402
 from markdown_it import MarkdownIt  # noqa: E402
 
 ROOT = v.find_repo_root(os.path.dirname(os.path.abspath(__file__))) or os.getcwd()
-SITE_URL = os.environ.get("SITE_URL", "https://behav-sci-skills.vercel.app").rstrip("/")
-REPO = "agency-fund/behav-sci-skills"
+SITE_URL = os.environ.get("SITE_URL", "https://besci-skills.vercel.app").rstrip("/")
+REPO = "agency-fund/besci-skills"
 GITHUB = f"https://github.com/{REPO}"
-PLUGIN = "behav-sci-skills"
+PLUGIN = "besci-skills"
 SITE_NAME = "Behavioral Science Skills"
 # The one-sentence description: home lede, footer, meta description, llms.txt.
 TAGLINE = "An open-source library of atomic AI skills that bring actionable behavioral-science methods into your everyday work."

@@ -2,7 +2,7 @@
 
 Small, single-purpose AI skills that put behavioral-science methods into the daily work of social-sector teams. A joint project of [The Agency Fund](https://agency.fund) and [Irrational Labs](https://irrationallabs.com).
 
-**Catalog and install guide:** https://behav-sci-skills.vercel.app
+**Catalog and install guide:** https://besci-skills.vercel.app
 
 ## Who this is for
 
@@ -17,17 +17,17 @@ Install the two meta-skills first. The **navigator** tells you which skill to us
 **Claude Code** (keeps itself updated):
 
 ```
-/plugin marketplace add agency-fund/behav-sci-skills
-/plugin install behav-sci-skills@behav-sci-skills
+/plugin marketplace add agency-fund/besci-skills
+/plugin install besci-skills@besci-skills
 ```
 
 **Codex, Cursor, Copilot, and other agents:**
 
 ```
-npx skills add agency-fund/behav-sci-skills --skill besci-navigator --skill besci-eval
+npx skills add agency-fund/besci-skills --skill besci-navigator --skill besci-eval
 ```
 
-**Claude Desktop / claude.ai:** download `besci-navigator.skill` and `besci-eval.skill` from the [latest release](https://github.com/agency-fund/behav-sci-skills/releases/latest), then Settings → Capabilities → Skills → Upload skill. Zips do not update themselves; the [What's new](https://behav-sci-skills.vercel.app/whats-new/) page and its RSS feed announce new versions.
+**Claude Desktop / claude.ai:** download `besci-navigator.skill` and `besci-eval.skill` from the [latest release](https://github.com/agency-fund/besci-skills/releases/latest), then Settings → Capabilities → Skills → Upload skill. Zips do not update themselves; the [What's new](https://besci-skills.vercel.app/whats-new/) page and its RSS feed announce new versions.
 
 Then ask: *"Where do I start? Mothers stop coming to our nutrition sessions after the third visit."*
 
@@ -72,7 +72,7 @@ Phase 1 (Oct–Nov 2026) is TAF and IL staff. Three paths, all ending in a pull 
 2. Upload it on GitHub's website into `inbox/` with "Create a new branch and start a pull request"; a bot unpacks and checks it.
 3. Clone, run the validator, open a pull request.
 
-See `CONTRIBUTING.md`. Propose a skill before writing it at https://behav-sci-skills.vercel.app/propose/.
+See `CONTRIBUTING.md`. Propose a skill before writing it at https://besci-skills.vercel.app/propose/.
 
 ## Repository map
 

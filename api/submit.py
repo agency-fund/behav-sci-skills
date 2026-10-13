@@ -13,7 +13,7 @@ Flow:
 Environment variables (set in Vercel project settings, see docs/deployment.md):
   CONTRIBUTOR_KEY   shared secret handed to TAF and IL staff
   GITHUB_TOKEN      fine-grained PAT (or GitHub App installation token)
-  GITHUB_REPO       default "agency-fund/behav-sci-skills"
+  GITHUB_REPO       default "agency-fund/besci-skills"
   GITHUB_BASE       default "main"
   SITE_URL          used only in the PR body for the contribute page link
 
@@ -206,7 +206,7 @@ class GitHub:
         req.add_header("Authorization", f"Bearer {self.token}")
         req.add_header("Accept", "application/vnd.github+json")
         req.add_header("X-GitHub-Api-Version", "2022-11-28")
-        req.add_header("User-Agent", "behav-sci-skills-submit")
+        req.add_header("User-Agent", "besci-skills-submit")
         if data is not None:
             req.add_header("Content-Type", "application/json")
         try:
@@ -280,7 +280,7 @@ def open_pull_request(skill: bv.Skill, skill_dir: str, fields: Dict[str, str], r
     token = os.environ.get("GITHUB_TOKEN", "")
     if not token:
         raise RuntimeError("Server is missing GITHUB_TOKEN; ask a maintainer to configure the upload endpoint.")
-    repo = os.environ.get("GITHUB_REPO", "agency-fund/behav-sci-skills")
+    repo = os.environ.get("GITHUB_REPO", "agency-fund/besci-skills")
     base = os.environ.get("GITHUB_BASE", "main")
     gh = GitHub(token, repo)
     base_sha = gh.base_sha(base)

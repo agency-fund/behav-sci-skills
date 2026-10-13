@@ -8,13 +8,13 @@ Name the skill, its version, its authors, and the library. Each skill's page on 
 
 APA style:
 
-> Wu, Z. (2026). *Cognitive interview script drafter* (Version 0.1.0) [AI skill]. Behavioral Science Skills Library, The Agency Fund and Irrational Labs. https://github.com/agency-fund/behav-sci-skills/tree/main/skills/draft-cognitive-interview-script
+> Wu, Z. (2026). *Cognitive interview script drafter* (Version 0.1.0) [AI skill]. Behavioral Science Skills Library, The Agency Fund and Irrational Labs. https://github.com/agency-fund/besci-skills/tree/main/skills/draft-cognitive-interview-script
 
 In a methods section:
 
 > Interview scripts were drafted with the `draft-cognitive-interview-script` skill (v0.1.0, Behavioral Science Skills Library) in Claude and revised by the research team.
 
-To cite the exact version, link to the git tag or commit rather than `main`: `https://github.com/agency-fund/behav-sci-skills/tree/v0.1.0/skills/<name>`.
+To cite the exact version, link to the git tag or commit rather than `main`: `https://github.com/agency-fund/besci-skills/tree/v0.1.0/skills/<name>`.
 
 ## Cite a workflow
 

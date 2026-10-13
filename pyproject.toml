@@ -1,5 +1,5 @@
 [project]
-name = "behav-sci-skills"
+name = "besci-skills"
 version = "0.1.0"
 description = "Tooling for the Behavioral Science Skills Library: validator, site builder, packager, catalog snapshot."
 requires-python = ">=3.10"

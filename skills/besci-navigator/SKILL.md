@@ -16,7 +16,7 @@ metadata:
   title: Behavioral science navigator
   type: meta
   stage: other
-  version: "0.1.0"
+  version: "0.1.1"
   status: draft
   authors: "Zezhen Wu"
   org: TAF
@@ -62,7 +62,7 @@ First decide the mode from the request. Route mode if the task is concrete, name
 4. Optional. Is a behavioral scientist available to you, even occasionally? This changes how much the plan leans on expert check-ins.
 5. Optional. Any constraints that rule methods out: no field access, no data collection, a fixed launch date?
 
-Before either mode, read `references/catalog.md` and note its snapshot date. If it is older than ninety days and web access is available, offer to fetch the live version from https://raw.githubusercontent.com/agency-fund/behav-sci-skills/main/skills/besci-navigator/references/catalog.md. Never recommend a skill that is not in the catalog.
+Before either mode, read `references/catalog.md` and note its snapshot date. If it is older than ninety days and web access is available, offer to fetch the live version from https://raw.githubusercontent.com/agency-fund/besci-skills/main/skills/besci-navigator/references/catalog.md. Never recommend a skill that is not in the catalog.
 
 ## What it draws on
 

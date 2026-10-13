@@ -5,8 +5,8 @@ type: software
 authors:
   - name: "The Agency Fund"
   - name: "Irrational Labs"
-repository-code: "https://github.com/agency-fund/behav-sci-skills"
-url: "https://behav-sci-skills.vercel.app"
+repository-code: "https://github.com/agency-fund/besci-skills"
+url: "https://besci-skills.vercel.app"
 license: "CC-BY-4.0 (content), MIT (code)"
 version: "0.1.0"
 date-released: "2026-10-08"

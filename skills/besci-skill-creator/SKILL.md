@@ -16,7 +16,7 @@ metadata:
   title: Behavioral science skill creator
   type: meta
   stage: other
-  version: "0.1.0"
+  version: "0.1.1"
   status: draft
   authors: "Zezhen Wu"
   org: TAF
@@ -40,7 +40,7 @@ The library's spec has eight sections, three or more test cases, and a changelog
 - "Is this idea atomic enough to be one skill?"
 - "Check my draft skill against the library spec"
 - "Revise my skill; the reviewer said the trigger rule is too vague"
-- "Contribute a skill" or "claim a skill" for the behav-sci-skills repo
+- "Contribute a skill" or "claim a skill" for the besci-skills repo
 
 ### Do not use it when
 - The skill is not for this library (a PDF tool, a coding workflow); use Anthropic's general skill-creator

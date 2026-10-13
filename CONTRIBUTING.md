@@ -10,7 +10,7 @@ Thank you. This library is only useful if a skill written by one person works fo
 
 ### 1. Claim
 
-Check the [catalog](https://behav-sci-skills.vercel.app) and the partnership's tracker so you are not duplicating a skill. Then propose yours at https://behav-sci-skills.vercel.app/propose/, which opens a pre-filled GitHub issue. A maintainer confirms it is atomic: one thing a behavioral scientist does, in one sentence, no "and". If your sentence needs an "and", you have two skills; the second usually takes the first's output as input.
+Check the [catalog](https://besci-skills.vercel.app) and the partnership's tracker so you are not duplicating a skill. Then propose yours at https://besci-skills.vercel.app/propose/, which opens a pre-filled GitHub issue. A maintainer confirms it is atomic: one thing a behavioral scientist does, in one sentence, no "and". If your sentence needs an "and", you have two skills; the second usually takes the first's output as input.
 
 ### 2. Draft
 
@@ -37,9 +37,9 @@ Pick the path that fits you. All three end in a pull request.
 
 **A. Hand it to a maintainer.** Send the `.skill` file to any maintainer in `MAINTAINERS.md` on Slack or Drive. They submit it for you; you stay the author in the metadata and on the commit.
 
-**B. Upload on GitHub's website, no git.** Open https://github.com/agency-fund/behav-sci-skills/tree/main/inbox, click **Add file → Upload files**, drop your `.skill` file, choose **Create a new branch for this commit and start a pull request**, and click **Propose changes**, then **Create pull request**. A bot unpacks the zip into `skills/<name>/`, runs the validator, and posts a plain-language checklist on the pull request. Fix anything it flags by uploading again to the same branch.
+**B. Upload on GitHub's website, no git.** Open https://github.com/agency-fund/besci-skills/tree/main/inbox, click **Add file → Upload files**, drop your `.skill` file, choose **Create a new branch for this commit and start a pull request**, and click **Propose changes**, then **Create pull request**. A bot unpacks the zip into `skills/<name>/`, runs the validator, and posts a plain-language checklist on the pull request. Fix anything it flags by uploading again to the same branch.
 
-**C. Upload on the site.** https://behav-sci-skills.vercel.app/upload/ takes the `.skill` file and a contributor key (ask a maintainer) and opens the pull request for you.
+**C. Upload on the site.** https://besci-skills.vercel.app/upload/ takes the `.skill` file and a contributor key (ask a maintainer) and opens the pull request for you.
 
 **D. Clone and open a pull request.** Fork or branch, add `skills/<name>/`, run the validator, push, open a PR. The template carries the checklist.
 

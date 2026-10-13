@@ -15,7 +15,7 @@ How the site, the upload endpoint, CI, and releases are wired, and the one-time 
 
 ## 1. GitHub repository setup (once)
 
-1. **Create the maintainers team.** In the `agency-fund` org: Settings, Teams, New team, name `behav-sci-maintainers`. Add every person in `MAINTAINERS.md` from both organizations. Give the team **Admin** on this repository. `.github/CODEOWNERS` points at this team; until it exists, review requests are not automatic.
+1. **Create the maintainers team.** In the `agency-fund` org: Settings, Teams, New team, name `besci-maintainers`. Add every person in `MAINTAINERS.md` from both organizations. Give the team **Admin** on this repository. `.github/CODEOWNERS` points at this team; until it exists, review requests are not automatic.
 2. **Create labels.** Repository, Issues, Labels: add `skill`, `submitted-via-site`, `skill-proposal`, `bug`. The upload endpoint and issue templates use these; missing labels are ignored, not fatal.
 3. **Branch protection on `main`.** Settings, Branches, Add rule for `main`:
    - Require a pull request before merging, 1 approval.
@@ -27,7 +27,7 @@ How the site, the upload endpoint, CI, and releases are wired, and the one-time 
 
 ## 2. Vercel project (once)
 
-1. In Vercel, **Add New Project**, import `agency-fund/behav-sci-skills`. Use a Vercel team both orgs can access, or add the IL maintainers as members.
+1. In Vercel, **Add New Project**, import `agency-fund/besci-skills`. Use a Vercel team both orgs can access, or add the IL maintainers as members.
 2. Framework preset: **Other**. The repo's `vercel.json` already sets:
    - Install command: `bash scripts/vercel_build.sh install` (runs `uv sync --frozen`; Vercel's build image has a uv-managed Python that rejects plain `pip install`, and the script falls back to `pip --break-system-packages` if uv is ever absent)
    - Build command: `bash scripts/vercel_build.sh build` (runs `uv run --frozen scripts/build_site.py`)
@@ -40,7 +40,7 @@ How the site, the upload endpoint, CI, and releases are wired, and the one-time 
    |---|---|---|
    | `CONTRIBUTOR_KEY` | a long random string | Phase 1 gate for the upload form. Generate with `python3 -c "import secrets;print(secrets.token_urlsafe(32))"`. Share with TAF and IL staff over a private channel. |
    | `GITHUB_TOKEN` | fine-grained personal access token | See step 3 below. Mark as **Sensitive**. |
-   | `GITHUB_REPO` | `agency-fund/behav-sci-skills` | Repo the endpoint opens PRs on. |
+   | `GITHUB_REPO` | `agency-fund/besci-skills` | Repo the endpoint opens PRs on. |
    | `GITHUB_BASE` | `main` | Base branch for PRs. |
    | `SITE_URL` | `https://<your-project>.vercel.app` | Used for the CORS preflight and the link in PR bodies. Update when you add a custom domain. |
 
@@ -55,7 +55,7 @@ How the site, the upload endpoint, CI, and releases are wired, and the one-time 
 The endpoint needs to create branches, commits, and pull requests. Use a **fine-grained personal access token** scoped to this one repository, held by a maintainer account (or a dedicated bot account such as `besci-bot`, which keeps PR authorship clean and survives staff changes; recommended).
 
 1. GitHub, Settings, Developer settings, Personal access tokens, Fine-grained tokens, Generate new token.
-2. Resource owner: `agency-fund`. Repository access: Only select repositories, `behav-sci-skills`.
+2. Resource owner: `agency-fund`. Repository access: Only select repositories, `besci-skills`.
 3. Permissions, Repository: **Contents: Read and write**, **Pull requests: Read and write**, **Metadata: Read** (added automatically). Nothing else.
 4. Expiration: 1 year. Put the expiry date in the maintainers' calendar.
 5. Copy the token into Vercel as `GITHUB_TOKEN`. Never commit it.
@@ -81,17 +81,17 @@ Use patch tags (`v0.1.1`) for skill fixes, minor tags (`v0.2.0`) when skills are
 ## 5. Installing from the marketplace (what to put in docs)
 
 ```
-/plugin marketplace add agency-fund/behav-sci-skills
-/plugin install behav-sci-skills@behav-sci-skills
+/plugin marketplace add agency-fund/besci-skills
+/plugin install besci-skills@besci-skills
 ```
 
 Or in one step on Claude Code 2.1.275 or later:
 
 ```
-/plugin install behav-sci-skills --marketplace agency-fund/behav-sci-skills
+/plugin install besci-skills --marketplace agency-fund/besci-skills
 ```
 
-For other agents: `npx skills add agency-fund/behav-sci-skills` (reads `.claude-plugin/marketplace.json`). Validate locally before pushing with `claude plugin validate ./`.
+For other agents: `npx skills add agency-fund/besci-skills` (reads `.claude-plugin/marketplace.json`). Validate locally before pushing with `claude plugin validate ./`.
 
 ## 6. Custom domain (later)
 

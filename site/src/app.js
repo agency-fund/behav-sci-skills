@@ -1,9 +1,9 @@
 /* Behavioral Science Skills: client script. No dependencies.
    Theme (follows the system until the reader picks), mobile menu, copy buttons,
-   install tabs, the home page's hero demo and stage flow chart, workflow
-   graphs (Workflows pages and home tiles), catalog
-   search and filters with URL sync, TOC scroll-spy, the propose form
-   (prefilled GitHub issue), and the upload form (/api/submit).
+   tabs (install options, and the file tabs on skill pages), the home page's
+   hero demo and stage flow chart, workflow graphs (Workflows pages and home
+   tiles), catalog search and filters with URL sync, TOC scroll-spy, the propose
+   form (prefilled GitHub issue), and the upload form (/api/submit).
    The skill map is in map.js; the workflow tray and builder are in workflow.js. */
 (function () {
   "use strict";
@@ -12,6 +12,15 @@
   var $$ = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
   var reduceMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   var root = document.documentElement;
+
+  /* ---------- analytics hook ----------
+     Does nothing until an analytics provider is chosen. Its adapter sets
+     window.besciAnalytics = function (name, props) { ... }. Event names are
+     listed in docs/analytics.md. */
+  function track(name, props) {
+    try { if (typeof window.besciAnalytics === "function") window.besciAnalytics(name, props || {}); } catch (e) { /* ignore */ }
+  }
+  window.besciTrack = track;
 
   /* ---------- theme: saved choice, else the system setting ----------
      Toggling to the theme the system already uses forgets the saved choice,
@@ -82,19 +91,52 @@
   });
 
 
-  /* ---------- tabs (install options) ---------- */
+  /* ---------- tabs: install options, and the file tabs on skill pages ----------
+     A [data-tabs] box owns only the tabs whose nearest [data-tabs] is itself, so the
+     install tabs inside a skill page's Skill tab stay separate. Most boxes remember
+     the choice in localStorage; data-tabs-url="tab" keeps it in ?tab= instead, so a
+     link can open a given tab. Elements with data-tab-for="<tab>" show only with that
+     tab (the skill page's per-tab "On this page" lists). A #hash pointing inside a
+     hidden panel opens that panel first. */
   $$("[data-tabs]").forEach(function (box) {
     var key = box.getAttribute("data-tabs") || "tabs";
-    var tabs = $$("[role=tab]", box), panels = $$("[role=tabpanel]", box);
-    function select(i, focus) {
+    var urlParam = box.getAttribute("data-tabs-url");
+    var own = function (el) { return el.closest("[data-tabs]") === box; };
+    var tabs = $$("[role=tab]", box).filter(own);
+    var panels = tabs.map(function (t) { return document.getElementById(t.getAttribute("aria-controls")); });
+    var followers = $$("[data-tab-for]", box).filter(own);
+    var current = -1;
+    var nameOf = function (i) { return tabs[i].getAttribute("data-tab") || String(i); };
+    function select(i, focus, fromLoad) {
       tabs.forEach(function (t, j) {
         var on = i === j;
         t.setAttribute("aria-selected", on ? "true" : "false");
         t.tabIndex = on ? 0 : -1;
         if (panels[j]) panels[j].hidden = !on;
       });
+      var name = nameOf(i);
+      followers.forEach(function (el) { el.hidden = el.getAttribute("data-tab-for") !== name; });
       if (focus) tabs[i].focus();
-      try { localStorage.setItem("tab:" + key, tabs[i].getAttribute("data-tab") || String(i)); } catch (e) { /* ignore */ }
+      // On a narrow screen the tab strip scrolls sideways; keep the chosen tab in view.
+      var strip = tabs[i].parentElement;
+      if (strip.scrollWidth > strip.clientWidth) {
+        var left = tabs[i].offsetLeft - strip.offsetLeft, right = left + tabs[i].offsetWidth;
+        if (left < strip.scrollLeft || right > strip.scrollLeft + strip.clientWidth) strip.scrollLeft = left - 24;
+      }
+      if (urlParam) {
+        if (!fromLoad) {
+          var params = new URLSearchParams(location.search);
+          if (i === 0) params.delete(urlParam); else params.set(urlParam, name);
+          var qs = params.toString();
+          history.replaceState(null, "", location.pathname + (qs ? "?" + qs : ""));
+          // Switching tabs further down the page starts the new tab at its top.
+          if (box.getBoundingClientRect().top < 0) box.scrollIntoView({ block: "start" });
+        }
+      } else {
+        try { localStorage.setItem("tab:" + key, name); } catch (e) { /* ignore */ }
+      }
+      if (i !== current && !fromLoad) track("tab_view", { box: key, tab: name });
+      current = i;
     }
     tabs.forEach(function (t, i) {
       t.addEventListener("click", function () { select(i, false); });
@@ -103,11 +145,50 @@
         if (e.key === "ArrowLeft") { e.preventDefault(); select((i - 1 + tabs.length) % tabs.length, true); }
       });
     });
+    var indexOf = function (name) {
+      var idx = -1;
+      tabs.forEach(function (t, i) { if (t.getAttribute("data-tab") === name) idx = i; });
+      return idx;
+    };
+    var panelForHash = function () {
+      var id = decodeURIComponent(location.hash.slice(1));
+      var el = id && document.getElementById(id);
+      if (!el) return -1;
+      var idx = -1;
+      panels.forEach(function (p, j) { if (p && p.contains(el)) idx = j; });
+      return idx;
+    };
     var saved = null;
-    try { saved = localStorage.getItem("tab:" + key); } catch (e) { /* ignore */ }
-    var idx = -1;
-    tabs.forEach(function (t, i) { if (t.getAttribute("data-tab") === saved) idx = i; });
-    select(idx >= 0 ? idx : 0, false);
+    if (urlParam) saved = new URLSearchParams(location.search).get(urlParam);
+    else { try { saved = localStorage.getItem("tab:" + key); } catch (e) { /* ignore */ } }
+    var fromHash = urlParam ? panelForHash() : -1;
+    var idx = fromHash >= 0 ? fromHash : indexOf(saved);
+    select(idx >= 0 ? idx : 0, false, true);
+    box.classList.add("is-ready");
+    if (fromHash >= 0 && saved !== null && saved !== nameOf(fromHash)) {
+      var fixed = new URLSearchParams(location.search);
+      if (fromHash === 0) fixed.delete(urlParam); else fixed.set(urlParam, nameOf(fromHash));
+      var fqs = fixed.toString();
+      history.replaceState(null, "", location.pathname + (fqs ? "?" + fqs : "") + location.hash);
+    }
+    if (fromHash > 0) {
+      var target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (target) target.scrollIntoView();
+    }
+    if (urlParam) {
+      // In-page links to a part of another tab (e.g. a test case, a reference file).
+      window.addEventListener("hashchange", function () {
+        var j = panelForHash();
+        if (j < 0 || j === current) return;
+        select(j, false, true);
+        var params = new URLSearchParams(location.search);
+        if (j === 0) params.delete(urlParam); else params.set(urlParam, nameOf(j));
+        var qs = params.toString();
+        history.replaceState(null, "", location.pathname + (qs ? "?" + qs : "") + location.hash);
+        var el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+        if (el) el.scrollIntoView();
+      });
+    }
   });
 
   /* ---------- old links: /?stage=... moved to /skills/, and the map moved to /map/ ---------- */

@@ -90,6 +90,7 @@ ICONS = {
     "replay": icon("arrow-counter-clockwise"),
     "plus": icon("plus"),
     "pencil": icon("pencil-simple"),
+    "star": icon("star"),
 }
 
 # One icon per stage, drawn in the stage's color.
@@ -1113,7 +1114,7 @@ TAB_INTROS = {
     "scripts": "Code the skill runs during its steps, so results such as calculations come from code rather than from the AI working them out.",
     "assets": "Files the skill uses as starting points, such as templates. They ship with the skill but aren't instructions.",
     "version-history": "What changed in each version, newest first. An entry that answers an issue or review links to it.",
-    "reviews": "Expert reviews come from behavioral scientists at The Agency Fund and Irrational Labs and are kept as issues on GitHub. Each one shows whether a later version of the skill answered it.",
+    "reviews": "Expert reviews come from behavioral scientists at The Agency Fund and Irrational Labs and are kept as issues on GitHub; each shows whether a later version of the skill answered it. Ratings and comments come from anyone who has used the skill.",
 }
 
 # Purpose lines for reference files whose opening paragraph describes the case, not the file.
@@ -1362,8 +1363,12 @@ def build_skill_pages(skills: List[dict], taxonomy: dict) -> None:
   <h3 id="expert-reviews-h">Expert reviews</h3>
   <div class="review-list" data-expert-reviews><p class="muted">Expert reviews of this skill are kept as <a href="{E(gh_reviews)}" rel="noopener">issues on GitHub</a>.</p></div>
   <p class="reviews-foot"><a href="{E(gh_reviews)}" rel="noopener">See all expert reviews of this skill on GitHub</a></p>
+</section>
+<section class="reviews-block" id="ratings" aria-labelledby="ratings-h">
+  <h3 id="ratings-h">Ratings and comments</h3>
+  <div class="ratings" data-ratings><p class="muted">Ratings show here once the site can reach its database.</p></div>
 </section>"""
-        tabs.append(("reviews", "Reviews", "", reviews_html, [("expert-reviews", "Expert reviews")]))
+        tabs.append(("reviews", "Reviews", "", reviews_html, [("expert-reviews", "Expert reviews"), ("ratings", "Ratings and comments")]))
 
         # What feedback.js needs: the skill, the build commit, and which version answered which issue.
         page_data = json.dumps({
@@ -1431,8 +1436,10 @@ def build_skill_pages(skills: List[dict], taxonomy: dict) -> None:
   <p class="skill-what">{E(s['what_it_does'])}</p>
   <div class="skill-actions">
     <button class="btn" type="button" data-panel-open="review" aria-controls="fb-panel">{ICONS['pencil']} Review this skill</button>
-    <p class="skill-actions-note">Expert review, for staff at The Agency Fund and Irrational Labs. <a href="#expert-reviews" data-review-summary hidden></a></p>
+    <button class="btn-secondary" type="button" data-panel-open="rate" aria-controls="fb-panel">{ICONS['star']} Rate this skill</button>
+    <a class="rating-summary" href="#ratings" data-rating-summary hidden></a>
   </div>
+  <p class="skill-actions-note">Expert reviews are for staff at The Agency Fund and Irrational Labs; anyone can rate. <a href="#expert-reviews" data-review-summary hidden></a></p>
 </header>
 <script type="application/json" id="skill-data">{page_data}</script>
 

@@ -1,11 +1,13 @@
-/* Behavioral Science Skills: expert reviews on skill pages. No dependencies.
-   - The "Review this skill" side panel: Google sign-in (Google's script loads only
-     when the panel opens), then a form that /api/review files as a GitHub issue.
-     Reviewers need no GitHub account.
-   - The Reviews tab: every expert review of this skill from /api/reviews, each
-     marked with the version that answered it (from the CHANGELOG, in #skill-data).
-   Server side: api/auth.py, api/review.py, api/reviews.py. Without the API (a
-   local build, or GitHub down) the page keeps its plain links to GitHub. */
+/* Behavioral Science Skills: expert reviews and ratings on skill pages. No dependencies.
+   - One side panel, two modes. "Review this skill": Google sign-in (Google's
+     script loads only when needed), then a form that /api/review files as a
+     GitHub issue; reviewers need no GitHub account. "Rate this skill": the same
+     sign-in for anyone, then stars, an optional comment, and name or anonymous.
+   - The Reviews tab: expert reviews from /api/reviews, each marked with the
+     version that answered it (from the CHANGELOG, in #skill-data), and ratings
+     and comments from /api/ratings, with hide and delete for maintainers.
+   Server side: api/auth.py, api/review.py, api/reviews.py, api/ratings.py.
+   Without the API (a local build, or an outage) the page keeps its plain links. */
 (function () {
   "use strict";
 
@@ -70,7 +72,7 @@
     if (isNaN(d)) return "";
     return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
   }
-  // Paths end in "/": the site adds trailing slashes (vercel.json), so "/api/auth" would cost a redirect.
+  // Paths end in "/": the site adds trailing slashes (vercel.json), so "/api/auth/" would cost a redirect.
   function api(method, path, body) {
     var opts = { method: method, credentials: "same-origin", headers: {} };
     if (body !== undefined) { opts.headers["Content-Type"] = "application/json"; opts.body = JSON.stringify(body); }
@@ -90,18 +92,27 @@
   }
 
   /* ---------- who is signed in ---------- */
+  // The session cookie is HttpOnly, so this flag is how a page knows to ask who is
+  // signed in (to show maintainers their moderation controls) without asking every time.
+  var SIGNED_IN = "besci:signed-in";
   var user = null; // null until asked; then the /api/auth view, or {signed_in:false, unavailable:true}
+  function setUser(u) {
+    user = u;
+    store(SIGNED_IN, u && u.signed_in ? true : null);
+    return u;
+  }
   function loadUser() {
     return api("GET", "/api/auth/").then(function (u) {
-      user = u._status === 200 ? u : { signed_in: false, unavailable: true };
-      return user;
+      return setUser(u._status === 200 ? u : { signed_in: false, unavailable: true });
     });
   }
   function signOut() {
+    var wasAdmin = user && user.is_admin;
     api("DELETE", "/api/auth/").then(function () {
-      user = { signed_in: false };
+      setUser({ signed_in: false });
       try { window.google.accounts.id.disableAutoSelect(); } catch (e) { /* ignore */ }
-      showReview();
+      if (wasAdmin) loadRatings(true);
+      showMode();
     });
   }
 
@@ -125,8 +136,9 @@
   function onCredential(resp) {
     api("POST", "/api/auth/", { credential: resp.credential, purpose: signInPurpose }).then(function (u) {
       if (u._status === 200 && u.signed_in) {
-        user = u;
+        setUser(u);
         track("sign_in", { purpose: signInPurpose, can_review: !!u.can_review });
+        if (u.is_admin) loadRatings(true);
         if (afterSignIn) afterSignIn();
       } else {
         showMessage(u.error || "Sign-in didn't work. Please try again.");
@@ -154,7 +166,7 @@
   }
 
   /* ---------- the side panel ---------- */
-  var panel, panelTitle, panelBody, opener;
+  var panel, panelTitle, panelBody, opener, mode = "review";
   function ensurePanel() {
     if (panel) return;
     panelTitle = h("h2", { id: "fb-title", class: "fb-title", tabindex: "-1" });
@@ -165,27 +177,33 @@
     document.body.appendChild(panel);
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !panel.hidden) closePanel(); });
   }
-  function openPanel(mode, btn) {
+  function openPanel(which, btn) {
     ensurePanel();
     opener = btn || null;
+    mode = which === "rate" ? "rate" : "review";
     panel.hidden = false;
-    $$("[data-panel-open]").forEach(function (b) { b.setAttribute("aria-expanded", "true"); });
-    if (mode === "review") { showReview(); track("review_panel_open", { skill: skill.name }); }
+    $$("[data-panel-open]").forEach(function (b) { b.setAttribute("aria-expanded", String(b.getAttribute("data-panel-open") === mode)); });
+    showMode();
+    track(mode + "_panel_open", { skill: skill.name });
     panelTitle.focus();
   }
+  function showMode() { if (mode === "rate") showRate(); else showReview(); }
   function closePanel() {
     panel.hidden = true;
     $$("[data-panel-open]").forEach(function (b) { b.setAttribute("aria-expanded", "false"); });
-    if (location.hash === "#review") history.replaceState(null, "", location.pathname + location.search);
+    if (location.hash === "#review" || location.hash === "#rate") history.replaceState(null, "", location.pathname + location.search);
     if (opener) opener.focus();
   }
   function setBody(nodes) {
     panelBody.textContent = "";
     nodes.forEach(function (n) { if (n) panelBody.appendChild(n); });
   }
-  function showMessage(text) {
+  function clearMessage() {
     var old = $(".fb-error", panelBody);
     if (old) old.remove();
+  }
+  function showMessage(text) {
+    clearMessage();
     panelBody.insertBefore(h("p", { class: "fb-error", role: "alert", text: text }), panelBody.firstChild);
   }
 
@@ -230,8 +248,9 @@
   function renderNotEligible() {
     setBody([
       h("p", {}, ["You're signed in as ", h("b", { text: user.email }), "."]),
-      h("p", { text: "Expert reviews are limited to staff at The Agency Fund and Irrational Labs for now. If you've used this skill and found a problem, you can report it on GitHub." }),
+      h("p", { text: "Expert reviews are limited to staff at The Agency Fund and Irrational Labs for now. You can still rate this skill and leave a comment, or report a problem on GitHub." }),
       h("p", { class: "fb-links" }, [
+        h("button", { type: "button", class: "btn-secondary", onclick: function () { openPanel("rate", opener); }, text: "Rate this skill" }),
         h("a", { href: bugReportUrl(), rel: "noopener", target: "_blank", text: "Report a problem" }),
         h("button", { type: "button", class: "link-btn", onclick: signOut, text: "Sign out" })
       ])
@@ -304,6 +323,7 @@
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var f = values();
+      clearMessage();
       if (!f.verdict) return showMessage("Choose a verdict.");
       if (f.review.length < MIN_REVIEW) { review.focus(); return showMessage("The review is too short. Say what works, what doesn't, and what you'd change."); }
       if (!f.name) { name.focus(); return showMessage("Add your name; it appears on the review."); }
@@ -437,8 +457,232 @@
   function loadReviews() {
     if (!list) return;
     fetch("/api/reviews/", { credentials: "omit" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
-      if (d && d.ok) renderReviews((d.skills || {})[skill.name] || []);
+      if (!d || !d.ok) return;
+      renderReviews((d.skills || {})[skill.name] || []);
+      // Reviews load in above the ratings; keep a #ratings link on target.
+      var target = location.hash === "#ratings" && document.getElementById("ratings");
+      if (target && !target.closest("[hidden]")) target.scrollIntoView();
     }).catch(function () { /* keep the link to GitHub */ });
+  }
+
+  /* ---------- ratings ---------- */
+  var ratingsBox = $("[data-ratings]");
+  var ratingSummary = $("[data-rating-summary]");
+  var ratings = null; // the last /api/ratings answer
+  var STAR_WORDS = ["", "Poor", "Fair", "Good", "Very good", "Excellent"];
+
+  function starsEl(n, label) {
+    var wrap = h("span", { class: "stars", role: "img", "aria-label": label || n + " out of 5 stars" });
+    for (var i = 1; i <= 5; i++) wrap.appendChild(icon(i <= n ? "star-fill" : "star"));
+    return wrap;
+  }
+  function plural(n, one, many) { return n + " " + (n === 1 ? one : many); }
+
+  function loadRatings(fresh) {
+    if (!ratingsBox && !ratingSummary) return Promise.resolve();
+    var admin = !!(user && user.is_admin);
+    // A fresh query string skips the minute-long CDN cache after you rate.
+    var url = "/api/ratings/?skill=" + encodeURIComponent(skill.name) + (admin ? "&admin=1" : "") + (fresh ? "&fresh=" + Date.now() : "");
+    return fetch(url, { credentials: admin ? "same-origin" : "omit" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+      if (d && d.ok) { ratings = d; renderRatings(); }
+    }).catch(function () { /* keep the placeholder */ });
+  }
+
+  function renderRatings() {
+    var d = ratings;
+    if (ratingSummary) {
+      ratingSummary.textContent = "";
+      if (d.count) {
+        ratingSummary.appendChild(starsEl(Math.round(d.average), "Rated " + d.average.toFixed(1) + " out of 5"));
+        ratingSummary.appendChild(h("b", { text: d.average.toFixed(1) }));
+        ratingSummary.appendChild(h("span", { text: "(" + plural(d.count, "rating", "ratings") + ")" }));
+      } else {
+        ratingSummary.appendChild(h("span", { text: "No ratings yet" }));
+      }
+      ratingSummary.hidden = false;
+    }
+    if (!ratingsBox) return;
+    ratingsBox.textContent = "";
+    var rateBtn = h("button", { type: "button", class: "btn-secondary", onclick: function () { openPanel("rate", rateBtn); } }, [icon("star"), "Rate this skill"]);
+    if (!d.count) {
+      ratingsBox.appendChild(h("p", { class: "muted", text: "No ratings yet. If you've used this skill, yours would be the first." }));
+      ratingsBox.appendChild(rateBtn);
+      return;
+    }
+    var bars = h("div", { class: "rating-bars" });
+    for (var n = 5; n >= 1; n--) {
+      var k = d.distribution[String(n)] || 0;
+      bars.appendChild(h("div", { class: "rating-bar" }, [
+        h("span", { text: plural(n, "star", "stars") }),
+        h("span", { class: "bar", "aria-hidden": "true" }, [h("span", { style: "width:" + Math.round(100 * k / d.count) + "%" })]),
+        h("span", { class: "bar-n", text: String(k) })
+      ]));
+    }
+    ratingsBox.appendChild(h("div", { class: "rating-overview" }, [
+      h("div", { class: "rating-big" }, [
+        h("b", { text: d.average.toFixed(1) }),
+        starsEl(Math.round(d.average), "Rated " + d.average.toFixed(1) + " out of 5"),
+        h("span", { text: plural(d.count, "rating", "ratings") })
+      ]),
+      bars,
+      rateBtn
+    ]));
+    if (!d.comments.length) ratingsBox.appendChild(h("p", { class: "muted", text: "No comments yet." }));
+    d.comments.forEach(function (cm) { ratingsBox.appendChild(commentCard(cm)); });
+  }
+
+  function commentCard(cm) {
+    var admin = user && user.is_admin;
+    var tools = null;
+    if (admin) {
+      tools = h("p", { class: "rating-admin" }, [
+        h("button", { type: "button", class: "link-btn", text: cm.hidden ? "Show comment" : "Hide comment", onclick: function () {
+          api("PATCH", "/api/ratings/", { id: cm.id, hidden: !cm.hidden }).then(function (r) { if (r.ok) loadRatings(true); });
+        } }),
+        h("button", { type: "button", class: "link-btn", text: "Delete rating", onclick: function () {
+          if (window.confirm("Delete this rating and its comment? This can't be undone.")) {
+            api("DELETE", "/api/ratings/", { id: cm.id }).then(function (r) { if (r.ok) loadRatings(true); });
+          }
+        } })
+      ]);
+    }
+    return h("article", { class: "rating-card" + (cm.hidden ? " is-hidden" : "") }, [
+      h("header", { class: "review-head" }, [
+        starsEl(cm.stars),
+        h("b", { text: cm.name }),
+        cm.badge ? h("span", { class: "rating-badge", text: cm.badge }) : null,
+        cm.date ? h("time", { datetime: cm.date, text: formatDate(cm.date) }) : null,
+        cm.version ? h("span", { text: "v" + cm.version }) : null
+      ]),
+      h("p", { class: "review-excerpt", text: cm.comment }),
+      cm.hidden ? h("p", { class: "fb-fine", text: "Hidden from readers by a maintainer." }) : null,
+      tools
+    ]);
+  }
+
+  /* ---------- rate: which screen to show ---------- */
+  function rateTarget() {
+    return h("p", { class: "fb-target" }, ["You're rating ", h("code", { text: skill.name }), " version " + skill.version + "."]);
+  }
+
+  function showRate() {
+    panelTitle.textContent = "Rate this skill";
+    if (!skill.google_client_id) return rateUnavailable();
+    setBody([h("p", { class: "muted", text: "Checking whether you're signed in…" })]);
+    (user ? Promise.resolve(user) : loadUser()).then(function (u) {
+      if (u.unavailable) return rateUnavailable();
+      if (!u.signed_in) return rateSignIn();
+      api("GET", "/api/ratings/?skill=" + encodeURIComponent(skill.name) + "&mine=1").then(function (m) {
+        if (m._status !== 200) return rateUnavailable();
+        rateForm(m.mine || null);
+      });
+    });
+  }
+
+  function rateUnavailable() {
+    setBody([rateTarget(), h("p", { text: "Ratings aren't available on this copy of the site yet." }),
+      h("p", {}, [h("a", { href: bugReportUrl(), rel: "noopener", target: "_blank", text: "Report a problem with this skill on GitHub" })])]);
+  }
+
+  function rateSignIn() {
+    setBody([
+      rateTarget(),
+      h("p", { text: "Sign in with Google to rate. Any Google account works." }),
+      h("p", { class: "muted", text: "Each person rates a skill once; rate again any time to change it. You choose whether your name appears." }),
+      googleButton("rate", showRate),
+      h("p", { class: "fb-fine", text: "We keep your name, email address, and when you signed in, so each person rates once. Your email is never shown publicly." })
+    ]);
+  }
+
+  function rateForm(mine) {
+    var form = h("form", { class: "fb-form", novalidate: true });
+    var chosen = mine ? mine.stars : 0;
+    var word = h("span", { class: "star-word", "aria-hidden": "true", text: STAR_WORDS[chosen] });
+    var starLabels = [];
+    var paint = function (n) {
+      starLabels.forEach(function (lb, i) { lb.classList.toggle("on", i < n); });
+      word.textContent = STAR_WORDS[n] || "";
+    };
+    var starRow = h("div", { class: "star-input", onmouseleave: function () { paint(chosen); } });
+    for (var i = 1; i <= 5; i++) {
+      (function (n) {
+        var input = h("input", { type: "radio", name: "stars", value: String(n), class: "sr-only", checked: n === chosen,
+          onchange: function () { chosen = n; paint(n); clearMessage(); } });
+        var lb = h("label", { title: STAR_WORDS[n], onmouseenter: function () { paint(n); } },
+          [input, icon("star-fill"), h("span", { class: "sr-only", text: plural(n, "star", "stars") + ", " + STAR_WORDS[n] })]);
+        starLabels.push(lb);
+        starRow.appendChild(lb);
+      })(i);
+    }
+    starRow.appendChild(word);
+    paint(chosen);
+
+    var comment = h("textarea", { id: "fb-comment", name: "comment", rows: "4", maxlength: "2000", "aria-describedby": "fb-comment-hint" });
+    comment.value = mine ? mine.comment : "";
+    var shownName = user.name || user.email.split("@")[0];
+    var anonYes = h("input", { type: "radio", name: "anonymous", value: "1", checked: !!(mine && mine.anonymous) });
+    var anonNo = h("input", { type: "radio", name: "anonymous", value: "0", checked: !(mine && mine.anonymous) });
+    var submit = h("button", { class: "btn", type: "submit", text: mine ? "Update rating" : "Save rating" });
+
+    form.appendChild(h("p", { class: "fb-who" }, ["Signed in as ", h("b", { text: shownName }), ". ",
+      h("button", { type: "button", class: "link-btn", onclick: signOut, text: "Sign out" })]));
+    form.appendChild(rateTarget());
+    if (mine) {
+      form.appendChild(h("p", { class: "fb-note", text: "You rated this " + plural(mine.stars, "star", "stars") + " on version " + mine.version +
+        ". Saving replaces that rating." + (mine.hidden ? " A maintainer has hidden your comment from readers." : "") }));
+    }
+    form.appendChild(h("fieldset", { class: "fb-field" }, [h("legend", { text: "Your rating" }), starRow]));
+    form.appendChild(h("div", { class: "fb-field" }, [
+      h("label", { for: "fb-comment" }, ["Comment ", h("span", { class: "fb-opt", text: "Optional" })]),
+      h("p", { id: "fb-comment-hint", class: "fb-hint", text: "What worked or didn't when you used it. Comments are public." }),
+      comment
+    ]));
+    form.appendChild(h("fieldset", { class: "fb-field" }, [
+      h("legend", { text: "Show with my rating" }),
+      h("label", { class: "fb-radio" }, [anonNo, " My name (" + shownName + (user.org ? ", " + user.org + " staff" : "") + ")"]),
+      h("label", { class: "fb-radio" }, [anonYes, " Anonymous"]),
+      h("p", { class: "fb-hint", text: "Anonymous hides your name on the site. Maintainers can still see who posted, to stop duplicate ratings and abuse." })
+    ]));
+    var actions = h("p", { class: "fb-links" }, [submit]);
+    if (mine) {
+      actions.appendChild(h("button", { type: "button", class: "link-btn", text: "Remove my rating", onclick: function () {
+        api("DELETE", "/api/ratings/", { skill: skill.name }).then(function (r) {
+          if (!r.ok) return showMessage(r.error || "The rating couldn't be removed.");
+          setBody([h("p", { class: "fb-done", text: "Your rating is removed." }), h("p", {}, [h("button", { type: "button", class: "link-btn", onclick: closePanel, text: "Close" })])]);
+          loadRatings(true);
+        });
+      } }));
+    }
+    form.appendChild(actions);
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      clearMessage();
+      if (!chosen) return showMessage("Choose from one to five stars.");
+      submit.disabled = true;
+      submit.textContent = "Saving…";
+      var body = { skill: skill.name, stars: chosen, comment: comment.value.trim(), anonymous: anonYes.checked };
+      api("POST", "/api/ratings", body).then(function (r) {
+        if (r._status === 200 && r.ok) {
+          track("rating_saved", { skill: skill.name, stars: chosen, comment: !!body.comment, anonymous: body.anonymous });
+          setBody([
+            h("p", { class: "fb-done" }, [h("b", { text: "Saved. Thanks for rating this skill." })]),
+            h("p", { text: body.comment ? "Your comment shows under Reviews on this page." : "Your rating counts toward the average now." }),
+            h("p", { class: "fb-links" }, [
+              h("a", { href: "#ratings", onclick: closePanel, text: "See ratings and comments" }),
+              h("button", { type: "button", class: "link-btn", onclick: closePanel, text: "Close" })
+            ])
+          ]);
+          loadRatings(true);
+          return;
+        }
+        submit.disabled = false;
+        submit.textContent = mine ? "Update rating" : "Save rating";
+        if (r._status === 401) { setUser(null); return showRate(); }
+        showMessage(r.error || "The rating couldn't be saved. Please try again in a minute.");
+      });
+    });
+    setBody([form]);
   }
 
   /* ---------- wiring ---------- */
@@ -446,7 +690,13 @@
     b.setAttribute("aria-expanded", "false");
     b.addEventListener("click", function () { openPanel(b.getAttribute("data-panel-open"), b); });
   });
-  // /skills/<name>/#review opens the panel, so a review request can be one link.
-  if (location.hash === "#review") openPanel("review", $("[data-panel-open=review]"));
+  // /skills/<name>/#review (or #rate) opens the panel, so a request to review can be one link.
+  if (location.hash === "#review" || location.hash === "#rate") {
+    var which = location.hash.slice(1);
+    openPanel(which, $("[data-panel-open=" + which + "]"));
+  }
   loadReviews();
+  loadRatings();
+  // Someone who signed in before: check the session once, so maintainers see their moderation controls.
+  if (recall(SIGNED_IN) && !user) loadUser().then(function (u) { if (u.is_admin) loadRatings(true); });
 })();

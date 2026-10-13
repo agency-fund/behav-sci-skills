@@ -8,7 +8,7 @@ How the site, its server functions, CI, and releases are wired, and the one-time
 |---|---|---|
 | Static site (`site/dist/`) | Vercel | every push to `main` (Vercel's Git integration); preview deploys on pull requests |
 | Upload endpoint (`api/submit.py`) | Vercel Python function at `/api/submit` | the website's upload form |
-| Sign-in and expert reviews (`api/auth.py`, `api/review.py`, `api/reviews.py`) | Vercel Python functions | the Review this skill panel and the Reviews tab on skill pages |
+| Sign-in, expert reviews, and ratings (`api/auth.py`, `api/review.py`, `api/reviews.py`, `api/ratings.py`) | Vercel Python functions | the Review this skill and Rate this skill panels and the Reviews tab on skill pages |
 | Ratings, reviewer sign-ins, server-side analytics events | Supabase (Postgres), reached only by the functions | sign-ins, filed reviews, ratings |
 | Database keep-alive (`api/health.py`) | GitHub Actions `keepalive.yml` | every three days, so the free Supabase project isn't paused |
 | Structure validation + PR comment | GitHub Actions `ci.yml` | every pull request and push to `main` |
@@ -35,7 +35,7 @@ How the site, its server functions, CI, and releases are wired, and the one-time
    - Install command: `bash scripts/vercel_build.sh install` (runs `uv sync --frozen`; Vercel's build image has a uv-managed Python that rejects plain `pip install`, and the script falls back to `pip --break-system-packages` if uv is ever absent)
    - Build command: `bash scripts/vercel_build.sh build` (runs `uv run --frozen scripts/build_site.py`)
    - Output directory: `site/dist`
-   - Python functions: `api/submit.py` (30 s max, 1 GB memory), and `api/auth.py`, `api/review.py`, `api/reviews.py`, `api/health.py`. Files starting with `_` in `api/` are shared code, not routes.
+   - Python functions: `api/submit.py` (30 s max, 1 GB memory), and `api/auth.py`, `api/review.py`, `api/reviews.py`, `api/ratings.py`, `api/health.py`. Files starting with `_` in `api/` are shared code, not routes.
    Vercel detects `api/*.py` and runs them on its Python 3.12 runtime. `requirements.txt` at the root supplies the functions' dependencies (`pyyaml`, `google-auth`, `requests`); `api/requirements.txt` is a fallback some Vercel versions read instead.
 3. **Environment variables** (Settings, Environment Variables, apply to Production and Preview):
 
@@ -52,7 +52,7 @@ How the site, its server functions, CI, and releases are wired, and the one-time
    | `SUPABASE_SECRET_KEY` | `sb_secret_...` | Section 10. **Sensitive**. Never in the browser, a commit, or chat. |
    | `REVIEW_DOMAINS` | `agency.fund,irrationallabs.com` | Email domains whose staff may file expert reviews. This is the default if unset. |
    | `REVIEWER_EMAILS` | optional, comma-separated | Individual invited reviewers outside those domains. |
-   | `ADMIN_EMAILS` | e.g. `michael@agency.fund` | Who may hide or delete rating comments. |
+   | `ADMIN_EMAILS` | e.g. `michael@agency.fund` | Who may hide or delete ratings and comments. Setting `is_admin` on a row in `besci_users` does the same. |
 
 4. Deploy. The first deploy fails if `scripts/build_site.py` is not yet on `main`; it is part of the initial commit.
 5. Verify the endpoint: `curl -s https://<project>.vercel.app/api/submit` should return `{"ok": false, "error": "POST a multipart form ..."}` with HTTP 405. A 500 means the function could not import `scripts/besci_validate.py`; check the Function logs. If Vercel pruned the `scripts/` folder from the function bundle, add to `vercel.json`:
@@ -123,7 +123,7 @@ Rotate when someone leaves either organization or the key is posted anywhere pub
 - Push a tag `v0.0.1-test`, confirm a Release appears with assets, then delete the tag and release.
 - `curl -sL https://<site>/api/auth/` returns `{"signed_in": false}`; `curl -sL https://<site>/api/health/` returns `{"ok": true, "db": true}`; `curl -sL https://<site>/api/reviews/` returns `{"ok": true, ...}`.
 - On a skill page, click **Review this skill**, sign in with a TAF or IL Google account, and file a short test review. An issue titled `[Expert review] ...` appears with its labels, shows in the skill's Reviews tab within two minutes, and a row appears in `besci_users`. Close the test issue as not planned.
-- Sign in with a personal Gmail account: the panel says expert reviews are limited to TAF and IL staff.
+- Sign in with a personal Gmail account: the panel says expert reviews are limited to TAF and IL staff. Rate the skill anonymously with a comment: the header average updates and the comment shows as "Anonymous" in the Reviews tab. Signed in as someone in `ADMIN_EMAILS`, hide and delete that comment.
 
 Local equivalents: `uv run scripts/besci_validate.py`, `uv run scripts/check_sync.py`, `uv run scripts/package_skills.py`, `uv run python scripts/test_submit.py`, `uv run python scripts/test_feedback.py`.
 

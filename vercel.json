@@ -27,6 +27,10 @@
     "api/health.py": {
       "maxDuration": 10,
       "includeFiles": "{api/_common.py,api/_review_issue.py,scripts/besci_validate.py,taxonomy.yaml,skills/*/SKILL.md}"
+    },
+    "api/ratings.py": {
+      "maxDuration": 15,
+      "includeFiles": "{api/_common.py,api/_review_issue.py,scripts/besci_validate.py,taxonomy.yaml,skills/*/SKILL.md}"
     }
   },
   "headers": [

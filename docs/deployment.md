@@ -121,7 +121,7 @@ Rotate when someone leaves either organization or the key is posted anywhere pub
 - Upload the seed skill's `.skill` (from `uv run scripts/package_skills.py`, in `dist/`) into `inbox/` through the GitHub web UI on a new branch: the inbox bot should fail with "A folder named ... already exists", which proves the path works; then try with a renamed copy.
 - Submit the same archive through the website form with the contributor key: a `submit/<name>-<timestamp>` branch and PR appear with the `submitted-via-site` label.
 - Push a tag `v0.0.1-test`, confirm a Release appears with assets, then delete the tag and release.
-- `curl -s https://<site>/api/auth` returns `{"signed_in": false}`; `curl -s https://<site>/api/health` returns `{"ok": true, "db": true}`; `curl -s https://<site>/api/reviews` returns `{"ok": true, ...}`.
+- `curl -sL https://<site>/api/auth/` returns `{"signed_in": false}`; `curl -sL https://<site>/api/health/` returns `{"ok": true, "db": true}`; `curl -sL https://<site>/api/reviews/` returns `{"ok": true, ...}`.
 - On a skill page, click **Review this skill**, sign in with a TAF or IL Google account, and file a short test review. An issue titled `[Expert review] ...` appears with its labels, shows in the skill's Reviews tab within two minutes, and a row appears in `besci_users`. Close the test issue as not planned.
 - Sign in with a personal Gmail account: the panel says expert reviews are limited to TAF and IL staff.
 
@@ -144,7 +144,7 @@ The database holds who has signed in, expert-review records, ratings, and server
 
 1. Supabase dashboard, the project, SQL Editor, New query: paste `api/schema.sql` and run it. It creates four `besci_` tables with Row Level Security on and no access for the public roles. It is safe to run again.
 2. Project Settings, API Keys: create a **secret key** (`sb_secret_...`) named `vercel-besci`. A legacy `service_role` key also works. Put it in Vercel as `SUPABASE_SECRET_KEY` (Sensitive) and the project URL as `SUPABASE_URL`. The publishable (anon) key is not used anywhere.
-3. Redeploy, then check `curl -s https://<site>/api/health` returns `"db": true`.
+3. Redeploy, then check `curl -sL https://<site>/api/health/` returns `"db": true`.
 4. Free-plan projects pause after about a week without requests. `.github/workflows/keepalive.yml` calls `/api/health` every three days; check its runs if the database ever goes quiet. Moving the project to a paid plan or an organization account removes the concern.
 
 Who has signed up as a reviewer, and other queries, are in `docs/analytics.md`. To delete someone's data on request, delete their rows from `besci_ratings`, `besci_events`, `besci_expert_reviews`, then `besci_users` (the issue they filed stays on GitHub unless a maintainer deletes it).

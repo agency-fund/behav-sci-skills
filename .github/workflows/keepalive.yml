@@ -22,7 +22,7 @@ jobs:
       - name: Call /api/health
         run: |
           # 503 (database down or paused) fails the run, so maintainers get an email.
-          body=$(curl -fsS --max-time 30 "$SITE/api/health")
+          body=$(curl -fsSL --max-time 30 "$SITE/api/health/")
           echo "$body"
           if echo "$body" | grep -q '"db": false'; then
             echo "::notice::The site has no database configured yet (SUPABASE_URL, SUPABASE_SECRET_KEY)."

@@ -70,6 +70,7 @@
     if (isNaN(d)) return "";
     return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
   }
+  // Paths end in "/": the site adds trailing slashes (vercel.json), so "/api/auth" would cost a redirect.
   function api(method, path, body) {
     var opts = { method: method, credentials: "same-origin", headers: {} };
     if (body !== undefined) { opts.headers["Content-Type"] = "application/json"; opts.body = JSON.stringify(body); }
@@ -91,13 +92,13 @@
   /* ---------- who is signed in ---------- */
   var user = null; // null until asked; then the /api/auth view, or {signed_in:false, unavailable:true}
   function loadUser() {
-    return api("GET", "/api/auth").then(function (u) {
+    return api("GET", "/api/auth/").then(function (u) {
       user = u._status === 200 ? u : { signed_in: false, unavailable: true };
       return user;
     });
   }
   function signOut() {
-    api("DELETE", "/api/auth").then(function () {
+    api("DELETE", "/api/auth/").then(function () {
       user = { signed_in: false };
       try { window.google.accounts.id.disableAutoSelect(); } catch (e) { /* ignore */ }
       showReview();
@@ -122,7 +123,7 @@
     return gisPromise;
   }
   function onCredential(resp) {
-    api("POST", "/api/auth", { credential: resp.credential, purpose: signInPurpose }).then(function (u) {
+    api("POST", "/api/auth/", { credential: resp.credential, purpose: signInPurpose }).then(function (u) {
       if (u._status === 200 && u.signed_in) {
         user = u;
         track("sign_in", { purpose: signInPurpose, can_review: !!u.can_review });
@@ -311,7 +312,7 @@
       submit.textContent = "Filing your review…";
       f.skill = skill.name;
       f.commit = skill.commit;
-      api("POST", "/api/review", f).then(function (res) {
+      api("POST", "/api/review/", f).then(function (res) {
         if (res._status === 200 && res.ok) {
           store(draftKey, null);
           if (f.github) store("besci:github", f.github);
@@ -435,7 +436,7 @@
 
   function loadReviews() {
     if (!list) return;
-    fetch("/api/reviews", { credentials: "omit" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+    fetch("/api/reviews/", { credentials: "omit" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
       if (d && d.ok) renderReviews((d.skills || {})[skill.name] || []);
     }).catch(function () { /* keep the link to GitHub */ });
   }

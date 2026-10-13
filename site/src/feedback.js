@@ -662,7 +662,7 @@
       submit.disabled = true;
       submit.textContent = "Saving…";
       var body = { skill: skill.name, stars: chosen, comment: comment.value.trim(), anonymous: anonYes.checked };
-      api("POST", "/api/ratings", body).then(function (r) {
+      api("POST", "/api/ratings/", body).then(function (r) {
         if (r._status === 200 && r.ok) {
           track("rating_saved", { skill: skill.name, stars: chosen, comment: !!body.comment, anonymous: body.anonymous });
           setBody([

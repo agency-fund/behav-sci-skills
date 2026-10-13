@@ -1,8 +1,9 @@
 /* Behavioral Science Skills — client script. No dependencies.
    Theme toggle (dark by default), mobile menu, copy buttons, install tabs,
-   hero typewriter, count-up stats, catalog search/filter with URL sync,
-   stage strip, cards/map view toggle, the skill-chain map, TOC scroll-spy,
-   the propose form (prefilled GitHub issue), and the upload form (/api/submit). */
+   the home page's hero demo and stage flow chart, catalog search/filter with
+   URL sync, stage chips, cards/map view toggle, the skill-chain map, TOC
+   scroll-spy, the propose form (prefilled GitHub issue), and the upload form
+   (/api/submit). */
 (function () {
   "use strict";
 
@@ -92,57 +93,197 @@
     select(idx >= 0 ? idx : 0, false);
   });
 
-  /* ---------- hero typewriter ---------- */
-  var demo = $("#demo-text");
-  if (demo) {
-    var examples = [];
-    try { examples = JSON.parse(demo.getAttribute("data-examples") || "[]"); } catch (e) { examples = []; }
-    if (!examples.length) examples = ["Where do I start?"];
-    if (reduceMotion) {
-      demo.textContent = examples[0];
-    } else {
-      var ei = 0, ci = 0, deleting = false, timer;
-      var tick = function () {
-        var full = examples[ei];
-        if (!deleting) {
-          ci++;
-          demo.textContent = full.slice(0, ci);
-          if (ci >= full.length) { deleting = true; timer = setTimeout(tick, 3200); return; }
-          timer = setTimeout(tick, 22 + Math.random() * 30);
-        } else {
-          ci = Math.max(0, ci - 3);
-          demo.textContent = full.slice(0, ci);
-          if (ci === 0) { deleting = false; ei = (ei + 1) % examples.length; timer = setTimeout(tick, 350); return; }
-          timer = setTimeout(tick, 14);
-        }
-      };
-      timer = setTimeout(tick, 500);
-      document.addEventListener("visibilitychange", function () {
-        if (document.hidden) clearTimeout(timer); else timer = setTimeout(tick, 300);
-      });
-    }
+  /* ---------- home: old catalog links (/?stage=...) now live at /skills/ ---------- */
+  if (document.body.classList.contains("page-index") && /[?&](q|stage|type|org|status|tag|view)=/.test(location.search)) {
+    location.replace("/skills/" + location.search + location.hash);
+    return;
   }
 
-  /* ---------- count-up stats ---------- */
-  $$("[data-count]").forEach(function (el) {
-    var target = parseInt(el.getAttribute("data-count"), 10) || 0;
-    if (reduceMotion || !("IntersectionObserver" in window)) { el.textContent = String(target); return; }
-    el.textContent = "0";
-    var io = new IntersectionObserver(function (entries) {
-      if (!entries[0].isIntersecting) return;
-      io.disconnect();
-      var start = null, dur = 900;
-      var step = function (ts) {
-        if (!start) start = ts;
-        var p = Math.min(1, (ts - start) / dur);
-        var eased = 1 - Math.pow(1 - p, 3);
-        el.textContent = String(Math.round(target * eased));
-        if (p < 1) requestAnimationFrame(step);
+  /* ---------- home: hero demo, a scripted conversation revealed step by step ----------
+     The whole transcript is in the HTML. Steps are marked data-step="type|tool|say|rows|note";
+     tool steps with data-wf advance the workflow rail. */
+  var demoBox = $("[data-demo]");
+  if (demoBox) {
+    var dTabs = $$("[data-demo-tab]", demoBox);
+    var dPanels = $$("[data-demo-panel]", demoBox);
+    var dLinks = $$("[data-demo-for]", demoBox);
+    var replayBtn = $(".demo-replay", demoBox);
+    var players = {}, current = null, demoVisible = true;
+
+    var wrapWords = function (el) {
+      var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null), nodes = [], n, out = [];
+      while ((n = walker.nextNode())) if (/\S/.test(n.nodeValue)) nodes.push(n);
+      nodes.forEach(function (t) {
+        var frag = document.createDocumentFragment();
+        t.nodeValue.split(/(\s+)/).forEach(function (part) {
+          if (!part) return;
+          if (!/\S/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+          var w = document.createElement("span"); w.className = "w"; w.textContent = part;
+          frag.appendChild(w); out.push(w);
+        });
+        t.parentNode.replaceChild(frag, t);
+      });
+      return out;
+    };
+
+    var makePlayer = function (panel) {
+      var body = $(".demo-body", panel);
+      var steps = $$("[data-step]", body);
+      var rail = $$(".wf-rail li", panel);
+      var acts = [], pos = 0, timer = null, playing = false, paused = false, follow = true;
+      var self = { played: false };
+      var setRail = function (n) {
+        rail.forEach(function (li, j) { li.classList.toggle("is-done", j < n); li.classList.toggle("is-active", j === n); });
       };
-      requestAnimationFrame(step);
-    }, { threshold: 0.4 });
-    io.observe(el);
-  });
+      var add = function (fn, d) { acts.push({ fn: fn, d: d }); };
+
+      steps.forEach(function (st) {
+        var kind = st.getAttribute("data-step"), wf = st.getAttribute("data-wf");
+        var reveal = function () { st.classList.remove("is-pending"); if (wf !== null) setRail(parseInt(wf, 10)); };
+        if (kind === "type") {
+          var t = $(".t-text", st), full = t.textContent;
+          st._full = full;
+          var per = Math.max(10, Math.min(28, 1500 / full.length));
+          add(reveal, 150);
+          for (var c = 1; c <= full.length; c++) add((function (k) { return function () { t.textContent = full.slice(0, k); }; })(c), per);
+          add(function () { st.classList.add("is-sent"); }, 550);
+        } else if (kind === "tool") {
+          add(reveal, 800);
+          add(function () { st.classList.add("is-done"); }, 350);
+        } else if (kind === "say") {
+          st._words = wrapWords(st);
+          add(reveal, 60);
+          st._words.forEach(function (w) { add(function () { w.classList.add("on"); }, 22); });
+          add(function () {}, 450);
+        } else if (kind === "rows") {
+          add(reveal, 120);
+          $$("[data-row]", st).forEach(function (r) { add(function () { r.classList.add("on"); }, 180); });
+          add(function () {}, 450);
+        } else {
+          add(reveal, 750);
+        }
+      });
+      add(function () { setRail(rail.length); }, 0);
+
+      var reset = function () {
+        steps.forEach(function (st) {
+          st.classList.add("is-pending");
+          st.classList.remove("is-sent", "is-done");
+          if (st._full !== undefined) $(".t-text", st).textContent = "";
+          (st._words || []).forEach(function (w) { w.classList.remove("on"); });
+          $$("[data-row]", st).forEach(function (r) { r.classList.remove("on"); });
+        });
+        setRail(-1);
+        body.scrollTop = 0; pos = 0; follow = true;
+      };
+      var tick = function () {
+        if (!playing) return;
+        if (pos >= acts.length) { playing = false; return; }
+        var a = acts[pos++];
+        a.fn();
+        if (follow) body.scrollTop = body.scrollHeight;
+        timer = setTimeout(tick, a.d);
+      };
+      self.play = function () { clearTimeout(timer); reset(); playing = true; paused = false; self.played = true; timer = setTimeout(tick, 500); };
+      self.pause = function () { if (playing) { clearTimeout(timer); playing = false; paused = true; } };
+      self.resume = function () { if (paused) { paused = false; playing = true; tick(); } };
+
+      // Stop following the newest line once the reader scrolls up; follow again at the bottom.
+      var userScroll = function () { setTimeout(function () { follow = body.scrollHeight - body.scrollTop - body.clientHeight < 48; }, 80); };
+      body.addEventListener("wheel", userScroll, { passive: true });
+      body.addEventListener("touchmove", userScroll, { passive: true });
+      body.addEventListener("keydown", userScroll);
+      reset();
+      return self;
+    };
+
+    var selectDemo = function (name, focus) {
+      dTabs.forEach(function (t) {
+        var on = t.getAttribute("data-demo-tab") === name;
+        t.setAttribute("aria-selected", on ? "true" : "false");
+        t.tabIndex = on ? 0 : -1;
+        if (on && focus) t.focus();
+      });
+      dPanels.forEach(function (p) { p.hidden = p.getAttribute("data-demo-panel") !== name; });
+      dLinks.forEach(function (a) { a.hidden = a.getAttribute("data-demo-for") !== name; });
+      if (reduceMotion) return;
+      if (current && current !== players[name]) current.pause();
+      current = players[name];
+      if (!current.played) current.play(); else if (demoVisible && !document.hidden) current.resume();
+    };
+
+    if (!reduceMotion) {
+      demoBox.classList.add("is-anim");
+      dPanels.forEach(function (p) { players[p.getAttribute("data-demo-panel")] = makePlayer(p); });
+      if (replayBtn) {
+        replayBtn.hidden = false;
+        replayBtn.addEventListener("click", function () { if (current) current.play(); });
+      }
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(function (es) {
+          demoVisible = es[0].isIntersecting;
+          if (current) { if (demoVisible) current.resume(); else current.pause(); }
+        }, { threshold: 0.15 }).observe(demoBox);
+      }
+      document.addEventListener("visibilitychange", function () {
+        if (!current) return;
+        if (document.hidden) current.pause(); else if (demoVisible) current.resume();
+      });
+    }
+    dTabs.forEach(function (t, i) {
+      t.addEventListener("click", function () { selectDemo(t.getAttribute("data-demo-tab"), false); });
+      t.addEventListener("keydown", function (e) {
+        var j = e.key === "ArrowRight" ? (i + 1) % dTabs.length : e.key === "ArrowLeft" ? (i - 1 + dTabs.length) % dTabs.length : -1;
+        if (j >= 0) { e.preventDefault(); selectDemo(dTabs[j].getAttribute("data-demo-tab"), true); }
+      });
+    });
+    selectDemo(dTabs.length ? dTabs[0].getAttribute("data-demo-tab") : "skill", false);
+  }
+
+  /* ---------- home: stage flow chart ----------
+     A slow tour lights each stage in turn; hovering or focusing a stage takes over.
+     Every node is a plain link to the catalog filtered by its stage. */
+  var flow = $("[data-flow]");
+  if (flow) {
+    var fSteps = $$(".flow-step", flow), fLinks = $$(".flow-link", flow), fPanels = $$(".flow-panel", flow);
+    var fActive = 0, fTimer = null, fHold = false, fStarted = false;
+    var fSet = function (i) {
+      fActive = i;
+      fSteps.forEach(function (s, j) { s.classList.toggle("is-active", j === i); s.classList.toggle("is-done", j < i); });
+      fLinks.forEach(function (l, j) { l.classList.toggle("is-done", j < i); });
+      fPanels.forEach(function (p, j) { p.hidden = j !== i; });
+    };
+    var fNext = function () {
+      clearTimeout(fTimer);
+      if (!fHold && !document.hidden) {
+        if (fActive >= fSteps.length - 1) {
+          fSet(0);
+        } else {
+          var l = fLinks[fActive], target = fActive + 1;
+          l.classList.remove("is-run"); void l.offsetWidth; l.classList.add("is-run");
+          setTimeout(function () { if (!fHold) fSet(target); }, 520);
+        }
+      }
+      fTimer = setTimeout(fNext, 3400);
+    };
+    fSet(0);
+    $$(".flow-node", flow).forEach(function (a) {
+      var idx = parseInt(a.getAttribute("data-idx"), 10);
+      var take = function () { fHold = true; fSet(idx); };
+      a.addEventListener("mouseenter", take);
+      a.addEventListener("focus", take);
+    });
+    flow.addEventListener("mouseleave", function () { fHold = false; });
+    flow.addEventListener("focusout", function (e) { if (!flow.contains(e.relatedTarget)) fHold = false; });
+    if (!reduceMotion && "IntersectionObserver" in window) {
+      flow.classList.add("is-js");
+      new IntersectionObserver(function (es) {
+        if (!es[0].isIntersecting) return;
+        flow.classList.add("in-view");
+        if (!fStarted) { fStarted = true; fTimer = setTimeout(fNext, 2600); }
+      }, { threshold: 0.3 }).observe(flow);
+    }
+  }
 
   /* ---------- catalog: search, filters, stage strip, view toggle ---------- */
   var grid = $("#grid");
@@ -153,7 +294,7 @@
     var selects = { stage: $("#f-stage"), type: $("#f-type"), org: $("#f-org"), status: $("#f-status"), tag: $("#f-tag") };
     var count = $("#f-count");
     var noResults = $("#no-results");
-    var stageBtns = $$(".stage-btn");
+    var stageBtns = $$(".stage-chip");
     var stageDesc = $("#stage-desc");
     var viewBtns = $$(".view-toggle button");
     var mapEl = $("#map");
@@ -175,22 +316,23 @@
       var qs = p.toString();
       history.replaceState(null, "", location.pathname + (qs ? "?" + qs : "") + location.hash);
     }
+    function showStageDesc(b) {
+      if (!stageDesc) return;
+      if (b && b.getAttribute("data-label")) {
+        stageDesc.innerHTML = "";
+        var bold = document.createElement("b"); bold.textContent = b.getAttribute("data-label") + ": ";
+        stageDesc.setAttribute("data-stage", b.getAttribute("data-stage"));
+        stageDesc.appendChild(bold);
+        stageDesc.appendChild(document.createTextNode(b.getAttribute("data-desc") || ""));
+      } else {
+        stageDesc.removeAttribute("data-stage");
+        stageDesc.textContent = stageDesc.getAttribute("data-default") || "";
+      }
+    }
     function syncStageStrip() {
       var val = selects.stage ? selects.stage.value : "";
       stageBtns.forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-stage") === val ? "true" : "false"); });
-      if (stageDesc) {
-        var active = stageBtns.filter(function (b) { return b.getAttribute("data-stage") === val; })[0];
-        if (active) {
-          stageDesc.innerHTML = "";
-          var b = document.createElement("b"); b.textContent = active.getAttribute("data-label") + ": ";
-          stageDesc.setAttribute("data-stage", val);
-          stageDesc.appendChild(b);
-          stageDesc.appendChild(document.createTextNode(active.getAttribute("data-desc") || ""));
-        } else {
-          stageDesc.removeAttribute("data-stage");
-          stageDesc.textContent = stageDesc.getAttribute("data-default") || "";
-        }
-      }
+      showStageDesc(val ? stageBtns.filter(function (b) { return b.getAttribute("data-stage") === val; })[0] : null);
     }
     function apply() {
       var text = (q && q.value || "").trim().toLowerCase();
@@ -251,21 +393,12 @@
     stageBtns.forEach(function (b) {
       b.addEventListener("click", function () {
         var val = b.getAttribute("data-stage");
-        if (selects.stage) selects.stage.value = selects.stage.value === val ? "" : val;
+        if (selects.stage) selects.stage.value = val && selects.stage.value !== val ? val : "";
         if (currentView === "map") setView("cards", false);
         apply();
-        var h = $("#catalog");
-        if (h && selects.stage && selects.stage.value) h.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
       });
-      b.addEventListener("mouseenter", function () {
-        if (!stageDesc || (selects.stage && selects.stage.value)) return;
-        stageDesc.innerHTML = "";
-        var bb = document.createElement("b"); bb.textContent = b.getAttribute("data-label") + ": ";
-        stageDesc.setAttribute("data-stage", b.getAttribute("data-stage"));
-        stageDesc.appendChild(bb);
-        stageDesc.appendChild(document.createTextNode(b.getAttribute("data-desc") || ""));
-      });
-      b.addEventListener("mouseleave", function () { if (selects.stage && !selects.stage.value) syncStageStrip(); });
+      b.addEventListener("mouseenter", function () { if (selects.stage && !selects.stage.value) showStageDesc(b); });
+      b.addEventListener("mouseleave", function () { syncStageStrip(); });
     });
     var clear = function () {
       if (q) q.value = "";

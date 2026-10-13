@@ -1,9 +1,10 @@
-/* Behavioral Science Skills — client script. No dependencies.
-   Theme toggle (dark by default), mobile menu, copy buttons, install tabs,
-   the home page's hero demo and stage flow chart, catalog search/filter with
-   URL sync, stage chips, cards/map view toggle, the skill-chain map, TOC
-   scroll-spy, the propose form (prefilled GitHub issue), and the upload form
-   (/api/submit). */
+/* Behavioral Science Skills: client script. No dependencies.
+   Theme (follows the system until the reader picks), mobile menu, copy buttons,
+   install tabs, the home page's hero demo and stage flow chart, workflow
+   graphs (Workflows pages and home tiles), catalog
+   search and filters with URL sync, TOC scroll-spy, the propose form
+   (prefilled GitHub issue), and the upload form (/api/submit).
+   The skill map is in map.js; the workflow tray and builder are in workflow.js. */
 (function () {
   "use strict";
 
@@ -12,24 +13,36 @@
   var reduceMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   var root = document.documentElement;
 
-  /* ---------- theme (dark by default) ---------- */
-  function applyThemeLabel() {
-    var light = root.getAttribute("data-theme") === "light";
+  /* ---------- theme: saved choice, else the system setting ----------
+     Toggling to the theme the system already uses forgets the saved choice,
+     so the page goes back to following the system. */
+  var darkQuery = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  var savedTheme = function () { try { var t = localStorage.getItem("theme"); return t === "light" || t === "dark" ? t : null; } catch (e) { return null; } };
+  function applyTheme(t) {
+    root.setAttribute("data-theme", t);
+    var light = t === "light";
     $$(".theme-toggle").forEach(function (b) {
       b.setAttribute("aria-label", light ? "Switch to dark mode" : "Switch to light mode");
       b.setAttribute("title", light ? "Switch to dark mode" : "Switch to light mode");
     });
+    if (window.__redrawMap) window.__redrawMap();
   }
   $$(".theme-toggle").forEach(function (b) {
     b.addEventListener("click", function () {
       var next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
-      root.setAttribute("data-theme", next);
-      try { localStorage.setItem("theme", next); } catch (e) { /* storage unavailable */ }
-      applyThemeLabel();
-      if (window.__redrawMap) window.__redrawMap();
+      var system = darkQuery && darkQuery.matches ? "dark" : "light";
+      try {
+        if (next === system) localStorage.removeItem("theme"); else localStorage.setItem("theme", next);
+      } catch (e) { /* storage unavailable */ }
+      applyTheme(next);
     });
   });
-  applyThemeLabel();
+  if (darkQuery) {
+    var onSystem = function (e) { if (!savedTheme()) applyTheme(e.matches ? "dark" : "light"); };
+    if (darkQuery.addEventListener) darkQuery.addEventListener("change", onSystem); else if (darkQuery.addListener) darkQuery.addListener(onSystem);
+  }
+  applyTheme(root.getAttribute("data-theme") === "dark" ? "dark" : "light");
+
 
   /* ---------- mobile menu ---------- */
   var menuBtn = $(".menu-btn"), nav = $(".site-nav");
@@ -41,7 +54,7 @@
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && nav.classList.contains("open")) { nav.classList.remove("open"); menuBtn.setAttribute("aria-expanded", "false"); } });
   }
 
-  /* ---------- copy buttons ---------- */
+  /* ---------- copy buttons (delegated, so buttons added later work too) ---------- */
   function fallbackCopy(text) {
     var ta = document.createElement("textarea");
     ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "absolute"; ta.style.left = "-9999px";
@@ -49,21 +62,25 @@
     try { document.execCommand("copy"); } catch (e) { /* ignore */ }
     document.body.removeChild(ta);
   }
-  $$(".copy").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      var text = btn.getAttribute("data-copy") || "";
-      var label = $(".copy-label", btn);
-      var done = function () {
-        btn.setAttribute("data-copied", "1");
-        var old = label ? label.textContent : "";
-        if (label) label.textContent = "Copied";
-        setTimeout(function () { btn.removeAttribute("data-copied"); if (label) label.textContent = old; }, 1600);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
-      } else { fallbackCopy(text); done(); }
+  function copyText(text, done) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+    } else { fallbackCopy(text); done(); }
+  }
+  window.__copyText = copyText;
+  document.addEventListener("click", function (e) {
+    var btn = e.target.closest ? e.target.closest(".copy") : null;
+    if (!btn) return;
+    var text = btn.getAttribute("data-copy") || "";
+    var label = $(".copy-label", btn);
+    copyText(text, function () {
+      btn.setAttribute("data-copied", "1");
+      var old = label ? label.textContent : "";
+      if (label) label.textContent = "Copied";
+      setTimeout(function () { btn.removeAttribute("data-copied"); if (label) label.textContent = old; }, 1600);
     });
   });
+
 
   /* ---------- tabs (install options) ---------- */
   $$("[data-tabs]").forEach(function (box) {
@@ -93,11 +110,16 @@
     select(idx >= 0 ? idx : 0, false);
   });
 
-  /* ---------- home: old catalog links (/?stage=...) now live at /skills/ ---------- */
+  /* ---------- old links: /?stage=... moved to /skills/, and the map moved to /map/ ---------- */
   if (document.body.classList.contains("page-index") && /[?&](q|stage|type|org|status|tag|view)=/.test(location.search)) {
     location.replace("/skills/" + location.search + location.hash);
     return;
   }
+  if (document.body.classList.contains("page-catalog") && /[?&]view=map/.test(location.search)) {
+    location.replace("/map/");
+    return;
+  }
+
 
   /* ---------- home: hero demo, a scripted conversation revealed step by step ----------
      The whole transcript is in the HTML. Steps are marked data-step="type|tool|say|rows|note";
@@ -245,26 +267,17 @@
      Every node is a plain link to the catalog filtered by its stage. */
   var flow = $("[data-flow]");
   if (flow) {
-    var fSteps = $$(".flow-step", flow), fLinks = $$(".flow-link", flow), fPanels = $$(".flow-panel", flow);
+    var fSteps = $$(".flow-step", flow), fPanels = $$(".flow-panel", flow);
     var fActive = 0, fTimer = null, fHold = false, fStarted = false;
     var fSet = function (i) {
       fActive = i;
       fSteps.forEach(function (s, j) { s.classList.toggle("is-active", j === i); s.classList.toggle("is-done", j < i); });
-      fLinks.forEach(function (l, j) { l.classList.toggle("is-done", j < i); });
       fPanels.forEach(function (p, j) { p.hidden = j !== i; });
     };
     var fNext = function () {
       clearTimeout(fTimer);
-      if (!fHold && !document.hidden) {
-        if (fActive >= fSteps.length - 1) {
-          fSet(0);
-        } else {
-          var l = fLinks[fActive], target = fActive + 1;
-          l.classList.remove("is-run"); void l.offsetWidth; l.classList.add("is-run");
-          setTimeout(function () { if (!fHold) fSet(target); }, 520);
-        }
-      }
-      fTimer = setTimeout(fNext, 3400);
+      if (!fHold && !document.hidden) fSet(fActive >= fSteps.length - 1 ? 0 : fActive + 1);
+      fTimer = setTimeout(fNext, 4200);
     };
     fSet(0);
     $$(".flow-node", flow).forEach(function (a) {
@@ -280,39 +293,200 @@
       new IntersectionObserver(function (es) {
         if (!es[0].isIntersecting) return;
         flow.classList.add("in-view");
-        if (!fStarted) { fStarted = true; fTimer = setTimeout(fNext, 2600); }
+        if (!fStarted) { fStarted = true; fTimer = setTimeout(fNext, 3200); }
       }, { threshold: 0.3 }).observe(flow);
     }
   }
 
-  /* ---------- catalog: search, filters, stage strip, view toggle ---------- */
+
+  /* ---------- workflow graphs: Workflows pages and the home tiles ----------
+     Steps sit in a grid built by build_site.py; each lists the steps it runs
+     after in data-after. Lines are drawn from ring to ring and redrawn on resize.
+     The first time a graph scrolls into view, a highlight runs through the steps
+     once and each step's incoming lines draw in. Pointing at a step (full graphs)
+     shows what it passes on and where the team decides. */
+  var svgNS = "http://www.w3.org/2000/svg";
+  var escHtml = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+  var graphs = $$("[data-wfg]");
+  graphs.forEach(function (g, gi) {
+    var compact = g.classList.contains("wfg-compact");
+    var nodes = $$(".wfg-node", g), byId = {};
+    nodes.forEach(function (n) { byId[n.getAttribute("data-step")] = n; });
+    var edges = [];
+    nodes.forEach(function (n) {
+      (n.getAttribute("data-after") || "").split(" ").forEach(function (f) {
+        if (byId[f]) edges.push({ from: byId[f], to: n, optional: n.hasAttribute("data-optional") });
+      });
+    });
+    var svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("class", "wfg-svg");
+    svg.setAttribute("aria-hidden", "true");
+    var mk = function (id, cls) {
+      var m = document.createElementNS(svgNS, "marker");
+      m.setAttribute("id", id); m.setAttribute("class", cls);
+      m.setAttribute("viewBox", "0 0 10 10"); m.setAttribute("refX", "9"); m.setAttribute("refY", "5");
+      m.setAttribute("markerWidth", "6"); m.setAttribute("markerHeight", "6"); m.setAttribute("orient", "auto");
+      m.setAttribute("markerUnits", "userSpaceOnUse");
+      var p = document.createElementNS(svgNS, "path"); p.setAttribute("d", "M0,1 L9,5 L0,9 z");
+      m.appendChild(p);
+      return m;
+    };
+    var arrow = "wfg-a" + gi, arrowHot = "wfg-ah" + gi;
+    if (!compact) {
+      var defs = document.createElementNS(svgNS, "defs");
+      defs.appendChild(mk(arrow, "wfg-arrow")); defs.appendChild(mk(arrowHot, "wfg-arrow-hot"));
+      svg.appendChild(defs);
+    }
+    edges.forEach(function (e) {
+      e.path = document.createElementNS(svgNS, "path");
+      e.path.setAttribute("class", "is-pending" + (e.optional ? " is-opt" : ""));
+      svg.appendChild(e.path);
+    });
+    g.insertBefore(svg, g.firstChild);
+
+    // Geometry: ring to ring, as a curve; across in wide layouts, down in narrow
+    // ones (the CSS stacks full graphs below 720px). The svg is sized in pixels
+    // with no viewBox, so a caption that grows the box does not rescale the lines.
+    var ringOf = function (n) { return $(".wfg-ring", n); };
+    var narrow = window.matchMedia ? window.matchMedia("(max-width: 720px)") : null;
+    function draw() {
+      var base = g.getBoundingClientRect();
+      if (!base.width) return;
+      svg.setAttribute("width", base.width); svg.setAttribute("height", base.height);
+      var stacked = !compact && narrow && narrow.matches;
+      edges.forEach(function (e) {
+        var a = ringOf(e.from).getBoundingClientRect(), b = ringOf(e.to).getBoundingClientRect();
+        var gap = compact ? 2 : 4, d;
+        if (!stacked && b.left >= a.right - 1) {
+          var x1 = a.right - base.left + gap, y1 = a.top - base.top + a.height / 2;
+          var x2 = b.left - base.left - gap, y2 = b.top - base.top + b.height / 2, k = (x2 - x1) / 2;
+          d = "M" + x1 + "," + y1 + " C" + (x1 + k) + "," + y1 + " " + (x2 - k) + "," + y2 + " " + x2 + "," + y2;
+        } else {
+          var u1 = a.left - base.left + a.width / 2, v1 = a.bottom - base.top + gap;
+          var u2 = b.left - base.left + b.width / 2, v2 = b.top - base.top - gap, m = (v2 - v1) / 2;
+          d = "M" + u1 + "," + v1 + " C" + u1 + "," + (v1 + m) + " " + u2 + "," + (v2 - m) + " " + u2 + "," + v2;
+        }
+        e.path.setAttribute("d", d);
+      });
+      paint();
+    }
+
+    // State: which steps have lit up, which step the reader is pointing at.
+    var hot = null;
+    function paint() {
+      g.classList.toggle("is-focus", !!hot);
+      nodes.forEach(function (n) {
+        var near = !!hot && (n === hot || edges.some(function (e) { return (e.from === hot && e.to === n) || (e.to === hot && e.from === n); }));
+        n.classList.toggle("is-near", near);
+        n.classList.toggle("is-hot", n === hot);
+      });
+      edges.forEach(function (e) {
+        var h = !!hot && (e.from === hot || e.to === hot);
+        e.path.classList.toggle("is-hot", h);
+        if (!compact && e.shown) e.path.setAttribute("marker-end", "url(#" + (h ? arrowHot : arrow) + ")");
+      });
+    }
+    function show(e, animate) {
+      var p = e.path;
+      if (!animate || e.optional) {
+        p.classList.remove("is-pending");
+        e.shown = true; paint();
+        return;
+      }
+      var len = p.getTotalLength();
+      p.style.transition = "none";
+      p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
+      p.getBoundingClientRect();
+      p.classList.remove("is-pending");
+      p.style.transition = "";
+      p.style.strokeDashoffset = "0";
+      setTimeout(function () { p.style.strokeDasharray = ""; p.style.strokeDashoffset = ""; e.shown = true; paint(); }, 520);
+    }
+    function play() {
+      var gapMs = compact ? 170 : 260;
+      nodes.forEach(function (n, i) {
+        setTimeout(function () {
+          var incoming = edges.filter(function (e) { return e.to === n; });
+          incoming.forEach(function (e) { show(e, true); });
+          setTimeout(function () {
+            nodes.forEach(function (m) { m.classList.remove("is-active"); });
+            n.classList.add("is-active", "is-done");
+            if (i === nodes.length - 1) setTimeout(function () { n.classList.remove("is-active"); }, 900);
+          }, incoming.length ? 300 : 0);
+        }, i * gapMs);
+      });
+    }
+    function finish() {
+      nodes.forEach(function (n) { n.classList.add("is-done"); });
+      edges.forEach(function (e) { show(e, false); });
+    }
+
+    draw();
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      finish();
+    } else {
+      g.classList.add("is-js");
+      var io = new IntersectionObserver(function (es) {
+        if (!es[0].isIntersecting) return;
+        io.disconnect();
+        draw();
+        play();
+      }, { threshold: 0.4 });
+      io.observe(g);
+    }
+
+    // Pointing at a step (full graphs only; compact ones sit inside a link).
+    var cap = $(".wfg-cap", g);
+    if (compact || !cap) { g._draw = draw; return; }
+    var hint = '<p class="wfg-hint">' + escHtml(cap.getAttribute("data-hint")) + "</p>";
+    var row = function (k, v) { return v ? "<div><dt>" + k + "</dt><dd>" + escHtml(v) + "</dd></div>" : ""; };
+    function point(n) {
+      if (n === hot) return;
+      hot = n;
+      paint();
+      if (!n) { cap.innerHTML = hint; return; }
+      cap.innerHTML = '<p class="wfg-cap-t"><span>Step ' + escHtml(n.getAttribute("data-step")) + "</span>" + escHtml(n.getAttribute("data-title")) +
+        (n.hasAttribute("data-optional") ? '<span class="wfg-opt">Optional</span>' : "") + "</p><dl>" +
+        row("Runs one of", n.getAttribute("data-alts")) + row("Passes on", n.getAttribute("data-carries")) + row("You decide", n.getAttribute("data-decide")) + "</dl>";
+    }
+    g.addEventListener("mouseover", function (e) { var n = e.target.closest(".wfg-node"); if (n) point(n); });
+    g.addEventListener("mouseleave", function () { if (!g.contains(document.activeElement)) point(null); });
+    g.addEventListener("focusin", function (e) { var n = e.target.closest(".wfg-node"); if (n) point(n); });
+    g.addEventListener("focusout", function (e) { if (!g.contains(e.relatedTarget)) point(null); });
+    g._draw = draw;
+  });
+  if (graphs.length) {
+    var redrawGraphs = function () { graphs.forEach(function (g) { if (g._draw) g._draw(); }); };
+    var gt;
+    window.addEventListener("resize", function () { clearTimeout(gt); gt = setTimeout(redrawGraphs, 120); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(redrawGraphs);
+  }
+
+
+  /* ---------- catalog: search, stage chips, filters ----------
+     With nothing filtered, cards sit under stage headings; any filter or search
+     flattens the grid. */
   var grid = $("#grid");
-  var catalogData = null;
   if (grid) {
     var cards = $$(".card", grid);
     var q = $("#q");
-    var selects = { stage: $("#f-stage"), type: $("#f-type"), org: $("#f-org"), status: $("#f-status"), tag: $("#f-tag") };
+    var fields = { stage: $("#f-stage"), type: $("#f-type"), org: $("#f-org"), status: $("#f-status"), tag: $("#f-tag") };
     var count = $("#f-count");
     var noResults = $("#no-results");
     var stageBtns = $$(".stage-chip");
     var stageDesc = $("#stage-desc");
-    var viewBtns = $$(".view-toggle button");
-    var mapEl = $("#map");
-    var index = {};
-
-    cards.forEach(function (c) { index[c.getAttribute("data-name")] = c.getAttribute("data-search") || ""; });
+    var moreFilters = $(".more-filters");
 
     function readUrl() {
       var p = new URLSearchParams(location.search);
       if (q) q.value = p.get("q") || "";
-      Object.keys(selects).forEach(function (k) { if (selects[k]) selects[k].value = p.get(k) || ""; });
-      return p.get("view") || "";
+      Object.keys(fields).forEach(function (k) { if (fields[k]) fields[k].value = p.get(k) || ""; });
+      if (moreFilters && ["type", "org", "status", "tag"].some(function (k) { return p.get(k); })) moreFilters.open = true;
     }
     function writeUrl() {
       var p = new URLSearchParams();
       if (q && q.value) p.set("q", q.value);
-      Object.keys(selects).forEach(function (k) { if (selects[k] && selects[k].value) p.set(k, selects[k].value); });
-      if (currentView === "map") p.set("view", "map");
+      Object.keys(fields).forEach(function (k) { if (fields[k] && fields[k].value) p.set(k, fields[k].value); });
       var qs = p.toString();
       history.replaceState(null, "", location.pathname + (qs ? "?" + qs : "") + location.hash);
     }
@@ -321,224 +495,86 @@
       if (b && b.getAttribute("data-label")) {
         stageDesc.innerHTML = "";
         var bold = document.createElement("b"); bold.textContent = b.getAttribute("data-label") + ": ";
-        stageDesc.setAttribute("data-stage", b.getAttribute("data-stage"));
         stageDesc.appendChild(bold);
         stageDesc.appendChild(document.createTextNode(b.getAttribute("data-desc") || ""));
       } else {
-        stageDesc.removeAttribute("data-stage");
         stageDesc.textContent = stageDesc.getAttribute("data-default") || "";
       }
     }
-    function syncStageStrip() {
-      var val = selects.stage ? selects.stage.value : "";
+    function syncStageChips() {
+      var val = fields.stage ? fields.stage.value : "";
       stageBtns.forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-stage") === val ? "true" : "false"); });
       showStageDesc(val ? stageBtns.filter(function (b) { return b.getAttribute("data-stage") === val; })[0] : null);
     }
     function apply() {
       var text = (q && q.value || "").trim().toLowerCase();
       var terms = text ? text.split(/\s+/) : [];
+      var filtered = !!terms.length;
       var shown = 0;
+      Object.keys(fields).forEach(function (k) { if (fields[k] && fields[k].value) filtered = true; });
       cards.forEach(function (c) {
         var ok = true;
-        Object.keys(selects).forEach(function (k) {
-          var val = selects[k] && selects[k].value;
+        Object.keys(fields).forEach(function (k) {
+          var val = fields[k] && fields[k].value;
           if (!val) return;
           if (k === "tag") {
-            var tags = (c.getAttribute("data-tags") || "").split(" ");
-            if (tags.indexOf(val) === -1) ok = false;
+            if ((c.getAttribute("data-tags") || "").split(" ").indexOf(val) === -1) ok = false;
           } else if (c.getAttribute("data-" + k) !== val) ok = false;
         });
         if (ok && terms.length) {
-          var hay = index[c.getAttribute("data-name")] || c.getAttribute("data-search") || "";
+          var hay = c.getAttribute("data-search") || "";
           ok = terms.every(function (t) { return hay.indexOf(t) !== -1; });
         }
         c.hidden = !ok;
         if (ok) shown++;
       });
+      grid.classList.toggle("is-filtered", filtered);
       if (count) count.textContent = shown === cards.length ? cards.length + " skills" : shown + " of " + cards.length;
-      if (noResults) noResults.hidden = shown !== 0 || currentView === "map";
-      syncStageStrip();
+      if (noResults) noResults.hidden = shown !== 0;
+      syncStageChips();
       writeUrl();
     }
 
-    var currentView = "cards";
-    function setView(v, scroll) {
-      currentView = v === "map" ? "map" : "cards";
-      viewBtns.forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-view") === currentView ? "true" : "false"); });
-      grid.hidden = currentView === "map";
-      if (mapEl) mapEl.hidden = currentView !== "map";
-      if (currentView === "map") ensureMap();
-      if (noResults) noResults.hidden = currentView === "map" || noResults.hidden;
-      writeUrl();
-      if (scroll) { var h = $("#catalog"); if (h) h.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" }); }
+    // Stage headings stick under the header. Mark the stuck one, which sits just
+    // above the observer's top edge, so it gets its backdrop.
+    if ("IntersectionObserver" in window) {
+      var headerH = parseFloat(getComputedStyle(root).getPropertyValue("--header-h")) || 64;
+      var stuck = new IntersectionObserver(function (es) {
+        es.forEach(function (en) { en.target.classList.toggle("is-stuck", en.intersectionRatio < 1 && en.boundingClientRect.top < headerH + 1); });
+      }, { rootMargin: "-" + (headerH + 1) + "px 0px 0px 0px", threshold: [0, 1] });
+      $$(".group-head", grid).forEach(function (h) { stuck.observe(h); });
     }
-    viewBtns.forEach(function (b) { b.addEventListener("click", function () { setView(b.getAttribute("data-view"), false); }); });
 
-    var initialView = readUrl();
+    readUrl();
     apply();
-    if (initialView === "map") setView("map", false);
-
-    fetch("/data/catalog.json").then(function (r) { return r.ok ? r.json() : null; }).then(function (data) {
-      if (!data || !data.skills) return;
-      catalogData = data;
-      data.skills.forEach(function (s) {
-        index[s.name] = [s.name, s.title, s.description, s.what_it_does, (s.tags || []).join(" "), (s.use_when || []).join(" "), (s.authors || []).join(" ")].join(" ").toLowerCase();
-      });
-      apply();
-      if (currentView === "map") ensureMap();
-    }).catch(function () { /* offline: fall back to data-search */ });
-
     if (q) q.addEventListener("input", apply);
-    Object.keys(selects).forEach(function (k) { if (selects[k]) selects[k].addEventListener("change", apply); });
+    Object.keys(fields).forEach(function (k) { if (fields[k] && fields[k].tagName === "SELECT") fields[k].addEventListener("change", apply); });
     stageBtns.forEach(function (b) {
       b.addEventListener("click", function () {
         var val = b.getAttribute("data-stage");
-        if (selects.stage) selects.stage.value = val && selects.stage.value !== val ? val : "";
-        if (currentView === "map") setView("cards", false);
+        if (fields.stage) fields.stage.value = val && fields.stage.value !== val ? val : "";
         apply();
       });
-      b.addEventListener("mouseenter", function () { if (selects.stage && !selects.stage.value) showStageDesc(b); });
-      b.addEventListener("mouseleave", function () { syncStageStrip(); });
+      b.addEventListener("mouseenter", function () { if (fields.stage && !fields.stage.value) showStageDesc(b); });
+      b.addEventListener("mouseleave", function () { syncStageChips(); });
     });
     var clear = function () {
       if (q) q.value = "";
-      Object.keys(selects).forEach(function (k) { if (selects[k]) selects[k].value = ""; });
+      Object.keys(fields).forEach(function (k) { if (fields[k]) fields[k].value = ""; });
       apply();
     };
     var c1 = $("#f-clear"), c2 = $("#f-clear-2");
     if (c1) c1.addEventListener("click", clear);
     if (c2) c2.addEventListener("click", clear);
+    document.addEventListener("click", function (e) { if (moreFilters && moreFilters.open && !moreFilters.contains(e.target)) moreFilters.open = false; });
     document.addEventListener("keydown", function (e) {
       var typing = /input|textarea|select/i.test(document.activeElement.tagName);
       if (e.key === "/" && q && !typing) { e.preventDefault(); q.focus(); q.select(); }
       if (e.key === "Escape" && q && document.activeElement === q) { q.value = ""; apply(); q.blur(); }
+      if (e.key === "Escape" && moreFilters && moreFilters.open) moreFilters.open = false;
     });
-
-    /* ---------- skill-chain map ---------- */
-    var mapBuilt = false;
-    function ensureMap() {
-      if (mapBuilt || !mapEl) return;
-      if (!catalogData) { mapEl.innerHTML = '<p class="muted" style="padding:1.25rem">Loading the catalog…</p>'; return; }
-      mapBuilt = true;
-      renderMap(mapEl, catalogData);
-    }
-    function renderMap(container, data) {
-      var tax = data.taxonomy || {};
-      var stages = (tax.stages || []).filter(function (s) { return s && s.id && s.id !== "other"; });
-      var io = {};
-      (tax.io_types || []).forEach(function (t) { if (t && t.id) io[t.id] = t; });
-      var skills = data.skills || [];
-      var producers = {};
-      skills.forEach(function (s) { (s.produces || []).forEach(function (t) { (producers[t] = producers[t] || []).push(s.name); }); });
-      var inputs = [];
-      skills.forEach(function (s) { (s.consumes || []).forEach(function (t) {
-        if (io[t] && io[t].user_suppliable && !producers[t] && inputs.indexOf(t) < 0) inputs.push(t);
-      }); });
-
-      var cols = [{ id: "you", label: "You supply", stage: "", nodes: inputs.map(function (t) { return { id: "io:" + t, label: t, title: io[t].label, io: true }; }) }];
-      stages.forEach(function (st) {
-        cols.push({ id: st.id, label: st.label, stage: st.id, nodes: skills.filter(function (s) { return s.stage === st.id && s.type !== "meta"; }).map(function (s) { return { id: s.name, label: s.name, title: s.title, url: s.url, stage: st.id }; }) });
-      });
-      var meta = skills.filter(function (s) { return s.type === "meta" || s.stage === "other"; });
-      cols.push({ id: "other", label: "Meta skills", stage: "other", nodes: meta.map(function (s) { return { id: s.name, label: s.name, title: s.title, url: s.url, stage: "other" }; }) });
-
-      var edges = [];
-      skills.forEach(function (c) { (c.consumes || []).forEach(function (t) {
-        (producers[t] || []).forEach(function (p) { if (p !== c.name) edges.push({ from: p, to: c.name, via: t }); });
-        if (inputs.indexOf(t) >= 0) edges.push({ from: "io:" + t, to: c.name, via: t });
-      }); });
-
-      container.innerHTML = "";
-      var inner = document.createElement("div"); inner.className = "map-inner";
-      var svgNS = "http://www.w3.org/2000/svg";
-      var svg = document.createElementNS(svgNS, "svg"); svg.setAttribute("class", "map-svg"); svg.setAttribute("aria-hidden", "true");
-      inner.appendChild(svg);
-      var nodeEls = {};
-      cols.forEach(function (col) {
-        if (!col.nodes.length) return;
-        var c = document.createElement("div"); c.className = "map-col"; c.setAttribute("data-stage", col.stage);
-        var h = document.createElement("h4");
-        var d = document.createElement("span"); d.className = "dot"; if (col.id === "you") d.style.display = "none";
-        h.appendChild(d); h.appendChild(document.createTextNode(col.label));
-        var n = document.createElement("span"); n.className = "muted"; n.style.marginLeft = "auto"; n.style.fontFamily = "var(--mono)"; n.textContent = String(col.nodes.length);
-        h.appendChild(n);
-        c.appendChild(h);
-        col.nodes.forEach(function (nd) {
-          var el = document.createElement(nd.url ? "a" : "div");
-          el.className = "map-node" + (nd.io ? " io" : "");
-          if (nd.url) el.href = nd.url;
-          el.setAttribute("data-id", nd.id);
-          el.setAttribute("data-stage", nd.stage || "");
-          el.appendChild(document.createTextNode(nd.label));
-          if (nd.title) { var sm = document.createElement("small"); sm.textContent = nd.title; el.appendChild(sm); }
-          el.addEventListener("mouseenter", function () { highlight(nd.id); });
-          el.addEventListener("mouseleave", function () { highlight(null); });
-          el.addEventListener("focus", function () { highlight(nd.id); });
-          el.addEventListener("blur", function () { highlight(null); });
-          c.appendChild(el);
-          nodeEls[nd.id] = el;
-        });
-        inner.appendChild(c);
-      });
-      container.appendChild(inner);
-      var legend = document.createElement("div"); legend.className = "map-legend";
-      legend.innerHTML = '<span><i></i> one skill\'s output feeds the next</span><span><i class="hot"></i> hover a skill to trace its chain</span><span><em></em> something you can supply yourself</span><span class="muted">Scroll sideways if the map is wider than your screen.</span>';
-      container.appendChild(legend);
-
-      var pathEls = [];
-      function draw() {
-        while (svg.firstChild) svg.removeChild(svg.firstChild);
-        pathEls = [];
-        var base = inner.getBoundingClientRect();
-        svg.setAttribute("viewBox", "0 0 " + inner.scrollWidth + " " + inner.scrollHeight);
-        svg.setAttribute("width", inner.scrollWidth); svg.setAttribute("height", inner.scrollHeight);
-        edges.forEach(function (e) {
-          var a = nodeEls[e.from], b = nodeEls[e.to];
-          if (!a || !b) return;
-          var ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
-          var x1, y1, x2, y2, d;
-          y1 = ra.top - base.top + ra.height / 2; y2 = rb.top - base.top + rb.height / 2;
-          if (rb.left >= ra.right - 2) {
-            x1 = ra.right - base.left; x2 = rb.left - base.left;
-            var dx = Math.max(24, (x2 - x1) / 2);
-            d = "M" + x1 + "," + y1 + " C" + (x1 + dx) + "," + y1 + " " + (x2 - dx) + "," + y2 + " " + x2 + "," + y2;
-          } else {
-            x1 = ra.left - base.left; x2 = rb.left - base.left;
-            var bulge = 26;
-            d = "M" + x1 + "," + y1 + " C" + (x1 - bulge) + "," + y1 + " " + (x2 - bulge) + "," + y2 + " " + x2 + "," + y2;
-          }
-          var p = document.createElementNS(svgNS, "path");
-          p.setAttribute("d", d);
-          p.setAttribute("data-from", e.from); p.setAttribute("data-to", e.to);
-          var t = document.createElementNS(svgNS, "title"); t.textContent = e.from + " → " + e.to + " (" + e.via + ")";
-          p.appendChild(t);
-          svg.appendChild(p);
-          pathEls.push(p);
-        });
-      }
-      function highlight(id) {
-        var connected = {};
-        if (id) {
-          connected[id] = true;
-          edges.forEach(function (e) { if (e.from === id) connected[e.to] = true; if (e.to === id) connected[e.from] = true; });
-        }
-        Object.keys(nodeEls).forEach(function (k) {
-          nodeEls[k].classList.toggle("is-hot", !!id && !!connected[k] && k !== id);
-          nodeEls[k].classList.toggle("is-dim", !!id && !connected[k]);
-        });
-        pathEls.forEach(function (p) {
-          var hot = !!id && (p.getAttribute("data-from") === id || p.getAttribute("data-to") === id);
-          p.classList.toggle("is-hot", hot);
-          p.classList.toggle("is-dim", !!id && !hot);
-        });
-      }
-      draw();
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
-      var rt;
-      window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(draw, 120); });
-      window.__redrawMap = draw;
-    }
   }
+
 
   /* ---------- skill page: TOC scroll-spy ---------- */
   var toc = $(".toc");

@@ -1,6 +1,7 @@
 /* Behavioral Science Skills: client script. No dependencies.
    Theme (follows the system until the reader picks), mobile menu, copy buttons,
-   install tabs, the home page's hero demo and stage flow chart, catalog
+   install tabs, the home page's hero demo and stage flow chart, workflow
+   graphs (Workflows pages and home tiles), catalog
    search and filters with URL sync, TOC scroll-spy, the propose form
    (prefilled GitHub issue), and the upload form (/api/submit).
    The skill map is in map.js; the workflow tray and builder are in workflow.js. */
@@ -12,7 +13,9 @@
   var reduceMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   var root = document.documentElement;
 
-  /* ---------- theme: saved choice, else the system setting ---------- */
+  /* ---------- theme: saved choice, else the system setting ----------
+     Toggling to the theme the system already uses forgets the saved choice,
+     so the page goes back to following the system. */
   var darkQuery = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
   var savedTheme = function () { try { var t = localStorage.getItem("theme"); return t === "light" || t === "dark" ? t : null; } catch (e) { return null; } };
   function applyTheme(t) {
@@ -22,20 +25,16 @@
       b.setAttribute("aria-label", light ? "Switch to dark mode" : "Switch to light mode");
       b.setAttribute("title", light ? "Switch to dark mode" : "Switch to light mode");
     });
-    $$(".theme-system").forEach(function (b) { b.hidden = !savedTheme(); });
     if (window.__redrawMap) window.__redrawMap();
   }
   $$(".theme-toggle").forEach(function (b) {
     b.addEventListener("click", function () {
       var next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
-      try { localStorage.setItem("theme", next); } catch (e) { /* storage unavailable */ }
+      var system = darkQuery && darkQuery.matches ? "dark" : "light";
+      try {
+        if (next === system) localStorage.removeItem("theme"); else localStorage.setItem("theme", next);
+      } catch (e) { /* storage unavailable */ }
       applyTheme(next);
-    });
-  });
-  $$(".theme-system").forEach(function (b) {
-    b.addEventListener("click", function () {
-      try { localStorage.removeItem("theme"); } catch (e) { /* ignore */ }
-      applyTheme(darkQuery && darkQuery.matches ? "dark" : "light");
     });
   });
   if (darkQuery) {
@@ -300,6 +299,170 @@
   }
 
 
+  /* ---------- workflow graphs: Workflows pages and the home tiles ----------
+     Steps sit in a grid built by build_site.py; each lists the steps it runs
+     after in data-after. Lines are drawn from ring to ring and redrawn on resize.
+     The first time a graph scrolls into view, a highlight runs through the steps
+     once and each step's incoming lines draw in. Pointing at a step (full graphs)
+     shows what it passes on and where the team decides. */
+  var svgNS = "http://www.w3.org/2000/svg";
+  var escHtml = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+  var graphs = $$("[data-wfg]");
+  graphs.forEach(function (g, gi) {
+    var compact = g.classList.contains("wfg-compact");
+    var nodes = $$(".wfg-node", g), byId = {};
+    nodes.forEach(function (n) { byId[n.getAttribute("data-step")] = n; });
+    var edges = [];
+    nodes.forEach(function (n) {
+      (n.getAttribute("data-after") || "").split(" ").forEach(function (f) {
+        if (byId[f]) edges.push({ from: byId[f], to: n, optional: n.hasAttribute("data-optional") });
+      });
+    });
+    var svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("class", "wfg-svg");
+    svg.setAttribute("aria-hidden", "true");
+    var mk = function (id, cls) {
+      var m = document.createElementNS(svgNS, "marker");
+      m.setAttribute("id", id); m.setAttribute("class", cls);
+      m.setAttribute("viewBox", "0 0 10 10"); m.setAttribute("refX", "9"); m.setAttribute("refY", "5");
+      m.setAttribute("markerWidth", "6"); m.setAttribute("markerHeight", "6"); m.setAttribute("orient", "auto");
+      m.setAttribute("markerUnits", "userSpaceOnUse");
+      var p = document.createElementNS(svgNS, "path"); p.setAttribute("d", "M0,1 L9,5 L0,9 z");
+      m.appendChild(p);
+      return m;
+    };
+    var arrow = "wfg-a" + gi, arrowHot = "wfg-ah" + gi;
+    if (!compact) {
+      var defs = document.createElementNS(svgNS, "defs");
+      defs.appendChild(mk(arrow, "wfg-arrow")); defs.appendChild(mk(arrowHot, "wfg-arrow-hot"));
+      svg.appendChild(defs);
+    }
+    edges.forEach(function (e) {
+      e.path = document.createElementNS(svgNS, "path");
+      e.path.setAttribute("class", "is-pending" + (e.optional ? " is-opt" : ""));
+      svg.appendChild(e.path);
+    });
+    g.insertBefore(svg, g.firstChild);
+
+    // Geometry: ring to ring, as a curve; across in wide layouts, down in narrow
+    // ones (the CSS stacks full graphs below 720px). The svg is sized in pixels
+    // with no viewBox, so a caption that grows the box does not rescale the lines.
+    var ringOf = function (n) { return $(".wfg-ring", n); };
+    var narrow = window.matchMedia ? window.matchMedia("(max-width: 720px)") : null;
+    function draw() {
+      var base = g.getBoundingClientRect();
+      if (!base.width) return;
+      svg.setAttribute("width", base.width); svg.setAttribute("height", base.height);
+      var stacked = !compact && narrow && narrow.matches;
+      edges.forEach(function (e) {
+        var a = ringOf(e.from).getBoundingClientRect(), b = ringOf(e.to).getBoundingClientRect();
+        var gap = compact ? 2 : 4, d;
+        if (!stacked && b.left >= a.right - 1) {
+          var x1 = a.right - base.left + gap, y1 = a.top - base.top + a.height / 2;
+          var x2 = b.left - base.left - gap, y2 = b.top - base.top + b.height / 2, k = (x2 - x1) / 2;
+          d = "M" + x1 + "," + y1 + " C" + (x1 + k) + "," + y1 + " " + (x2 - k) + "," + y2 + " " + x2 + "," + y2;
+        } else {
+          var u1 = a.left - base.left + a.width / 2, v1 = a.bottom - base.top + gap;
+          var u2 = b.left - base.left + b.width / 2, v2 = b.top - base.top - gap, m = (v2 - v1) / 2;
+          d = "M" + u1 + "," + v1 + " C" + u1 + "," + (v1 + m) + " " + u2 + "," + (v2 - m) + " " + u2 + "," + v2;
+        }
+        e.path.setAttribute("d", d);
+      });
+      paint();
+    }
+
+    // State: which steps have lit up, which step the reader is pointing at.
+    var hot = null;
+    function paint() {
+      g.classList.toggle("is-focus", !!hot);
+      nodes.forEach(function (n) {
+        var near = !!hot && (n === hot || edges.some(function (e) { return (e.from === hot && e.to === n) || (e.to === hot && e.from === n); }));
+        n.classList.toggle("is-near", near);
+        n.classList.toggle("is-hot", n === hot);
+      });
+      edges.forEach(function (e) {
+        var h = !!hot && (e.from === hot || e.to === hot);
+        e.path.classList.toggle("is-hot", h);
+        if (!compact && e.shown) e.path.setAttribute("marker-end", "url(#" + (h ? arrowHot : arrow) + ")");
+      });
+    }
+    function show(e, animate) {
+      var p = e.path;
+      if (!animate || e.optional) {
+        p.classList.remove("is-pending");
+        e.shown = true; paint();
+        return;
+      }
+      var len = p.getTotalLength();
+      p.style.transition = "none";
+      p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
+      p.getBoundingClientRect();
+      p.classList.remove("is-pending");
+      p.style.transition = "";
+      p.style.strokeDashoffset = "0";
+      setTimeout(function () { p.style.strokeDasharray = ""; p.style.strokeDashoffset = ""; e.shown = true; paint(); }, 520);
+    }
+    function play() {
+      var gapMs = compact ? 170 : 260;
+      nodes.forEach(function (n, i) {
+        setTimeout(function () {
+          var incoming = edges.filter(function (e) { return e.to === n; });
+          incoming.forEach(function (e) { show(e, true); });
+          setTimeout(function () {
+            nodes.forEach(function (m) { m.classList.remove("is-active"); });
+            n.classList.add("is-active", "is-done");
+            if (i === nodes.length - 1) setTimeout(function () { n.classList.remove("is-active"); }, 900);
+          }, incoming.length ? 300 : 0);
+        }, i * gapMs);
+      });
+    }
+    function finish() {
+      nodes.forEach(function (n) { n.classList.add("is-done"); });
+      edges.forEach(function (e) { show(e, false); });
+    }
+
+    draw();
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      finish();
+    } else {
+      g.classList.add("is-js");
+      var io = new IntersectionObserver(function (es) {
+        if (!es[0].isIntersecting) return;
+        io.disconnect();
+        draw();
+        play();
+      }, { threshold: 0.4 });
+      io.observe(g);
+    }
+
+    // Pointing at a step (full graphs only; compact ones sit inside a link).
+    var cap = $(".wfg-cap", g);
+    if (compact || !cap) { g._draw = draw; return; }
+    var hint = '<p class="wfg-hint">' + escHtml(cap.getAttribute("data-hint")) + "</p>";
+    var row = function (k, v) { return v ? "<div><dt>" + k + "</dt><dd>" + escHtml(v) + "</dd></div>" : ""; };
+    function point(n) {
+      if (n === hot) return;
+      hot = n;
+      paint();
+      if (!n) { cap.innerHTML = hint; return; }
+      cap.innerHTML = '<p class="wfg-cap-t"><span>Step ' + escHtml(n.getAttribute("data-step")) + "</span>" + escHtml(n.getAttribute("data-title")) +
+        (n.hasAttribute("data-optional") ? '<span class="wfg-opt">Optional</span>' : "") + "</p><dl>" +
+        row("Runs one of", n.getAttribute("data-alts")) + row("Passes on", n.getAttribute("data-carries")) + row("You decide", n.getAttribute("data-decide")) + "</dl>";
+    }
+    g.addEventListener("mouseover", function (e) { var n = e.target.closest(".wfg-node"); if (n) point(n); });
+    g.addEventListener("mouseleave", function () { if (!g.contains(document.activeElement)) point(null); });
+    g.addEventListener("focusin", function (e) { var n = e.target.closest(".wfg-node"); if (n) point(n); });
+    g.addEventListener("focusout", function (e) { if (!g.contains(e.relatedTarget)) point(null); });
+    g._draw = draw;
+  });
+  if (graphs.length) {
+    var redrawGraphs = function () { graphs.forEach(function (g) { if (g._draw) g._draw(); }); };
+    var gt;
+    window.addEventListener("resize", function () { clearTimeout(gt); gt = setTimeout(redrawGraphs, 120); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(redrawGraphs);
+  }
+
+
   /* ---------- catalog: search, stage chips, filters ----------
      With nothing filtered, cards sit under stage headings; any filter or search
      flattens the grid. */
@@ -370,6 +533,16 @@
       if (noResults) noResults.hidden = shown !== 0;
       syncStageChips();
       writeUrl();
+    }
+
+    // Stage headings stick under the header. Mark the stuck one, which sits just
+    // above the observer's top edge, so it gets its backdrop.
+    if ("IntersectionObserver" in window) {
+      var headerH = parseFloat(getComputedStyle(root).getPropertyValue("--header-h")) || 64;
+      var stuck = new IntersectionObserver(function (es) {
+        es.forEach(function (en) { en.target.classList.toggle("is-stuck", en.intersectionRatio < 1 && en.boundingClientRect.top < headerH + 1); });
+      }, { rootMargin: "-" + (headerH + 1) + "px 0px 0px 0px", threshold: [0, 1] });
+      $$(".group-head", grid).forEach(function (h) { stuck.observe(h); });
     }
 
     readUrl();

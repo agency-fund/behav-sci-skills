@@ -35,6 +35,8 @@ REPO = "agency-fund/behav-sci-skills"
 GITHUB = f"https://github.com/{REPO}"
 PLUGIN = "behav-sci-skills"
 SITE_NAME = "Behavioral Science Skills"
+# The one-sentence description: home lede, footer, meta description, llms.txt.
+TAGLINE = "An open-source library of atomic AI skills that bring actionable behavioral-science methods into your everyday work."
 SRC = os.path.join(ROOT, "site", "src")
 DIST = os.path.join(ROOT, "site", "dist")
 SKILLS_DIR = os.path.join(ROOT, "skills")
@@ -240,8 +242,88 @@ def load_workflows() -> List[dict]:
             "url": f"/workflows/{name}/",
             "source_url": f"{GITHUB}/blob/main/workflows/{fname}",
             "body": body,
+            "steps": parse_workflow_steps(body),
         })
     return out
+
+
+def step_refs(relationship: str, key: str) -> Optional[List[str]]:
+    """Step ids named after `key` ("after 4, 5, and 7" -> ["4", "5", "7"]), or None if `key` is absent."""
+    m = re.search(rf"\b{key}\b(.*)", relationship, flags=re.IGNORECASE)
+    if not m:
+        return None
+    ids = []
+    for tok in re.findall(r"\d+[a-z]?\b|[A-Za-z]+|,", m.group(1)):
+        if re.fullmatch(r"\d+[a-z]?", tok):
+            ids.append(tok)
+        elif tok.lower() not in (",", "and", "or", "with"):
+            break
+    return ids
+
+
+def parse_workflow_steps(body: str) -> List[dict]:
+    """The "Skills in this workflow" table as steps, each with the steps it runs after.
+
+    Relationship values are start, after N, parallel with N, independent, and
+    optional (see workflows/WORKFLOW-TEMPLATE.md). A step whose relationship
+    names no earlier step ("after the experiment ends") follows the previous row."""
+    m = re.search(r"^## Skills in this workflow\s*\n(.*?)(?=^## |\Z)", body, flags=re.MULTILINE | re.DOTALL)
+    if not m:
+        return []
+    rows = [ln.strip() for ln in m.group(1).splitlines() if ln.strip().startswith("|")]
+    if len(rows) < 3:
+        return []
+    cells = lambda ln: [c.strip() for c in ln.strip().strip("|").split("|")]  # noqa: E731
+    head = [c.lower() for c in cells(rows[0])]
+
+    def col(row: List[str], *names: str) -> str:
+        for n in names:
+            for i, h in enumerate(head):
+                if h.startswith(n) and i < len(row):
+                    return row[i]
+        return ""
+
+    steps: List[dict] = []
+    for ln in rows[2:]:
+        row = cells(ln)
+        sid = col(row, "step")
+        if not sid:
+            continue
+        skill_cell = col(row, "skill")
+        names = re.findall(r"`([a-z0-9-]+)`", skill_cell)
+        label = ""
+        if len(names) != 1:
+            label = re.split(r"\s*\(|,", re.sub(r"`", "", skill_cell), maxsplit=1)[0].strip()
+            label = re.sub(r"^the\s+", "", label, flags=re.IGNORECASE)
+            label = label[:1].upper() + label[1:]
+        rel = col(row, "relationship")
+        steps.append({
+            "id": sid,
+            "skill": names[0] if len(names) == 1 else "",
+            "alternatives": names if len(names) > 1 else [],
+            "label": label,
+            "relationship": rel,
+            "optional": "optional" in rel.lower(),
+            "carries": col(row, "what carries"),
+            "decide": col(row, "human decision"),
+        })
+
+    known = {st["id"] for st in steps}
+    for i, st in enumerate(steps):
+        rel = st["relationship"].lower()
+        after = step_refs(rel, "after")
+        if after is None and rel.startswith(("start", "independent")):
+            after = []
+        elif not after:
+            parallel = step_refs(rel, "parallel with") or []
+            twin = next((x for x in steps[:i] if x["id"] in parallel), None)
+            after = list(twin["after"]) if twin else ([steps[i - 1]["id"]] if i else [])
+        st["after"] = [x for x in after if x in known and x != st["id"]]
+    layer: Dict[str, int] = {}
+    for st in steps:
+        st["layer"] = 1 + max((layer.get(x, 0) for x in st["after"]), default=-1)
+        layer[st["id"]] = st["layer"]
+    return steps
 
 
 def taxonomy_public(taxonomy: dict) -> dict:
@@ -359,7 +441,7 @@ def layout(title: str, description: str, body: str, path: str, extra_head: str =
     <div class="footer-top">
       <div class="footer-brand">
         {logos}
-        <p>AI skills for behavioral-science methods, made by The Agency Fund and Irrational Labs for teams without a behavioral scientist on staff.</p>
+        <p>{E(TAGLINE)}</p>
       </div>
       <nav class="footer-links" aria-label="More">
         <a href="/whats-new/">What's new</a>
@@ -374,9 +456,8 @@ def layout(title: str, description: str, body: str, path: str, extra_head: str =
       </nav>
     </div>
     <div class="footer-bottom">
-      <span>Skills are CC BY 4.0 and code is MIT. <a href="{GITHUB}/blob/main/LICENSE" rel="noopener">See the licenses.</a></span>
-      <span class="footer-orgs"><a href="https://agency.fund" rel="noopener">agency.fund</a><a href="https://irrationallabs.com" rel="noopener">irrationallabs.com</a></span>
-      <button class="link-quiet theme-system" type="button">Match system theme</button>
+      <span>Skill content is licensed <a href="{GITHUB}/blob/main/LICENSE-CONTENT.md" rel="noopener">CC BY 4.0</a> and code is <a href="{GITHUB}/blob/main/LICENSE" rel="noopener">MIT</a>.</span>
+      <span class="footer-orgs"><a href="https://agency.fund" rel="noopener">The Agency Fund</a><a href="https://irrationallabs.com" rel="noopener">Irrational Labs</a></span>
     </div>
   </div>
 </footer>
@@ -692,15 +773,74 @@ def map_teaser(by_name: Dict[str, dict], taxonomy: dict) -> str:
     return f'<ol class="teaser-chain">{"".join(parts)}</ol>'
 
 
-def workflow_chips(names: List[str], by_name: Dict[str, dict]) -> str:
-    """A workflow's skills in order, as linked chips."""
-    items = []
-    for i, n in enumerate(names):
-        s = by_name.get(n)
-        label = f'<span class="chip-n">{i + 1}</span>{E(s["title"] if s else n)}'
-        items.append(f'<li><a class="chip" href="{E(s["url"])}" data-stage="{E(s["stage"])}">{label}</a></li>' if s
-                     else f'<li><span class="chip">{label}</span></li>')
-    return f'<ol class="chip-strip">{"".join(items)}</ol>'
+def workflow_graph(w: dict, by_name: Dict[str, dict], compact: bool = False) -> str:
+    """A workflow's steps as a small flow chart: one column per layer, parallel steps
+    stacked, each step drawn like a stage on the home page.
+
+    app.js draws the lines from data-after and animates them once on first view.
+    The compact form (home tiles) sits inside a link, so its steps are not links."""
+    steps = w.get("steps") or [
+        {"id": str(i + 1), "skill": n, "alternatives": [], "label": "", "optional": False,
+         "carries": "", "decide": "", "after": [str(i)] if i else [], "layer": i}
+        for i, n in enumerate(w["skills"])]
+    if not steps:
+        return ""
+    # Draw only the direct links: "after 4, 5, and 7" needs no line from 4 when
+    # 4 already leads to 5. The dashed ring says a step in between is optional.
+    after = {st["id"]: st["after"] for st in steps}
+
+    def leads_to(a: str, b: str) -> bool:
+        return any(x == a or leads_to(a, x) for x in after.get(b, []))
+    links = {st["id"]: [a for a in st["after"] if not any(o != a and leads_to(a, o) for o in st["after"])] for st in steps}
+    per_layer: Dict[int, List[dict]] = {}
+    for st in steps:
+        per_layer.setdefault(st["layer"], []).append(st)
+    rows = max(len(v) for v in per_layer.values())
+    # Row of each step. Steps sharing a layer are ordered by where their
+    # predecessors sit, so lines cross less. A step alone in its layer stays level
+    # with its one predecessor; one that joins branches spans the rows, centered.
+    row_of: Dict[str, Optional[int]] = {}
+    mid = (rows - 1) / 2
+    for layer in sorted(per_layer):
+        mates = per_layer[layer]
+        if len(mates) > 1:
+            def pull(st: dict) -> float:
+                rs = [mid if row_of.get(a) is None else row_of[a] for a in links[st["id"]]]
+                return sum(rs) / len(rs) if rs else mid
+            for i, st in enumerate(sorted(mates, key=pull)):
+                row_of[st["id"]] = i
+            continue
+        st = mates[0]
+        if len(links[st["id"]]) == 1 and row_of.get(links[st["id"]][0]) is not None:
+            row_of[st["id"]] = row_of[links[st["id"]][0]]
+        else:
+            row_of[st["id"]] = None if rows > 1 else 0
+    nodes = []
+    for st in steps:
+        s = by_name.get(st["skill"])
+        alts = [by_name[a] for a in st["alternatives"] if a in by_name]
+        title = s["title"] if s else (st["label"] or st["skill"])
+        stage = s["stage"] if s else (alts[0]["stage"] if alts and len({a["stage"] for a in alts}) == 1 else "")
+        r = row_of[st["id"]]
+        place = f'--c:{st["layer"] + 1};--r:{1 if r is None else r + 1};--span:{rows if r is None else 1}'
+        ring = f'<span class="wfg-ring">{stage_icon(stage)}</span>'
+        attrs = (f'data-step="{E(st["id"])}" data-after="{E(" ".join(links[st["id"]]))}" data-stage="{E(stage)}" '
+                 f'style="{place}"' + (' data-span' if r is None else "") + (' data-optional' if st["optional"] else ""))
+        if compact:
+            nodes.append(f'<span class="wfg-node" {attrs} title="{E(title)}">{ring}</span>')
+            continue
+        info = (f' data-title="{E(title)}" data-carries="{E(st["carries"])}" data-decide="{E(st["decide"])}"'
+                + (f' data-alts="{E(", ".join(a["title"] for a in alts))}"' if alts else ""))
+        inner = f'{ring}<span class="wfg-t">{E(title)}</span>'
+        target = (f'<a class="wfg-hit" href="{E(s["url"])}">{inner}</a>' if s
+                  else f'<span class="wfg-hit" tabindex="0">{inner}</span>')
+        nodes.append(f'<li class="wfg-node" {attrs}{info}>{target}</li>')
+    style = f'style="--cols:{len(per_layer)};--rows:{rows}"'
+    if compact:
+        return f'<span class="wfg wfg-compact" data-wfg aria-hidden="true" {style}>{"".join(nodes)}</span>'
+    hint = "Point at a step to see what it passes on and where your team decides. Dashed steps are optional."
+    return (f'<div class="wfg" data-wfg {style}><ol class="wfg-grid" aria-label="Steps in {E(w["title"])}">{"".join(nodes)}</ol>'
+            f'<div class="wfg-cap" data-hint="{E(hint)}" aria-live="polite"><p class="wfg-hint">{E(hint)}</p></div></div>')
 
 
 def workflow_lead(w: dict) -> str:
@@ -724,27 +864,25 @@ def install_skills_cmd(names: List[str]) -> str:
 
 def build_index(skills: List[dict], taxonomy: dict, workflows: List[dict]) -> None:
     by_name = {s["name"]: s for s in skills}
-    stage_labels = label_map(taxonomy.get("stages"))
     n_skills = len(skills)
     meta = [s for s in skills if s["type"] == "meta"]
     meta_links = ", ".join(skill_link(s["name"], by_name) for s in meta)
 
     tiles = []
     for w in workflows[:4]:
-        stages = ", ".join(stage_labels.get(x, x) for x in w["stages"])
-        n = len(w["skills"])
         tiles.append(
             f'<li><a class="wf-tile" href="{E(w["url"])}"><b>{E(w["title"])}</b>'
-            f'<span>{E(workflow_lead(w))}</span>'
-            f'<span class="wf-tile-meta">{n} skills{": " + E(stages) if stages else ""}</span></a></li>')
+            f'<span class="wf-tile-lead">{E(workflow_lead(w))}</span>'
+            f'{workflow_graph(w, by_name, compact=True)}</a></li>')
 
     body = f"""
 <section class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
   <div class="hero-grid">
     <div class="hero-copy">
       <div class="hero-logos reveal" style="--i:0">{logos_html()}</div>
       <h1 class="reveal" style="--i:1">Behavioral science skills for your AI assistant</h1>
-      <p class="lede reveal" style="--i:2">{n_skills} small skills, each running one method, like a COM-B barrier analysis or a cognitive interview script.</p>
+      <p class="lede reveal" style="--i:2">{E(TAGLINE)}</p>
       <p class="hero-actions reveal" style="--i:3"><a class="btn" href="/install/">Install {ICONS['arrow']}</a> <a class="btn-secondary" href="/skills/">Browse skills</a></p>
     </div>
     {hero_demo(by_name)}
@@ -771,7 +909,7 @@ def build_index(skills: List[dict], taxonomy: dict, workflows: List[dict]) -> No
 
 <section class="section" aria-labelledby="wf-h">
   <div class="section-head">
-    <h2 id="wf-h">Or follow a workflow</h2>
+    <h2 id="wf-h">Connect multiple skills to create a workflow</h2>
     <p>A workflow runs several skills in order for a bigger job and marks where your team has to decide.</p>
   </div>
   <ul class="wf-grid">{''.join(tiles)}</ul>
@@ -790,7 +928,7 @@ def build_index(skills: List[dict], taxonomy: dict, workflows: List[dict]) -> No
   </div>
 </section>
 """
-    page("/", SITE_NAME, "Open-source AI skills that run behavioral-science methods for social-sector teams. From The Agency Fund and Irrational Labs.", body, page_class="page-index")
+    page("/", SITE_NAME, f"{TAGLINE} From The Agency Fund and Irrational Labs.", body, page_class="page-index")
 
 
 def build_catalog(skills: List[dict], taxonomy: dict) -> None:
@@ -821,8 +959,11 @@ def build_catalog(skills: List[dict], taxonomy: dict) -> None:
         members = [s for s in skills if group_of(s) == sid]
         if not members:
             continue
-        blocks.append(f'<div class="group-head" data-stage="{E(sid)}"><h2>{stage_icon(sid)}{E(label)} <span>{len(members)}</span></h2><p>{E(desc)}</p></div>')
-        blocks.extend(card(s, stage_labels) for s in members)
+        cards = "\n".join(card(s, stage_labels) for s in members)
+        blocks.append(
+            f'<section class="group" data-stage="{E(sid)}" aria-labelledby="g-{E(sid)}">'
+            f'<div class="group-head"><h2 id="g-{E(sid)}">{stage_icon(sid)}<span class="group-l">{E(label)}</span> <span class="group-n">{len(members)}</span></h2><p>{E(desc)}</p></div>\n'
+            f'{cards}</section>')
     body = f"""
 <section id="catalog" aria-labelledby="catalog-h">
 <div class="page-head page-head-row">
@@ -998,11 +1139,9 @@ def build_workflows(workflows: List[dict], skills: List[dict], taxonomy: dict) -
     stage_labels = label_map(taxonomy.get("stages"))
     items = []
     for w in workflows:
-        meta = ", ".join(x for x in [", ".join(w["authors"]), ORG_NAMES.get(w["org"], w["org"])] if x)
         items.append(
             f'<li class="wf-item"><h2><a href="{E(w["url"])}">{E(w["title"])}</a></h2>'
-            f'<p>{E(workflow_lead(w))}</p>{workflow_chips(w["skills"], by_name)}'
-            f'<p class="wf-meta">{len(w["skills"])} skills. {E(meta)}</p></li>')
+            f'<p>{E(workflow_lead(w))}</p>{workflow_graph(w, by_name)}</li>')
     items.append(
         '<li class="wf-item wf-build"><h2><a href="/workflows/build/">Build your own</a></h2>'
         '<p>Pick skills from the list or the map, put them in order, and get the install commands and a prompt to run them.</p>'
@@ -1032,8 +1171,8 @@ def build_workflows(workflows: List[dict], skills: List[dict], taxonomy: dict) -
 <p class="muted">{E(meta)}. <a href="{E(w['source_url'])}" rel="noopener">Source</a></p>
 </header>
 <section class="wf-overview" aria-labelledby="wf-skills-h">
-  <h2 id="wf-skills-h">Skills, in order</h2>
-  {workflow_chips(w['skills'], by_name)}
+  <h2 id="wf-skills-h">How the skills connect</h2>
+  {workflow_graph(w, by_name)}
   <div class="wf-actions">
     <button class="btn" type="button" data-load-workflow="{E(','.join(names))}">{ICONS['plus']} Open in builder</button>
   </div>
@@ -1366,7 +1505,7 @@ def build_data(skills: List[dict], workflows: List[dict], taxonomy: dict) -> Non
     lines = [
         f"# {SITE_NAME}",
         "",
-        "An open library of atomic AI skills for behavioral science, by The Agency Fund and Irrational Labs.",
+        f"{TAGLINE} By The Agency Fund and Irrational Labs.",
         f"Repository: {GITHUB}",
         f"Catalog JSON: {SITE_URL}/data/catalog.json",
         "",

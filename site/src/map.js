@@ -1,5 +1,5 @@
 /* Behavioral Science Skills: the skill map (/map/). No dependencies.
-   Columns are the seven stages plus the meta-skills. An arrow from A to B means
+   Columns are the meta-skills, then the seven stages. An arrow from A to B means
    A produces something B takes in, as the skills declare in produces/consumes.
    Hover previews a skill's links. Click pins it: the highlight stays put, a panel
    lists what it feeds and what feeds it, and ?skill=<name> makes it linkable.
@@ -48,9 +48,9 @@
     var outOf = {}, inTo = {};
     edges.forEach(function (e) { (outOf[e.from] = outOf[e.from] || []).push(e); (inTo[e.to] = inTo[e.to] || []).push(e); });
 
-    // Columns
+    // Columns: the meta-skills first, then the stages in project order.
     var cols = data.stages.filter(function (s) { return s.id !== "other"; }).map(function (s) { return { id: s.id, label: s.label }; });
-    cols.push({ id: "other", label: "Meta-skills" });
+    cols.unshift({ id: "other", label: "Meta-skills" });
     var inner = document.createElement("div");
     inner.className = "map-inner";
     var svg = document.createElementNS(svgNS, "svg");
@@ -70,8 +70,7 @@
         b.type = "button";
         b.className = "map-node";
         b.setAttribute("data-id", s.name);
-        b.title = s.name;
-        b.innerHTML = "<b>" + esc(s.title) + "</b>";
+        b.innerHTML = "<b>" + esc(s.title) + "</b><code>" + esc(s.name) + "</code>";
         c.appendChild(b);
         nodes[s.name] = b;
       });

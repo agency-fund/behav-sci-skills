@@ -149,3 +149,19 @@ Propose and upload keep their text; only the eyebrows go.
 | llms.txt line | - name [stage, type, status]: what it does — URL | - name [stage, type, status]: what it does (URL) |
 
 Stage descriptions in `taxonomy.yaml` stay as they are.
+
+## Round 4 changes (2026-10-13, from Michael's markup)
+
+Strings changed after the table above was applied. "Before" is the round 3 text.
+
+| Where | Before | After |
+|---|---|---|
+| Home lede, footer blurb, home meta description, llms.txt summary | (three different sentences, see above) | An open-source library of atomic AI skills that bring actionable behavioral-science methods into your everyday work. |
+| Home workflows h2 | Or follow a workflow | Connect multiple skills to create a workflow |
+| Footer licenses | Skills are CC BY 4.0 and code is MIT. See the licenses. | Skill content is licensed CC BY 4.0 and code is MIT. (each license name links to its file) |
+| Footer links | agency.fund, irrationallabs.com | The Agency Fund, Irrational Labs |
+| Footer theme | Match system theme | (removed; toggling back to the system's theme clears the saved choice) |
+| Workflows list, per workflow | 5 skills. Zezhen Wu, The Agency Fund | (removed; the workflow graph replaces it) |
+| Workflow page h2 | Skills, in order | How the skills connect |
+| Workflow graph hint | (new) | Point at a step to see what it passes on and where your team decides. Dashed steps are optional. |
+| Workflow graph caption labels | (new) | Step N, Runs one of, Passes on, You decide, Optional |

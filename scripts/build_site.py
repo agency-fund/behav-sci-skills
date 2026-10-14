@@ -1782,78 +1782,96 @@ def build_about(skills: List[dict]) -> None:
         """A skill name in code, linked to its page when the skill exists."""
         return f'<a href="{E(by_name[n]["url"])}"><code>{E(n)}</code></a>' if n in by_name else f"<code>{E(n)}</code>"
 
-    def principle(title: str, short: str, body: str, practice: str) -> str:
-        """One principle card: the title and a one-line summary, opening to the reasoning and what it changes."""
-        return (f'<details class="panel principle"><summary><h3>{title}</h3><p>{short}</p>'
+    def principle(title: str, body: str, practice: str) -> str:
+        """One principle card, closed by default: the memorandum's heading, opening to its paragraph as written and where the library carries it out."""
+        return (f'<details class="panel principle"><summary><h3>{title}</h3>'
                 f'<span class="principle-more" aria-hidden="true"><span class="more">Read more</span><span class="less">Show less</span></span></summary>'
-                f'<div class="principle-body">{body}<p class="principle-practice"><b>In the library:</b> {practice}</p></div></details>')
+                f'<div class="principle-body"><p>{body}</p><p class="principle-practice"><b>In the library:</b> {practice}</p></div></details>')
 
+    # Word for word from the TAF and IL memorandum of understanding, section 2. Edit the
+    # memorandum first if the wording needs to change.
     principles = "\n    ".join([
         principle(
-            "Skills don't replace experts",
-            "They give practitioners a starting point, and say when the work needs a specialist.",
-            "<p>People ask a fair question about projects like this one: are you pulling expert judgment into a machine so organizations can stop paying experts? Our answer is no, and the library is designed around it.</p>"
-            "<p>Most behavioral scientists work at universities, tech companies, and international organizations. Most organizations running programs at scale in low- and middle-income countries have never had access to one. We support NGOs hiring their own; the library is for the people doing the work in the meantime. For experts, a skill is a way to get a method used correctly many times over, by people they'll never meet.</p>"
-            "<p>The skills stick to narrow problems with fairly clear, technical answers. That's on purpose. The judgment calls in a real project stay with people.</p>",
-            "every skill ends with “When to bring in a specialist”, and the navigator checks those points before it recommends anything."),
+            "Contributors can set their own terms.",
+            "We provide a general guideline to help skill authors contribute to the library. However, contributors have full control over what they’d like to put in the skills, whether it involves publicly available information or knowledge that is traditionally more gated. Contributions are also version-controlled, so that a contributor can revise or deprecate their own skill.",
+            "authors are credited in the skill's metadata and changelog, including when a maintainer submits it for them. Deprecated skills stay in the history, so projects that cited them can still find them."),
         principle(
-            "Skills ask before they answer",
-            "Each skill asks about your situation before it produces anything.",
-            "<p>A technique applied without context is how a good method ends up in the wrong program. Colleagues who read the first plan for this library asked for skills that behave like a Socratic tutor, asking questions instead of handing down prescriptions. We agreed.</p>"
-            "<p>The questions are also how you learn the method. They are the ones an expert would ask you before giving advice.</p>",
-            f"every skill has a “Before you start” section listing its questions and what it assumes when you can't answer one. {sl('besci-skill-creator')} interviews skill authors the same way."),
+            "Use of the library should follow open science guidelines.",
+            "Because each skill is a fixed, versioned artifact, teams can document which skills and which workflows (i.e., combinations of skills) they used in a project, much like registering analysis code on OSF. This also aligns with Busara’s <a href=\"https://busara.global/our-works/the-sifa-tool-for-a-statement-of-intellectual-fellowship-and-accountability/\" rel=\"noopener\">SIFA</a> framework for documenting how humans and AI contribute to the production of knowledge. We encourage both skill authors and users to follow these principles when creating, adapting, or applying skills in their work.",
+            f"see <a href=\"{GITHUB}/blob/main/docs/citing.md\" rel=\"noopener\">how to cite a skill</a>, and use {sl('draft-sifa-declaration')} to write the SIFA statement for your project."),
         principle(
-            "Evidence is honest",
-            "No invented citations, and a plain note on where the evidence comes from.",
-            "<p>Much of behavioral science was built on WEIRD samples: Western, educated, industrialized, rich, and democratic. A nudge that worked with US college students may do nothing for farmers in Ethiopia, and a skill shouldn't pretend otherwise. Replication is uneven too. Some well-known effects shrank or disappeared when other labs tried them again.</p>",
-            "each skill states which populations its evidence comes from and how well it has replicated, and its page shows the WEIRD status. A source nobody could check is marked “unverified, author to confirm” instead of being cited as if it were."),
+            "Skills do not replace experts.",
+            "Most behavioral scientists work at universities, tech companies, international organizations, or some NGOs. Most of the organizations running programs at scale in low- and middle-income countries have never had access to one. Along with broader support on hiring behavioral scientists for NGOs, we also want to build interim support for NGO practitioners who currently play a role adjacent to a behavioral scientist. A skill library is especially an amplifier for this group: it gives a practitioner a good starting point and helps them learn by doing. We also intend to build a skill module that informs users when the question has outgrown the tool, and they should bring in a specialist. For the experts themselves, skills are a distribution channel for their methods and a way to make their frameworks applied repeatedly. For both groups, we want to be explicit that the library is meant to provide practical value where that value is useful, not to replace human behavioral scientists. The skills are deliberately designed around atomic problems with relatively clear and technical solutions, while real-world research projects involve complex judgments that cannot be fully captured by any AI skills or AI models.",
+            f"every skill ends with “When to bring in a specialist”, and the {sl('besci-navigator')} checks those points before it recommends anything."),
         principle(
-            "Contributors set their own terms",
-            "Authors decide what goes in a skill, and can revise or retire it.",
-            "<p>We publish a guideline and a template. What goes into a skill is still the author's call, whether that's material already in the public domain or know-how usually shared only through training or consulting.</p>",
-            "authors are credited in the skill's metadata and changelog, including when a maintainer submits it for them. An author can revise or deprecate their own skill at any time. Deprecated skills stay in the history, so projects that cited them can still find them."),
-        principle(
-            "Use follows open science",
-            "Skills are versioned, so a project can cite exactly what it used.",
-            "<p>Each skill is a fixed, numbered version. A team can record which skills and workflows it used, much as researchers register analysis code on OSF. This fits Busara's <a href=\"https://busara.global/our-works/the-sifa-tool-for-a-statement-of-intellectual-fellowship-and-accountability/\" rel=\"noopener\">SIFA framework</a> (a Statement of Intellectual Fellowship and Accountability), which records how people and AI each contributed to a piece of work. We ask authors and users to follow it.</p>",
-            f"see <a href=\"{GITHUB}/blob/main/docs/citing.md\" rel=\"noopener\">how to cite a skill</a>, and use {sl('draft-sifa-declaration')} to write the statement for your project."),
-        principle(
-            "You know what's shared",
-            "Users and contributors are told what goes to an AI provider.",
-            "<p>The skills are open, but running one inside a commercial AI product sends what you type, and any files you attach, to the company behind it. That can be data it couldn't get any other way. Don't paste personal or confidential information until you understand the product's terms. Contributors should know that when someone uses their skill, its text goes to whichever AI model that person runs.</p>"
-            "<p>If you'd rather not put your work through an AI system at all, use the library as a set of guides: read the skill, learn the method, and apply it by hand.</p>",
+            "Users and contributors need to be informed about what may be shared with AI providers.",
+            "Although the skills themselves are open-source artifacts, using them inside a commercial AI product may require users to provide a third-party model provider with data that it otherwise could not access from users. Therefore, we should clearly disclose this distinction to both users and contributors, encourage users not to provide sensitive personal or proprietary information without understanding the terms of the AI product they are using, and make clear to contributors that their published skill content may be processed by third-party AI systems when others use it. For users who are uncomfortable transferring their work or expertise into an AI system through skills, the library should also be usable as an educational resource where users can use the skills to learn and practice a method, then apply the underlying procedure in their own non-AI workflows.",
             f"the <a href=\"{GITHUB}/blob/main/DISCLOSURE.md\" rel=\"noopener\">disclosure</a> spells this out, and every skill can be read on this site without installing anything."),
     ])
+
+    # Who it is for: the four personas, each with an avatar (site/src/assets/personas/).
+    # app.js brings the avatars in once and replays each one's gesture on hover or tap.
+    personas = [
+        ("learner", "Learners", "People in the public who want to learn about behavioral science."),
+        ("practitioner", "Practitioners", "Program designers, product managers, designers, and others who practice behavioral science in their work without formal training in it."),
+        ("researcher", "Industry researchers", "UX researchers, M&amp;E researchers, and others who use behavioral science in their research without having formally studied it."),
+        ("expert", "Experts", "Behavioral scientists and academic scholars whose job is to study and practice behavioral science."),
+    ]
+    persona_cards = "\n    ".join(
+        f'<div class="persona persona-{key}" style="--i:{i}">{inline_svg(f"personas/{key}.svg")}<h3>{name}</h3><p>{who}</p></div>'
+        for i, (key, name, who) in enumerate(personas))
+
+    # How it's run: the broad stages from the memorandum's roadmap. The current stage is
+    # the last one whose start date has passed when the site is built.
+    stages = [
+        (dt.date(2026, 9, 1), "Fall 2026", "Build and test in-house", "The Agency Fund and Irrational Labs write the first skills and try the review process on their own work."),
+        (dt.date(2026, 12, 1), "December 2026", "Launch the first version", "The first library of skills goes public, with tutorials and webinars to help people start."),
+        (dt.date(2027, 1, 1), "2027", "Co-build with experts", "Invited experts and applied organizations add their own skills and workflows, and rate the ones already here."),
+        (None, "Later", "Open to everyone", "Anyone can propose a skill, and a wider coalition of behavioral science groups helps curate the library."),
+    ]
+    today = dt.date.today()
+    now = max((i for i, s in enumerate(stages) if s[0] and s[0] <= today), default=0)
+    rm_items = []
+    for i, (_, when, title, text) in enumerate(stages):
+        state = "is-done" if i < now else "is-now" if i == now else "is-next"
+        current = ' aria-current="step"' if i == now else ""
+        here = ' <span class="rm-here">Now</span>' if i == now else ""
+        rm_items.append(f'<li class="rm-step {state}" style="--i:{i}"{current}><span class="rm-track" aria-hidden="true"><span class="rm-seg"></span><span class="rm-dot"></span></span>'
+                        f'<p class="rm-when">{when}{here}</p><h3>{title}</h3><p>{text}</p></li>')
+    roadmap = "\n    ".join(rm_items)
 
     body = f"""
 <div class="page-head">
   <h1>About</h1>
-  <p class="lede">The Behavioral Science Skills Library is a free, open-source set of AI skills for people doing behavioral-science work in the social sector. Each skill covers one method. <a href="https://agency.fund" rel="noopener">The Agency Fund</a> and <a href="https://irrationallabs.com" rel="noopener">Irrational Labs</a> build it and own it together.</p>
+  <p class="lede">The Behavioral Science Skills Library is a free, open-source set of AI skills for people who want to practice behavioral science with the help of AI in their daily work. The initial skills and workflows were co-developed by <a href="https://agency.fund" rel="noopener">The Agency Fund</a> and <a href="https://irrationallabs.com" rel="noopener">Irrational Labs</a>. We aim to build this library toward a broader community-driven resource with inputs and contributions from both scholars and practictioners. </p>
 </div>
 
 <section class="section about-first">
   <h2>Why we built this</h2>
   <div class="prose">
-    <p>Take a researcher at an NGO that runs a large program in a low- or middle-income country. The next phase starts in six weeks. They know how to do research, but they don't have a PhD student's time for a literature review, and most journals sit behind paywalls. So they learn the way most practitioners do: run into a problem, look for something that might help, try it, adjust.</p>
-    <p>The methods they need mostly exist already. They're scattered across hundreds of papers, toolkits, and textbooks in several fields. You read about a clever technique once, and six months later, designing an intervention, you remember there was something, somewhere, but not where or how it worked. An outside expert helps, but first they have to learn your program and its constraints before their advice gets specific.</p>
-    <p>So we're breaking behavioral science into small methods an AI assistant can run with you: define the behavior, find the barriers, pick a technique, design a measure, plan a test. Someone who knows each method writes it down once, with its sources, and a maintainer reviews it. When the problem comes up in your work, you call the skill, and it works on your program instead of a textbook example. We'd rather every team didn't have to invent its own framework, or trust whichever expert it happened to reach.</p>
+    <p>Imagine a researcher or a practitioner at an NGO running a large program in a low- or middle-income country. The next phase starts in six weeks. They want to draw on behavioral science in their intervention design, but don't have months to read across disciplines, chase down papers behind paywalls, or consult an expert every time a new question comes up. So they do what most practitioners do: define the problem, look for something useful, try it, and adjust as they go. </p>
+    
+    <p>The process might look "quick and dirty" from an eye of an academic scholar, but that's just the reality of working in the real world: you have to tinker through rapid trials and errors. Given the circumstances, our big question is: how do we help these people, knowing what we know and what the field knows about behavioral science as a discipline?</p>
+
+    <p>Part of the problem is that the knowledge is scattered. Similar ideas appear under different names across psychology, economics, education, public health, and other fields, each with its own preferred theories and frameworks. Walter Mischel wrote about this <a href="https://www.psychologicalscience.org/observer/the-toothbrush-problem" target="_blank" rel="noopener noreferrer">"toothbrush problem"</a> many years ago: scholars (and psychologists especially) tend to treat other people's theories like toothbrushes, something they'd rather not use. The result is a lot of parallel work and reinventing the wheel. You remember reading about a useful method somewhere, but can't quite recall where or how it worked. Or you develop your own approach without realizing that someone else has already solved a similar problem.</p>
+
+    <p>We don't think everyone needs to agree on one grand theory of human behavior. But at the level of practical tasks, there is a lot we can share: defining a target behavior, identifying barriers, choosing an intervention technique, designing a measure, or planning a test.</p>
+    
+    <p>Today's AI is incredibly useful for applying these methods. But as you probably notice in your own work, AI can very easily go astray without proper guidance. Hence, we're turning these common methods into small, structured, and reusable skills that an AI assistant can work through with its users. Each skill is documented with its sources, reviewed by someone familiar with the method, and designed to be applied to a real problem.</p>
+
+    <p>We're also taking an open-source approach because we don't think this library should belong to any one team or organization. We hope researchers, practitioners, and others in the behavioral science community will contribute methods, review one another's work, and improve the skills over time. If we can agree on and share even some of the basic ways we work, we can spend less time reinventing methods and more time learning from and building on each other's work.</p>
   </div>
 </section>
 
 <section class="section">
-  <h2>Who it's for</h2>
+  <h2>Who it is for</h2>
   <div class="prose">
-    <p>In the social sector, having a behavioral scientist or an academic in the room is a luxury. Most organizations have never had one. And the work doesn't wait for one: the funder wants a plan, the program launches next quarter, and somebody has to decide what to do now. We built the library for the people who carry that work anyway. With an AI assistant and methods written down by people who have used them, they can do more of it themselves, and get more capable at it rather than more dependent.</p>
+    <p>In the social sector, having a behavioral scientist or an academic scholar in the room is a luxury. Most organizations have never had one. Even in the tech sector, many teams do not have a designated user experience researcher (UXR) playing the role of a behavioral scientist. We built the library for the people who carry that line of work in their teams. With an AI assistant and skills written down by experts and other practitioners, they can do more of it themselves, get more capable at it, and know when to bring in a specialist for tasks beyond the scope of the AI skills.</p>
+    <p>The skills won't cover every problem, and we wish to be open about this. Each one handles a narrow task with a fairly clear answer, while real projects are full of judgment calls that no skill or AI model can make for you. Hence, every skill ends with a section called “When to bring in a specialist”, which names the situations that need one, the kind of expert to bring in, and what to hand them. When you reach that point, we at The Agency Fund and Irrational Labs, or other organizations like <a href="https://findmybesci.com" rel="noopener">Find My BeSci</a> can also help match your organizations with behavioral scientists.</p>
   </div>
-  <div class="two-col audience">
-    <div class="panel"><h3>Program and product teams</h3><p>Program designers, product managers, and M&amp;E leads at NGOs and social enterprises who need a behavioral diagnosis, a message, or a measure, and have nobody to ask.</p></div>
-    <div class="panel"><h3>People already doing the work</h3><p>Researchers and analysts in roles next to a behavioral scientist's: running the interviews, drafting the survey, writing the pilot plan. A skill gives you a solid first draft and teaches the method as you use it.</p></div>
-    <div class="panel"><h3>Behavioral scientists and academics</h3><p>A skill gets your method used properly by people you'll never meet. You can write one, review one, or hand the routine parts of your own projects to the library.</p></div>
-    <div class="panel"><h3>Anyone learning the methods</h3><p>Every skill reads as a worked guide to its method. You don't need an AI tool to learn from it.</p></div>
-  </div>
-  <div class="note expert-note">
-    <p><strong>You will often need an expert, and the skills say so.</strong> They cover narrow problems with fairly clear answers. Real projects are full of judgment calls that no skill or model can make for you. Every skill ends with a section called “When to bring in a specialist”: the situations that call for one, such as a clinical behavior or a study with children, which kind of expert to bring in, and what to hand them. The {sl("besci-navigator")} checks those points before it recommends anything.</p>
-    <p>A pattern that works: get an expert's advice at the start, use the skills to draft and iterate, and get the expert's sign-off before anything reaches participants. To find someone, <a href="https://findmybesci.com" rel="noopener">Find My BeSci</a> matches organizations with behavioral scientists.</p>
+  <p class="prose">The library is built for four kinds of people, and all of them can benefit from using it.</p>
+  <div class="personas">
+    {persona_cards}
   </div>
 </section>
 
@@ -1861,8 +1879,8 @@ def build_about(skills: List[dict]) -> None:
   <h2>What's in a skill</h2>
   <div class="prose">
     <p>A skill is a folder of instructions, scripts, and resources that an AI assistant loads when a task calls for it. That's Anthropic's definition. They introduced the format for Claude (see <a href="https://support.claude.com/en/articles/12512176-what-are-skills" rel="noopener">What are skills?</a> and <a href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills" rel="noopener">Equipping agents for the real world with Agent Skills</a>), and it is now an <a href="https://agentskills.io" rel="noopener">open standard</a> that many other AI tools read. Until your request matches a skill, the assistant sees only its name and a short description. When it matches, the assistant loads the full instructions and follows them.</p>
-    <p>Our bar for a useful skill is higher than a good prompt. It covers one method, narrow enough to state in a sentence without “and”. It asks about your situation before it produces anything. It names the framework or evidence it is built on, and how far that evidence has been tested outside WEIRD samples. It says when not to use it, how it tends to go wrong, and when to bring in a specialist. Its output follows a fixed template, so you know what you'll get. And it carries a version number and a changelog, so a project can cite exactly what it used.</p>
-    <p>Take the saying-is-believing technique, where students write advice to future students and come to believe the message themselves. How to run it well is published, but spread across several papers. {sl("draft-belonging-story")} puts that procedure in one place, so the assistant helps you adapt it to your students instead of improvising from memory. A manual or a checklist does the same job. The difference is that a skill runs, inside the assistant you already use, on your program.</p>
+    <p>Our bar for a useful skill is higher than a good prompt. It covers one method, narrow enough to state in a sentence without “and”. It asks about your situation before it produces anything. It names the framework or evidence it is built on, and how far that evidence has been tested outside <a href="https://pubmed.ncbi.nlm.nih.gov/20550733/" target="_blank" rel="noopener noreferrer">"Western, Educated, Industrialized, Rich, and Democratic (WEIRD)"</a> samples. It says when not to use it, how it tends to go wrong, and when to bring in a specialist. Its output follows a fixed template, so you know what you'll get. And it carries a version number and a changelog, so a project can cite exactly what it used.</p>
+    <p>Take the saying-is-believing technique, where students write advice to future students and come to believe the message themselves. How to run it well is published, but spread across several papers. {sl("draft-belonging-story")} puts that procedure in one place, so the assistant helps you adapt it to your students instead of improvising from its own memory of the internet. A manual or a checklist does the same job. The difference is that a skill runs, inside the assistant you already use, on your own context.</p>
   </div>
   <div class="two-col">
     <div class="panel">
@@ -1887,8 +1905,8 @@ def build_about(skills: List[dict]) -> None:
 </section>
 
 <section class="section">
-  <h2>Skills for using the library</h2>
-  <p class="prose">Three skills look after the library itself. If you don't know which skill you need, start with the navigator.</p>
+  <h2>Meta-skills for using the library</h2>
+  <p class="prose">If you don't know which skill you need, start with the navigator. If you want to examine how good a particular skill is, use the evaluator. IF you want to create a new skill, use the skill creator.</p>
   <div class="two-col">
     {meta_panel("besci-navigator", "Recommends which skills to run, in what order.")}
     {meta_panel("besci-eval", "Checks a skill's structure, triggering, and output quality.")}
@@ -1898,7 +1916,7 @@ def build_about(skills: List[dict]) -> None:
 
 <section class="section">
   <h2>Principles</h2>
-  <p class="prose">The Agency Fund and Irrational Labs wrote these into the agreement behind the library. Open a card for the reasoning and for what each one changes in practice.</p>
+  <p class="prose">We expect a fair question from users who have concerns about AI as a medium for knowledge dissemination: <em>are you extracting expert judgment into a machine so that organizations can stop paying for experts?</em> We wish to make sure that we address this concern and implement suitable guidelines when building the first version of the library.</p>
   <div class="principles">
     {principles}
   </div>
@@ -1907,10 +1925,13 @@ def build_about(skills: List[dict]) -> None:
 <section class="section">
   <h2>How it's run</h2>
   <div class="prose">
-    <p>The Agency Fund and Irrational Labs co-own the library, and neither can relicense, rename, or shut it down without the other. Code is MIT and skill content is CC BY 4.0. A maintainer reviews every skill before it's published, and we aim for that reviewer to come from the other organization, so a skill gets read by someone outside its author's team. After that, staff at both organizations can file an expert review from any skill's page, and anyone can rate it.</p>
-    <p>Contribution opens in stages. Through November 2026 only TAF and IL staff contribute, so we can test the process on ourselves. In early 2027 we invite experts and applied organizations to add skills and full workflows. After that, anyone can open a pull request. Later we'd like navigators built on other frameworks, for instance one that starts from people's aspirations and agency rather than from a target behavior.</p>
-    <p>The details are in <a href="{GITHUB}/blob/main/GOVERNANCE.md" rel="noopener">GOVERNANCE.md</a> and <a href="{GITHUB}/blob/main/MAINTAINERS.md" rel="noopener">MAINTAINERS.md</a>, and decisions already made are recorded as <a href="{GITHUB}/tree/main/docs/adr" rel="noopener">architecture decision records</a>.</p>
+    <p>The Agency Fund and Irrational Labs co-own the library, and neither can relicense, rename, or shut it down without the other. The code is MIT-licensed and the skill content is CC BY 4.0, so you can use, adapt, and share a skill as long as you credit its authors. A maintainer reviews every skill before it is published, and the maintainers re-check published skills every quarter. Once a skill is live, anyone can rate it from its page, and staff at both organizations can file an expert review.</p>
+    <p>The library opens up in stages, from the two founding teams to anyone who wants to contribute.</p>
   </div>
+  <ol class="roadmap">
+    {roadmap}
+  </ol>
+  <p class="prose">Roles and rules are in <a href="{GITHUB}/blob/main/GOVERNANCE.md" rel="noopener">GOVERNANCE.md</a> and <a href="{GITHUB}/blob/main/MAINTAINERS.md" rel="noopener">MAINTAINERS.md</a>.</p>
   <p class="hero-actions"><a class="btn-secondary" href="{GITHUB}" rel="noopener">{ICONS['github']} Source on GitHub</a> <a class="btn-secondary" href="/contribute/">Contribute a skill</a></p>
 </section>
 """

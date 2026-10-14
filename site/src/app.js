@@ -2,8 +2,9 @@
    Theme (follows the system until the reader picks), mobile menu, copy buttons,
    tabs (install options, and the file tabs on skill pages), the home page's
    hero demo and stage flow chart, workflow graphs (Workflows pages and home
-   tiles), catalog search and filters with URL sync, TOC scroll-spy, the propose
-   form (prefilled GitHub issue), and the upload form (/api/submit).
+   tiles), the About page's persona avatars and roadmap, catalog search and
+   filters with URL sync, TOC scroll-spy, the propose form (prefilled GitHub
+   issue), and the upload form (/api/submit).
    The skill map is in map.js; the workflow tray and builder are in workflow.js. */
 (function () {
   "use strict";
@@ -377,6 +378,48 @@
         if (!fStarted) { fStarted = true; fTimer = setTimeout(fNext, 3200); }
       }, { threshold: 0.3 }).observe(flow);
     }
+  }
+
+
+  /* ---------- About page: persona avatars and the roadmap ----------
+     The avatars rise into their circles the first time the row scrolls into
+     view, then each plays its gesture once. Pointing at or tapping a persona
+     plays it again. The roadmap's line draws up to the current stage once. */
+  var personas = $(".personas");
+  if (personas) {
+    var pCards = $$(".persona", personas);
+    var gesture = function (c) {
+      if (c._busy) return;
+      c._busy = true;
+      c.classList.remove("play");
+      void c.offsetWidth;
+      c.classList.add("play");
+      setTimeout(function () { c._busy = false; }, 1200);
+    };
+    pCards.forEach(function (c) {
+      c.addEventListener("mouseenter", function () { gesture(c); });
+      c.addEventListener("click", function () { gesture(c); });
+    });
+    if (!reduceMotion && "IntersectionObserver" in window) {
+      personas.classList.add("is-js");
+      var pio = new IntersectionObserver(function (es) {
+        if (!es[0].isIntersecting) return;
+        pio.disconnect();
+        personas.classList.add("in-view");
+        pCards.forEach(function (c, i) { setTimeout(function () { gesture(c); }, 800 + i * 160); });
+      }, { threshold: 0.35 });
+      pio.observe(personas);
+    }
+  }
+  var roadmap = $(".roadmap");
+  if (roadmap && !reduceMotion && "IntersectionObserver" in window) {
+    roadmap.classList.add("is-js");
+    var rio = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return;
+      rio.disconnect();
+      roadmap.classList.add("in-view");
+    }, { threshold: 0.4 });
+    rio.observe(roadmap);
   }
 
 

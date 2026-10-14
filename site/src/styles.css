@@ -1001,38 +1001,114 @@ html:not(.js) .skill-actions, html:not(.js) .skill-actions-note { display: none;
 /* About page */
 .section.about-first { margin-top: 2.5rem; }
 .page-about .prose p { margin: 0 0 0.9rem; }
-.audience { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
-.audience .panel p { margin: 0; }
-.expert-note { max-width: 70ch; border-left: 3px solid var(--accent); }
-.expert-note p { margin: 0 0 0.6rem; }
-.expert-note p:last-child { margin-bottom: 0; }
-/* Principles: a full-width accordion, so an opened card has room to read. The body
-   lines up under the summary column. */
+/* Who it is for: four personas, each a flat character drawn for this site
+   (site/src/assets/personas/) in a gold circle, with a name and one line on who
+   they are. The characters rise into their circles once when the row scrolls into
+   view (app.js sets .is-js, then .in-view); pointing at or tapping one adds .play:
+   it bounces, blinks, and moves its prop. */
+.personas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.5rem; margin: 1.75rem 0 0.5rem; }
+.persona { text-align: center; cursor: default; }
+.persona h3 { margin: 0.9rem 0 0.3rem; }
+.persona p { margin: 0 auto; max-width: 28ch; color: var(--fg-2); font-size: 0.9375rem; line-height: 1.6; }
+.av { display: block; width: 112px; height: 112px; margin: 0 auto; border-radius: 50%; clip-path: circle(50%); background: #fbefc8; transition: background-color var(--t); }
+.persona:hover .av { background: #f8e3a4; }
+:root[data-theme="dark"] .av { background: #e8dbb0; }
+:root[data-theme="dark"] .persona:hover .av { background: #f0dc9c; }
+.av g[class] { transform-box: fill-box; transform-origin: 50% 50%; }
+.av .av-fig { transform-origin: 50% 100%; }
+.av .av-page { transform-origin: 0% 50%; }
+.av .av-note { transform-origin: 50% 100%; }
+.av .av-glass { transform-origin: 80% 90%; }
+.av .av-cap { transform-origin: 50% 80%; }
+.av .av-tassel { transform-origin: 50% 0%; }
+.av-check path { stroke-dasharray: 1 1; }
+.personas.is-js .av-fig { transform: translateY(45%); }
+.personas.is-js .av-spark { opacity: 0; }
+.personas.in-view .av-fig { transform: none; transition: transform 0.75s cubic-bezier(0.2, 0.9, 0.25, 1.12) calc(var(--i) * 130ms); }
+.personas.in-view .av-spark { opacity: 1; transition: opacity 0.4s ease calc(var(--i) * 130ms + 500ms); }
+.persona.play .av-fig { animation: av-bounce 0.7s ease-out; }
+.persona.play .av-eyes { animation: av-blink 0.3s ease 0.3s; }
+.persona.play .av-star { animation: av-twinkle 0.8s ease-in-out; }
+.persona.play .av-star + .av-star { animation-delay: 0.15s; }
+.persona.play .av-page { animation: av-flip 0.9s cubic-bezier(0.45, 0, 0.25, 1); }
+.persona.play .av-note { animation: av-wiggle 0.8s ease-in-out; }
+.persona.play .av-check path { animation: av-draw 0.45s ease 0.35s both; }
+.persona.play .av-glass { animation: av-scan 1s ease-in-out; }
+.persona.play .av-cap { animation: av-tip 0.6s ease-out; }
+.persona.play .av-tassel { animation: av-swing 1.2s ease-out; }
+@keyframes av-bounce { 25% { transform: scale(1.04, 0.95); } 50% { transform: scale(0.97, 1.05); } 75% { transform: scale(1.01, 0.99); } }
+@keyframes av-blink { 50% { transform: scaleY(0.1); } }
+@keyframes av-twinkle { 40% { transform: scale(1.35) rotate(25deg); } }
+@keyframes av-flip { to { transform: scaleX(-1); } }
+@keyframes av-wiggle { 20% { transform: rotate(-9deg); } 45% { transform: rotate(7deg); } 70% { transform: rotate(-4deg); } }
+@keyframes av-draw { from { stroke-dashoffset: 1; } }
+@keyframes av-scan { 30% { transform: translate(-5%, -3%) rotate(-8deg); } 65% { transform: translate(3%, 1%) rotate(5deg); } }
+@keyframes av-tip { 35% { transform: rotate(-6deg); } }
+@keyframes av-swing { 18% { transform: rotate(24deg); } 42% { transform: rotate(-15deg); } 66% { transform: rotate(8deg); } 86% { transform: rotate(-3deg); } }
+@media (max-width: 900px) { .personas { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 2rem; } }
+@media (max-width: 420px) {
+  .personas { gap: 1.5rem 1rem; }
+  .av { width: 96px; height: 96px; }
+  .persona p { font-size: 0.875rem; line-height: 1.5; }
+}
+
+/* Principles: the memorandum's four, word for word. Each card shows its heading and
+   opens to the full text; all start closed. */
 .principles { display: grid; gap: 0.5rem; margin: 1.5rem 0; }
 .principle { padding: 0; }
-.principle summary, .principle-body { display: grid; grid-template-columns: minmax(12rem, 17rem) minmax(0, 1fr) auto; column-gap: 1.75rem; }
-.principle summary { list-style: none; align-items: baseline; padding: 1.1rem 1.4rem; cursor: pointer; border-radius: var(--r-card); }
+.principle summary { display: flex; align-items: baseline; justify-content: space-between; gap: 1.5rem; padding: 1.1rem 1.4rem; list-style: none; cursor: pointer; border-radius: var(--r-card); }
 .principle summary::-webkit-details-marker { display: none; }
 .principle summary:focus-visible { outline-offset: -2px; }
 .principle summary h3 { margin: 0; }
-.principle summary p { margin: 0; max-width: 62ch; }
 .principle-more { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.875rem; font-weight: 500; color: var(--fg-2); white-space: nowrap; }
 .principle-more::after { content: ""; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform var(--t-fast); }
 .principle summary:hover .principle-more { color: var(--fg); }
 .principle .less, .principle[open] .more { display: none; }
 .principle[open] .less { display: inline; }
 .principle[open] .principle-more::after { transform: translateY(1px) rotate(-135deg); }
-.principle-body { padding: 0 1.4rem 1.3rem; }
-.principle-body > * { grid-column: 2; max-width: 62ch; }
-.principle-body p { margin: 0 0 0.7rem; }
-.principle-practice { margin: 0.5rem 0 0 !important; padding: 0.7rem 0.85rem; border-radius: var(--r-row); background: var(--surface-2); }
+.principle-body { max-width: 72ch; padding: 0 1.4rem 1.3rem; }
+.principle-body p { margin: 0 0 0.7rem; font-size: 1rem; }
+.principle-body .principle-practice { margin: 0.2rem 0 0; padding: 0.7rem 0.85rem; border-radius: var(--r-row); background: var(--surface-2); font-size: 0.9375rem; }
 .principle-practice b { color: var(--fg); font-weight: 600; }
+
+/* Roadmap: the broad stages in a row. A gold line runs through the finished stages
+   to the current one and stops partway; later stages sit on a dashed line. When it
+   scrolls into view (.is-js, then .in-view) the line draws stage by stage. Stacks
+   vertically on narrow screens. */
+.roadmap { list-style: none; padding: 0; margin: 2rem 0 1.25rem; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.rm-step { position: relative; padding: 2.1rem 1.5rem 0 0; }
+.rm-track { position: absolute; top: 0; left: 0; right: 0; height: 14px; }
+.rm-track::before { content: ""; position: absolute; left: 0; right: 0; top: 6px; border-top: 2px dashed var(--border-2); }
+.rm-step:last-child .rm-track::before { -webkit-mask-image: linear-gradient(90deg, #000 20%, transparent 85%); mask-image: linear-gradient(90deg, #000 20%, transparent 85%); }
+.rm-seg { position: absolute; left: 0; top: 6px; width: 100%; height: 2px; background: var(--edge-hot); transform-origin: left center; }
+.rm-step.is-now .rm-seg { width: 45%; }
+.rm-step.is-next .rm-seg { display: none; }
+.rm-dot { position: absolute; left: 0; top: 0; width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--border-3); background: var(--surface); }
+.rm-step.is-done .rm-dot { background: var(--edge-hot); border-color: var(--edge-hot); }
+.rm-step.is-now .rm-dot { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft); }
+.rm-dot::after { content: ""; position: absolute; inset: -2px; border-radius: 50%; border: 2px solid var(--accent); opacity: 0; }
+.rm-when { display: flex; align-items: center; gap: 0.5rem; margin: 0 0 0.3rem; font-family: var(--mono); font-size: 0.8125rem; color: var(--fg-3); }
+.rm-here { padding: 0.05rem 0.55rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent-text); font-family: var(--font); font-size: 0.75rem; font-weight: 600; }
+.rm-step h3 { margin: 0 0 0.35rem; font-size: 1.0625rem; }
+.rm-step p:last-child { margin: 0; color: var(--fg-2); font-size: 0.9375rem; }
+.roadmap.is-js .rm-seg { transform: scaleX(0); }
+.roadmap.is-js .rm-dot { transform: scale(0); }
+.roadmap.is-js .rm-step > :not(.rm-track) { opacity: 0; transform: translateY(8px); }
+.roadmap.in-view .rm-seg { transform: none; transition: transform 0.5s linear calc(var(--i) * 0.5s + 0.2s); }
+.roadmap.in-view .rm-dot { transform: none; transition: transform 0.4s cubic-bezier(0.3, 1.5, 0.5, 1) calc(var(--i) * 0.5s); }
+.roadmap.in-view .rm-step > :not(.rm-track) { opacity: 1; transform: none; transition: opacity 0.5s ease calc(var(--i) * 0.5s + 0.1s), transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--i) * 0.5s + 0.1s); }
+.roadmap.in-view .is-now .rm-dot::after { animation: rm-ping 1.4s ease-out calc(var(--i) * 0.5s + 0.4s) 2; }
+@keyframes rm-ping { from { opacity: 0.7; transform: scale(1); } to { opacity: 0; transform: scale(2.6); } }
 @media (max-width: 720px) {
-  .principle summary { grid-template-columns: minmax(0, 1fr) auto; row-gap: 0.3rem; }
-  .principle summary p { grid-column: 1 / -1; grid-row: 2; }
-  .principle summary .principle-more { grid-column: 2; grid-row: 1; }
-  .principle-body { grid-template-columns: minmax(0, 1fr); }
-  .principle-body > * { grid-column: 1; }
+  .roadmap { grid-template-columns: minmax(0, 1fr); }
+  .rm-step { padding: 0 0 1.6rem 2.1rem; }
+  .rm-step:last-child { padding-bottom: 0; }
+  .rm-track { top: 0.3rem; bottom: -0.3rem; right: auto; width: 14px; height: auto; }
+  .rm-track::before { left: 6px; right: auto; top: 0; bottom: 0; border-top: 0; border-left: 2px dashed var(--border-2); }
+  .rm-step:last-child .rm-track::before { -webkit-mask-image: linear-gradient(180deg, #000 20%, transparent 85%); mask-image: linear-gradient(180deg, #000 20%, transparent 85%); }
+  .rm-seg { left: 6px; top: 0; width: 2px; height: 100%; transform-origin: center top; }
+  .rm-step.is-now .rm-seg { width: 2px; height: 45%; }
+  .roadmap.is-js:not(.in-view) .rm-seg { transform: scaleY(0); }
 }
 .empty-state { border: 1px dashed var(--border-2); border-radius: var(--r-card); padding: 1.5rem; color: var(--fg-2); margin: 1.5rem 0; }
 @media (max-width: 640px) { .compare { grid-template-columns: 1fr; } }

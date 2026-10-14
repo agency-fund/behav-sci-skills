@@ -58,3 +58,15 @@ _Avoid_: drop zone, staging, uploads
 **Contributor key**:
 The shared secret given to TAF and IL staff that lets the website's upload form open a pull request on their behalf during Phase 1.
 _Avoid_: password, token, API key
+
+**Maintainer review**:
+A maintainer's review of a pull request that changes a skill. Only a maintainer review sets `status: published` and `reviewed_by`.
+_Avoid_: approval, sign-off
+
+**Expert review**:
+Written feedback on one version of a skill from an approved reviewer (for now, staff at The Agency Fund and Irrational Labs), filed from the skill's page as a GitHub issue labeled `expert-review`. A later version answers it by citing the issue in its CHANGELOG entry. It never changes `status` or `reviewed_by`.
+_Avoid_: review (alone), comment, ticket
+
+**Rating**:
+One to five stars, with an optional public comment, that anyone signed in with Google gives a skill. One per person per skill; rating again replaces it.
+_Avoid_: review, score, vote

@@ -31,8 +31,6 @@ import shutil
 import sys
 import tempfile
 import time
-import urllib.error
-import urllib.request
 from datetime import datetime, timezone
 from email.parser import BytesParser
 from email.policy import default as email_default_policy
@@ -43,12 +41,13 @@ from typing import Dict, List, Optional, Tuple
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _CANDIDATE_ROOTS = [os.path.dirname(_HERE), os.getcwd(), "/var/task"]
 REPO_ROOT = next((r for r in _CANDIDATE_ROOTS if os.path.exists(os.path.join(r, "taxonomy.yaml"))), os.path.dirname(_HERE))
-for p in (REPO_ROOT, os.path.join(REPO_ROOT, "scripts")):
+for p in (_HERE, REPO_ROOT, os.path.join(REPO_ROOT, "scripts")):
     if p not in sys.path:
         sys.path.insert(0, p)
 
 import besci_validate as bv  # noqa: E402
 import skillzip  # noqa: E402
+from _common import GitHub  # noqa: E402  (shared with the review functions)
 
 TAXONOMY_PATH = os.path.join(REPO_ROOT, "taxonomy.yaml")
 MAX_UPLOAD_BYTES = skillzip.MAX_ARCHIVE_BYTES
@@ -187,93 +186,6 @@ def pr_body(skill: bv.Skill, fields: Dict[str, str], report: str) -> str:
     if site:
         lines.append(f"Contribution guide: {site}/contribute")
     return "\n".join(lines)
-
-
-# ---------------------------------------------------------------------------
-# GitHub REST client (urllib only)
-# ---------------------------------------------------------------------------
-
-class GitHub:
-    def __init__(self, token: str, repo: str):
-        self.token = token
-        self.repo = repo
-        self.base = f"https://api.github.com/repos/{repo}"
-
-    def _req(self, method: str, path: str, payload: Optional[dict] = None, absolute: bool = False) -> Tuple[int, dict]:
-        url = path if absolute else self.base + path
-        data = json.dumps(payload).encode("utf-8") if payload is not None else None
-        req = urllib.request.Request(url, data=data, method=method)
-        req.add_header("Authorization", f"Bearer {self.token}")
-        req.add_header("Accept", "application/vnd.github+json")
-        req.add_header("X-GitHub-Api-Version", "2022-11-28")
-        req.add_header("User-Agent", "besci-skills-submit")
-        if data is not None:
-            req.add_header("Content-Type", "application/json")
-        try:
-            with urllib.request.urlopen(req, timeout=25) as resp:
-                raw = resp.read()
-                return resp.status, (json.loads(raw) if raw else {})
-        except urllib.error.HTTPError as exc:
-            raw = exc.read()
-            try:
-                body = json.loads(raw) if raw else {}
-            except json.JSONDecodeError:
-                body = {"message": raw.decode("utf-8", errors="replace")[:500]}
-            return exc.code, body
-
-    def base_sha(self, branch: str) -> str:
-        status, body = self._req("GET", f"/git/ref/heads/{branch}")
-        if status != 200:
-            raise RuntimeError(f"Could not read base branch '{branch}': {body.get('message', status)}")
-        return body["object"]["sha"]
-
-    def branch_exists(self, name: str) -> bool:
-        status, _ = self._req("GET", f"/git/ref/heads/{name}")
-        return status == 200
-
-    def create_branch(self, name: str, sha: str) -> None:
-        status, body = self._req("POST", "/git/refs", {"ref": f"refs/heads/{name}", "sha": sha})
-        if status not in (200, 201):
-            raise RuntimeError(f"Could not create branch: {body.get('message', status)}")
-
-    def create_blob_b64(self, b64: str) -> str:
-        status, body = self._req("POST", "/git/blobs", {"content": b64, "encoding": "base64"})
-        if status not in (200, 201):
-            raise RuntimeError(f"Could not upload a file: {body.get('message', status)}")
-        return body["sha"]
-
-    def create_tree(self, base_tree: str, entries: List[Dict[str, str]]) -> str:
-        resolved = []
-        for e in entries:
-            if "_binary_b64" in e:
-                resolved.append({"path": e["path"], "mode": e["mode"], "type": "blob", "sha": self.create_blob_b64(e["_binary_b64"])})
-            else:
-                resolved.append({"path": e["path"], "mode": e["mode"], "type": "blob", "content": e["content"]})
-        status, body = self._req("POST", "/git/trees", {"base_tree": base_tree, "tree": resolved})
-        if status not in (200, 201):
-            raise RuntimeError(f"Could not build the commit tree: {body.get('message', status)}")
-        return body["sha"]
-
-    def create_commit(self, message: str, tree: str, parent: str) -> str:
-        status, body = self._req("POST", "/git/commits", {"message": message, "tree": tree, "parents": [parent]})
-        if status not in (200, 201):
-            raise RuntimeError(f"Could not create the commit: {body.get('message', status)}")
-        return body["sha"]
-
-    def update_ref(self, branch: str, sha: str) -> None:
-        status, body = self._req("PATCH", f"/git/refs/heads/{branch}", {"sha": sha, "force": False})
-        if status != 200:
-            raise RuntimeError(f"Could not move the branch: {body.get('message', status)}")
-
-    def open_pr(self, title: str, head: str, base: str, body_md: str) -> dict:
-        status, body = self._req("POST", "/pulls", {"title": title, "head": head, "base": base, "body": body_md})
-        if status not in (200, 201):
-            raise RuntimeError(f"Could not open the pull request: {body.get('message', status)}")
-        return body
-
-    def add_labels(self, number: int, labels: List[str]) -> None:
-        # Best effort: missing labels are created lazily by GitHub only for repo admins; ignore failures.
-        self._req("POST", f"/issues/{number}/labels", {"labels": labels})
 
 
 def open_pull_request(skill: bv.Skill, skill_dir: str, fields: Dict[str, str], report: str) -> str:

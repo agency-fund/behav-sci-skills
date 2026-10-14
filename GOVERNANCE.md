@@ -39,6 +39,10 @@ Who reviews what is decided at the monthly maintainers' meeting. A skill may be 
 
 Cross-organization review (a reviewer from the other organization than the author) is the stated intent of the MOU and remains the norm; it is not enforced by automation.
 
+## Expert reviews
+
+Staff of either organization can file an expert review from any skill's page; it lands as a GitHub issue labeled `expert-review` (see `docs/expert-reviews.md`). Expert reviews are input to the author and maintainers. They do not publish a skill or set `reviewed_by`; only the merge review above does. Maintainers triage open expert reviews at the monthly meeting, and each one ends in a new version that cites it in its CHANGELOG, or a reply and the `review:declined` label.
+
 ## Changing the rules
 
 - Changes to the skill specification (`docs/skill-spec.md`) and the validator require agreement from maintainers of both organizations, recorded in the pull request.

@@ -11,7 +11,7 @@ body:
     id: name
     attributes:
       label: Proposed name
-      description: Verb-first, kebab-case. Examples - decompose-comb-barriers, define-key-behavior, draft-values-affirmation-exercise.
+      description: Verb-first, kebab-case. Examples - decompose-comb-barriers, define-key-behavior, draft-values-affirmation.
       placeholder: draft-something-specific
     validations:
       required: true

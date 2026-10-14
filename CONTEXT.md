@@ -1,6 +1,6 @@
 # Behavioral Science Skills Library
 
-A curated, open-source library of small, single-purpose AI skills that put behavioral-science methods into the daily work of social-sector teams. Co-owned by The Agency Fund and Irrational Labs.
+An open-source library of atomic AI skills that bring actionable behavioral-science methods into everyday work. Co-owned by The Agency Fund and Irrational Labs.
 
 ## Language
 

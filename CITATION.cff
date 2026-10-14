@@ -7,7 +7,9 @@ authors:
   - name: "Irrational Labs"
 repository-code: "https://github.com/agency-fund/besci-skills"
 url: "https://besci-skills.vercel.app"
-license: "CC-BY-4.0 (content), MIT (code)"
+license:
+  - CC-BY-4.0
+  - MIT
 version: "0.1.0"
 date-released: "2026-10-08"
 keywords:
@@ -16,4 +18,4 @@ keywords:
   - intervention design
   - measurement
   - evaluation
-abstract: "A curated, open-source library of small, single-purpose AI skills that put behavioral-science methods into the daily work of social-sector teams. Each skill is a versioned, cited procedure with a trigger rule, an output template, known failure modes, an escalation point, and test cases."
+abstract: "An open-source library of atomic AI skills that bring actionable behavioral-science methods into everyday work. Skill content is CC BY 4.0 and code is MIT. Each skill is a versioned, cited procedure with a trigger rule, an output template, known failure modes, an escalation point, and test cases."

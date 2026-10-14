@@ -53,7 +53,7 @@ CI runs the validator, the sync check, the site build, packaging, and test_feedb
 | `api/` | the site's server functions on Vercel: upload (`submit.py`), Google sign-in (`auth.py`), expert reviews (`review.py`, `reviews.py`), ratings (`ratings.py`), database check (`health.py`); `_common.py` and `_review_issue.py` are shared code; `schema.sql` is the Supabase schema |
 | `.claude-plugin/` | marketplace and plugin manifests; one plugin, all skills |
 | `.github/` | CI, inbox unpack, snapshot commit, release zips, PR and issue templates |
-| `docs/` | spec, taxonomy, citing, deployment, ADRs, plan and session records |
+| `docs/` | spec, taxonomy, citing, deployment, expert reviews, analytics, ADRs; `docs/plan/` keeps the evidence dossier the October 2026 skills cite |
 
 ## Adding a skill as an agent
 

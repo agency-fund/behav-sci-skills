@@ -4,5 +4,5 @@ contact_links:
     url: https://github.com/agency-fund/besci-skills/blob/main/CONTRIBUTING.md
     about: The three ways to get a skill into the library, and the rules a skill must follow.
   - name: Upload a skill on the website
-    url: https://besci-skills.vercel.app/contribute
+    url: https://besci-skills.vercel.app/upload/
     about: For TAF and IL staff with a contributor key. No git needed.

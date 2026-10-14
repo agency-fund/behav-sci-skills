@@ -4,7 +4,7 @@ People who review and merge pull requests, hold admin rights, and keep the libra
 
 | Name | Organization | GitHub | Role | Since |
 |---|---|---|---|---|
-| Zezhen (Michael) Wu | The Agency Fund | _handle_ | Admin, maintainer, lead for skill development | 2026-10 |
+| Zezhen (Michael) Wu | The Agency Fund | @littlehifive | Admin, maintainer, lead for skill development | 2026-10 |
 | Chaning Jang | Irrational Labs | _handle_ | Admin, maintainer, lead for adoption and outreach | 2026-10 |
 | Joe Speed | Irrational Labs | @joe-speed | Maintainer | 2026-10 |
 

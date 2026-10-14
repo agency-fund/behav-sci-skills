@@ -997,6 +997,43 @@ html:not(.js) .skill-actions, html:not(.js) .skill-actions-note { display: none;
 .tree { font-family: var(--mono); font-size: 0.8125rem; line-height: 1.6; color: var(--fg-2); margin: 0; overflow-x: auto; }
 .tree b { color: var(--fg); font-weight: 500; }
 .tree .c { color: var(--fg-3); }
+
+/* About page */
+.section.about-first { margin-top: 2.5rem; }
+.page-about .prose p { margin: 0 0 0.9rem; }
+.audience { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.audience .panel p { margin: 0; }
+.expert-note { max-width: 70ch; border-left: 3px solid var(--accent); }
+.expert-note p { margin: 0 0 0.6rem; }
+.expert-note p:last-child { margin-bottom: 0; }
+/* Principles: a full-width accordion, so an opened card has room to read. The body
+   lines up under the summary column. */
+.principles { display: grid; gap: 0.5rem; margin: 1.5rem 0; }
+.principle { padding: 0; }
+.principle summary, .principle-body { display: grid; grid-template-columns: minmax(12rem, 17rem) minmax(0, 1fr) auto; column-gap: 1.75rem; }
+.principle summary { list-style: none; align-items: baseline; padding: 1.1rem 1.4rem; cursor: pointer; border-radius: var(--r-card); }
+.principle summary::-webkit-details-marker { display: none; }
+.principle summary:focus-visible { outline-offset: -2px; }
+.principle summary h3 { margin: 0; }
+.principle summary p { margin: 0; max-width: 62ch; }
+.principle-more { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.875rem; font-weight: 500; color: var(--fg-2); white-space: nowrap; }
+.principle-more::after { content: ""; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform var(--t-fast); }
+.principle summary:hover .principle-more { color: var(--fg); }
+.principle .less, .principle[open] .more { display: none; }
+.principle[open] .less { display: inline; }
+.principle[open] .principle-more::after { transform: translateY(1px) rotate(-135deg); }
+.principle-body { padding: 0 1.4rem 1.3rem; }
+.principle-body > * { grid-column: 2; max-width: 62ch; }
+.principle-body p { margin: 0 0 0.7rem; }
+.principle-practice { margin: 0.5rem 0 0 !important; padding: 0.7rem 0.85rem; border-radius: var(--r-row); background: var(--surface-2); }
+.principle-practice b { color: var(--fg); font-weight: 600; }
+@media (max-width: 720px) {
+  .principle summary { grid-template-columns: minmax(0, 1fr) auto; row-gap: 0.3rem; }
+  .principle summary p { grid-column: 1 / -1; grid-row: 2; }
+  .principle summary .principle-more { grid-column: 2; grid-row: 1; }
+  .principle-body { grid-template-columns: minmax(0, 1fr); }
+  .principle-body > * { grid-column: 1; }
+}
 .empty-state { border: 1px dashed var(--border-2); border-radius: var(--r-card); padding: 1.5rem; color: var(--fg-2); margin: 1.5rem 0; }
 @media (max-width: 640px) { .compare { grid-template-columns: 1fr; } }
 

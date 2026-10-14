@@ -280,6 +280,8 @@ dl { margin: 0; }
 .demo-tab { font: inherit; font-size: 0.875rem; font-weight: 500; padding: 0.35rem 0.85rem; border: 0; border-radius: 999px; background: transparent; color: var(--fg-2); cursor: pointer; white-space: nowrap; transition: color var(--t-fast), background var(--t-fast); }
 .demo-tab:hover { color: var(--fg); }
 .demo-tab[aria-selected="true"] { background: var(--surface-3); color: var(--fg); }
+.demo-tab-short { display: none; }
+@media (max-width: 560px) { .demo-tab { padding: 0.35rem 0.65rem; } .demo-tab-long { display: none; } .demo-tab-short { display: inline; } }
 .demo-screen[hidden] { display: none; }
 .demo-body { height: 440px; overflow-y: auto; padding: 1.1rem 1.2rem 1.3rem; font-size: 0.9375rem; line-height: 1.55; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--border-2) transparent; }
 .demo-body:focus-visible { outline-offset: -2px; }

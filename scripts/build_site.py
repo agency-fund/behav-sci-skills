@@ -704,20 +704,41 @@ def tool_line(name: str, sub: str, by_name: Dict[str, dict], wf: Optional[int] =
 
 
 def hero_demo(by_name: Dict[str, dict]) -> str:
-    """Two scripted, illustrative conversations: one skill, and one workflow.
+    """Three scripted, illustrative conversations: a meta-skill, an atomic skill, and a workflow.
 
     The full transcript is in the HTML; app.js only reveals it step by step,
     so readers without JavaScript or with reduced motion see all of it."""
     sk = lambda n: skill_link(n, by_name)  # noqa: E731
     clip = ICONS["clip"]
+    meta_panel = f"""
+  <div class="demo-screen" role="tabpanel" id="demo-p-meta" aria-labelledby="demo-t-meta" data-demo-panel="meta">
+    <div class="demo-body" tabindex="0" aria-label="Illustrative conversation using besci-navigator">
+      <div class="t-user" data-step="type"><span class="t-text">How do I measure agency in my program?</span></div>
+      {tool_line("besci-navigator", f"Read the catalog: {len(by_name)} skills", by_name)}
+      <div class="t-ai" data-step="say"><p>Your goal is still open, so I'm in <b>guide mode</b>: a few questions first, one at a time. Say “just tell me which skill” to skip ahead.</p>
+        <p class="t-ask">What does the program do, for whom, and what would more agency look like?<small>Suggested: name one decision you want participants to make more on their own.</small></p></div>
+      <div class="t-user" data-step="type"><span class="t-text">We run a voice advisory line for smallholder farmers in Ethiopia. We want farmers to make their own planting decisions with confidence, not just follow the advice.</span></div>
+      <div class="t-ai" data-step="say"><p class="t-ask">Has your team written down what agency means for these farmers, and what data do you collect now?<small>Suggested: no written definition yet; call logs and a yearly household survey.</small></p></div>
+      <div class="t-user" data-step="type"><span class="t-text">No definition yet. We have call logs, and a household survey at baseline in March.</span></div>
+      <div class="t-ai" data-step="say"><p>That is enough to recommend skills. Switching to <b>route mode</b>: three skills, in this order.</p></div>
+      <div class="t-block" data-step="rows">
+        <div class="t-cap" data-row>Recommended skills</div>
+        <div class="t-hyp" data-row><span class="t-tag">1 · Define</span><span>{sk("define-agency-construct")}: nobody has written down what agency means for these farmers, and measures chosen before that measure “agency” in name only.<small>Have ready: a paragraph on the advisory line and two or three things a confident farmer does differently.</small></span></div>
+        <div class="t-hyp" data-row><span class="t-tag">2 · Measure</span><span>{sk("plan-agency-measurement")}: turns the definition into measures in the calls and outside them. Your call logs already count as data.<small>Have ready: the definition from step 1, and how much room the March survey has.</small></span></div>
+        <div class="t-hyp" data-row><span class="t-tag">3 · Measure</span><span>{sk("draft-survey-items")}: writes the baseline questions so farmers with little schooling can answer them when an enumerator reads them aloud.<small>Have ready: the measurement plan from step 2.</small></span></div>
+      </div>
+      <div class="t-ai" data-step="say"><p><b>Next action:</b> start {sk("define-agency-construct")}. I can pass it what you have told me so far.</p></div>
+    </div>
+  </div>"""
+
     skill_panel = f"""
-  <div class="demo-screen" role="tabpanel" id="demo-p-skill" aria-labelledby="demo-t-skill" data-demo-panel="skill">
+  <div class="demo-screen" role="tabpanel" id="demo-p-skill" aria-labelledby="demo-t-skill" data-demo-panel="skill" hidden>
     <div class="demo-body" tabindex="0" aria-label="Illustrative conversation using plan-agency-measurement">
-      <div class="t-user" data-step="type"><span class="t-text">Here is the agency definition for Pitch Partner, our WhatsApp AI mentor for student entrepreneurs. How should we measure agency?</span><span class="t-file">{clip}agency-definition.md</span></div>
+      <div class="t-user" data-step="type"><span class="t-text">I'm working on a WhatsApp AI mentor that coaches secondary-school students on business skills. How should I measure student agency? We define it as students forming, testing, and revising their own business ideas, and knowing when the mentor's help is worth taking. More in the attached file.</span><span class="t-file">{clip}agency-definition.md</span></div>
       {tool_line("plan-agency-measurement", "Loaded skill", by_name)}
       <div class="t-ai" data-step="say"><p>Your definition focuses on three constructs: <b>entrepreneurial self-efficacy</b>, <b>revising after feedback</b>, and <b>calibrated reliance on the mentor</b>. One question before I plan anything:</p>
         <p class="t-ask">What decision will this plan support?<small>Suggested: choosing between the mentor's direct mode and a questions-first mode.</small></p></div>
-      <div class="t-user" data-step="type"><span class="t-text">The mode decision, and maybe a funder report later. Students consented to chat analysis. We can run a 20-minute survey in weeks 1 and 12.</span></div>
+      <div class="t-user" data-step="type"><span class="t-text">The mode decision. Students consented to chat analysis, and we can run a 20-minute survey in weeks 1 and 12.</span></div>
       <div class="t-ai" data-step="say"><p>Here is the plan on the 2x2 agency framework. <i>(have)</i> marks data you already collect.</p></div>
       <div class="t-block" data-step="rows">
         <div class="t-cap" data-row>Measures on the 2x2 agency framework</div>
@@ -740,7 +761,7 @@ def hero_demo(by_name: Dict[str, dict]) -> str:
           <li data-row><b>Later:</b> {sk("design-evidential-experiment")} for the direct versus questions-first comparison</li>
         </ol>
       </div>
-      <p class="t-note t-warn" data-step="note">Bring in a psychometrician before #2 backs a funder claim.</p>
+      <div class="t-ai" data-step="say"><p class="t-ask">Want me to search for published entrepreneurial self-efficacy scales for #2 now? I will quote only items I can open.<small>Suggested: yes, limited to scales tested with secondary-school students.</small></p></div>
     </div>
   </div>"""
 
@@ -758,48 +779,55 @@ def hero_demo(by_name: Dict[str, dict]) -> str:
   <div class="demo-screen" role="tabpanel" id="demo-p-workflow" aria-labelledby="demo-t-workflow" data-demo-panel="workflow" hidden>
     <ol class="wf-rail" aria-label="Workflow steps">{rail}</ol>
     <div class="demo-body" tabindex="0" aria-label="Illustrative conversation running the diagnose-to-pilot workflow">
-      <div class="t-user" data-step="type"><span class="t-text">Women in our antenatal program in Malawi get iron-folate tablets, but most do not take them daily. Where do we start?</span></div>
+      <div class="t-user" data-step="type"><span class="t-text">Rural women in India learn about kangaroo mother care in a hospital health education session, but few report practicing it at home. Why? I want to study this qualitatively with a small sample, then design the most promising intervention.</span></div>
       {tool_line("besci-navigator", "Matched workflow: diagnose-to-pilot", by_name)}
-      <div class="t-ai" data-step="say"><p>This fits <a href="/workflows/diagnose-to-pilot/">From a vague goal to a piloted intervention</a>. I will run five skills in order and stop wherever you need to decide.</p></div>
+      <div class="t-ai" data-step="say"><p>This fits <a href="/workflows/diagnose-to-pilot/">From a vague goal to a piloted intervention</a>. I will run its first five skills, from the behavior to a chosen lever, and stop wherever you need to decide.</p></div>
       {tool_line("define-key-behavior", "Step 1 of 5", by_name, 0)}
-      <div class="t-ai" data-step="say"><p><b>Target behavior:</b> enrolled women take one tablet every day, from the first antenatal visit until delivery. Observable by pill count at each visit.</p></div>
+      <div class="t-ai" data-step="say"><p><b>Target behavior:</b> after discharge, mothers of low-birthweight babies hold the baby skin-to-skin at home every day, for the hours the nurses advised, through the first four weeks. Observable on the ASHA's home visits and a daily tick-sheet.</p></div>
       {tool_line("decompose-comb-barriers", "Step 2 of 5", by_name, 1)}
       <div class="t-block" data-step="rows">
         <div class="t-cap" data-row>Barrier hypotheses, by COM-B</div>
-        <div class="t-hyp" data-row><span class="t-tag">C, psychological</span><span>Forgetting: nothing in the day cues the tablet<small>Ask: “What were you doing the last time you took one?”</small></span></div>
-        <div class="t-hyp" data-row><span class="t-tag">M, automatic</span><span>Nausea after taking it<small>Ask: “How did you feel after the last tablet?”</small></span></div>
-        <div class="t-hyp" data-row><span class="t-tag">O, social</span><span>Husbands distrust “hospital medicine”<small>Ask: “What does your husband say about the tablets?”</small></span></div>
+        <div class="t-hyp" data-row><span class="t-tag">O, social</span><span>The mother-in-law thinks a bare baby will catch cold<small>Ask: “What did your mother-in-law say the first time you held the baby this way?”</small></span></div>
+        <div class="t-hyp" data-row><span class="t-tag">O, physical</span><span>Housework leaves no long stretch to sit with the baby<small>Ask: “Walk me through yesterday. When could you have held the baby?”</small></span></div>
+        <div class="t-hyp" data-row><span class="t-tag">M, reflective</span><span>KMC feels like a hospital treatment that ended at discharge<small>Ask: “Why do you think the nurses asked you to do this?”</small></span></div>
       </div>
       <p class="t-note t-decide" data-step="note">You decide: which hypotheses go to a field round?</p>
-      <div class="t-user" data-step="type"><span class="t-text">Test all three. We can run 20 interviews.</span></div>
+      <div class="t-user" data-step="type"><span class="t-text">All three. We can interview about 12 mothers and a few mothers-in-law.</span></div>
       {tool_line("draft-tdf-interview-guide", "Step 3 of 5", by_name, 2)}
-      <div class="t-ai" data-step="say"><p>Interview guide ready: questions mapped to the TDF domains behind each hypothesis, with probes and notes for reading aloud in Chichewa.</p></div>
-      <p class="t-gap" data-step="note">Three weeks of interviews later</p>
-      <div class="t-user" data-step="type"><span class="t-text">Notes from 20 interviews with women and 6 with health surveillance assistants.</span><span class="t-file">{clip}interview-notes.docx</span></div>
+      <div class="t-ai" data-step="say"><p>Interview guide ready: questions mapped to the TDF domains behind each hypothesis, a short module for mothers-in-law, and probes to read aloud in Hindi. Interview each mother on her own; what she says about the family changes when her mother-in-law is in the room.</p></div>
+      <p class="t-gap" data-step="note">Four weeks of interviews later</p>
+      <div class="t-user" data-step="type"><span class="t-text">Notes from 12 mothers and 5 mothers-in-law in six villages.</span><span class="t-file">{clip}interview-notes.docx</span></div>
       {tool_line("synthesize-interview-findings", "Step 4 of 5", by_name, 3)}
       <div class="t-block" data-step="rows">
         <div class="t-cap" data-row>Barrier diagnosis</div>
-        <div class="t-res is-yes" data-row><span>Forgetting</span><b>supported</b><small>14 of 20 women</small></div>
-        <div class="t-res is-yes" data-row><span>Nausea</span><b>supported</b><small>9 of 20</small></div>
-        <div class="t-res is-no" data-row><span>Husbands' distrust</span><b>not supported</b><small>2 of 20</small></div>
+        <div class="t-res is-yes" data-row><span>Mother-in-law's worry about cold</span><b>supported</b><small>9 of 12</small></div>
+        <div class="t-res is-yes" data-row><span>No long stretch of time</span><b>supported</b><small>7 of 12</small></div>
+        <div class="t-res is-no" data-row><span>“Only for the hospital”</span><b>not supported</b><small>2 of 12</small></div>
       </div>
       {tool_line("select-intervention-levers", "Step 5 of 5", by_name, 4)}
-      <div class="t-ai" data-step="say"><p><b>Barrier:</b> forgetting. <b>Function:</b> Environmental restructuring, the strongest on APEASE. <b>Technique:</b> a prompt or cue: tie the tablet to morning tea. Kept for the next pilot: Education on managing nausea.</p>
-        <p>Next, {sk("design-habit-anchor")} drafts the cue and {sk("design-pilot-feasibility-study")} plans a four-clinic pilot.</p></div>
+      <div class="t-ai" data-step="say"><p><b>Barrier:</b> the mother-in-law's worry about cold, which also keeps her from taking a turn. <b>Function:</b> Enablement, the strongest on APEASE. <b>Technique:</b> practical social support: on the first home visit, the ASHA shows the mother-in-law how to hold the baby skin-to-skin too, so the hours are shared. Kept for the next pilot: Modelling, a short video of local grandmothers doing it.</p>
+        <p>Next, {sk("draft-lever-content")} writes the ASHA's home-visit script and {sk("design-pilot-feasibility-study")} plans a pilot in ten villages.</p></div>
     </div>
   </div>"""
 
+    tabs = [("meta", "Use a meta-skill", "Meta-skill"), ("skill", "Use an atomic skill", "Atomic skill"), ("workflow", "Run a workflow", "Workflow")]
+    # Short labels replace the long ones on narrow screens, where three long tabs overflow.
+    tab_html = "\n      ".join(
+        f'<button class="demo-tab" type="button" role="tab" id="demo-t-{k}" aria-controls="demo-p-{k}" '
+        + ('aria-selected="true"' if i == 0 else 'aria-selected="false" tabindex="-1"')
+        + f' data-demo-tab="{k}"><span class="demo-tab-long">{E(long)}</span><span class="demo-tab-short">{E(short)}</span></button>'
+        for i, (k, long, short) in enumerate(tabs))
     return f"""<div class="demo reveal" style="--i:2" data-demo>
   <div class="demo-bar">
     <div class="demo-tabs" role="tablist" aria-label="Example">
-      <button class="demo-tab" type="button" role="tab" id="demo-t-skill" aria-controls="demo-p-skill" aria-selected="true" data-demo-tab="skill">Use a skill</button>
-      <button class="demo-tab" type="button" role="tab" id="demo-t-workflow" aria-controls="demo-p-workflow" aria-selected="false" tabindex="-1" data-demo-tab="workflow">Run a workflow</button>
+      {tab_html}
     </div>
-  </div>{skill_panel}{wf_panel}
+  </div>{meta_panel}{skill_panel}{wf_panel}
   <div class="demo-foot">
     <span>Example conversation, shortened. The program and the numbers are made up.</span>
     <span class="demo-foot-actions">
-      <a href="/skills/plan-agency-measurement/" data-demo-for="skill">Open this skill {ICONS['arrow']}</a>
+      <a href="/skills/besci-navigator/" data-demo-for="meta">Open this skill {ICONS['arrow']}</a>
+      <a href="/skills/plan-agency-measurement/" data-demo-for="skill" hidden>Open this skill {ICONS['arrow']}</a>
       <a href="/workflows/diagnose-to-pilot/" data-demo-for="workflow" hidden>Open this workflow {ICONS['arrow']}</a>
       <button class="demo-replay" type="button" hidden>{ICONS['replay']} Replay</button>
     </span>
@@ -1043,10 +1071,10 @@ def build_catalog(skills: List[dict], taxonomy: dict) -> None:
             f'data-desc="{E(stage_descs.get(sid, ""))}" aria-pressed="false">{stage_icon(sid)}{E(str(st.get("label")))} <span>{counts.get(sid, 0)}</span></button>')
     stage_default = "Pick a stage to narrow the list."
 
-    # Cards grouped by stage, in flow order, with the meta-skills last. The group
-    # headings hide when a filter or search is on and the grid goes flat.
-    groups = [(str(st.get("id")), str(st.get("label")), stage_descs.get(str(st.get("id")), "")) for st in stages]
-    groups.append(("other", "Meta-skills", "Skills that help you use the library itself."))
+    # Cards grouped by stage, meta-skills first, then the stages in flow order. The
+    # group headings hide when a filter or search is on and the grid goes flat.
+    groups = [("other", "Meta-skills", "Skills that help you use the library itself.")]
+    groups += [(str(st.get("id")), str(st.get("label")), stage_descs.get(str(st.get("id")), "")) for st in stages]
     def group_of(s: dict) -> str:
         return "other" if s["type"] == "meta" or s["stage"] in ("", "other") else s["stage"]
 

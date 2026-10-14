@@ -1,9 +1,33 @@
 # Analytics
 
-The site has no analytics provider yet. Two things are in place so that adding one later is a small change:
+Three things are in place:
 
-- server-side events in the database
-- a client-side hook that does nothing until a provider is plugged in
+- page views, counted by Vercel Web Analytics on its free plan
+- server-side events in the database: who signs in, reviews, and rates
+- a client-side hook for engagement events that does nothing until a provider is plugged in
+
+## Page views: Vercel Web Analytics
+
+`scripts/build_site.py` adds Vercel's script to every page when the site is built on Vercel. It is turned on once in the Vercel dashboard (docs/deployment.md, section 12). It sets no cookies; Vercel tells visitors apart by a hash of the request that it discards after 24 hours.
+
+**Where to look.** Vercel, the `besci-skills` project, Analytics. Leave the environment on Production.
+
+| Question | Panel |
+|---|---|
+| How many people visit, and is it growing? | Visitors and Page Views at the top; change the period at the top right |
+| Which skills get read? | Pages. Every skill is `/skills/<name>/` and every workflow `/workflows/<name>/`; the panel's full view lists every page, not just the top few. |
+| Where do readers come from (Slack, GitHub, search, a newsletter)? | Referrers. Visits from links in Slack or email often show as no referrer. |
+| Who reads, roughly? | Countries, Devices, Operating Systems, Browsers |
+| Which links are broken? | Pages, filtered to paths that don't exist. The 404 page is counted at the address the reader tried. |
+| What does one skill's audience look like? | Click its row in Pages; the other panels then show only that page's visitors. |
+
+**What it counts.** One page view per page load. Switching tabs on a skill page, typing in the catalog search, and changing filters don't count, because they change the address with `replaceState`, which Vercel's script ignores. Bots that announce themselves as automated are left out.
+
+**What it doesn't do.** No time on page, scroll depth, tab views, copy clicks, or downloads. Those are custom events, which need the Pro plan (below). No data older than one month: the free plan's reporting window is a month, so note anything you want to keep, for example a monthly screenshot of the Pages panel.
+
+**The monthly allowance.** 50,000 events a month, shared by every project on the same Vercel account. Past it, Vercel stops collecting after a three-day grace period until the next month. Vercel emails when usage gets close; check Usage in the account settings.
+
+**Leaving out your own visits.** Open any page with `?notrack=1` added to the address, for example `https://besci-skills.vercel.app/?notrack=1`. That browser's visits stop counting until you open a page with `?notrack=0`. It is stored in the browser, so do it once per browser and device. Maintainers should do this so their checking doesn't inflate the numbers.
 
 ## Server-side: who signs in, reviews, and rates
 
@@ -44,14 +68,7 @@ where name = 'review_denied_domain' group by 1 order by 2 desc;
 
 ## Client-side events
 
-`site/src/app.js` defines `track(name, props)` (also exposed as `window.besciTrack`). It does nothing until a provider's adapter sets `window.besciAnalytics`:
-
-```html
-<script>
-  // Example adapter for PostHog; Plausible or Vercel Web Analytics look the same.
-  window.besciAnalytics = function (name, props) { posthog.capture(name, props); };
-</script>
-```
+`site/src/app.js` defines `track(name, props)` (also exposed as `window.besciTrack`). The calls below are already in the code; they do nothing until a provider's adapter sets `window.besciAnalytics` (next section).
 
 | Event | Fired when | Props |
 |---|---|---|
@@ -65,10 +82,16 @@ where name = 'review_denied_domain' group by 1 order by 2 desc;
 
 Add a row here whenever you add a `track()` call.
 
-## Choosing a provider
+## Adding engagement events later
 
-- **Vercel Web Analytics**: page views on the Hobby plan. Custom events need Pro.
-- **PostHog**: free tier, with custom events. It can tie events to the signed-in person if `identify` is called after sign-in.
-- **Plausible**: paid, no cookies, supports custom events.
+The free Vercel plan counts page views only. To record the events above, pick one of these and add its adapter to `ANALYTICS_SCRIPT` in `scripts/build_site.py`:
+
+- **Vercel Pro** (about $20 a month plus $0.03 per 1,000 events): custom events appear in the same Analytics page, with 12 months of history. Each event may carry two properties, so trim `props` to the two that matter (for most events, `skill` and one more).
+  ```js
+  window.besciAnalytics = function (name, props) { window.va("event", { name: name, data: props }); };
+  ```
+- **PostHog** (free tier): custom events, funnels, and retention. It sets a cookie unless configured with `persistence: "memory"`. It can tie events to the signed-in person if `identify` is called after sign-in; say so in `DISCLOSURE.md` if you do.
+- **Plausible** (paid, no cookies): custom events with properties.
+- **Supabase**: a small function could store one anonymous summary per page view in `besci_events`. Free, keeps all history, and joins with ratings, at the cost of code to maintain.
 
 Whatever is chosen, update `DISCLOSURE.md` in the same pull request.

@@ -46,6 +46,9 @@ WORKFLOWS_DIR = os.path.join(ROOT, "workflows")
 NON_WORKFLOW_FILES = {"README.md", "WORKFLOW-TEMPLATE.md"}
 # The OAuth client behind the "Sign in with Google" button on skill pages (public, not a secret).
 GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "")
+# Vercel Web Analytics counts page views (docs/analytics.md). Its script exists only on
+# Vercel, so local builds leave it out; BESCI_ANALYTICS=1 forces it in for checking the output.
+ANALYTICS = os.environ.get("VERCEL") == "1" or os.environ.get("BESCI_ANALYTICS") == "1"
 FONTS = "https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Geist+Mono:wght@400;500&display=swap"
 
 MD = MarkdownIt("commonmark", {"html": True, "linkify": False}).enable(["table", "strikethrough"])
@@ -144,6 +147,19 @@ THEME_SCRIPT = (
     "<script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}"
     "if(t!=='light'&&t!=='dark'){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}"
     "document.documentElement.setAttribute('data-theme',t);document.documentElement.classList.add('js');})()</script>"
+)
+
+# Page views only: no cookies, no custom events (the free plan has none). Visiting any
+# page with ?notrack=1 stops counting this browser's visits, so maintainers don't inflate
+# the numbers; ?notrack=0 undoes it. Vercel's script counts a page view on load and on
+# pushState, not on the replaceState calls that tabs and catalog search make.
+ANALYTICS_SCRIPT = (
+    "<script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};"
+    "(function(){var k='besci-notrack',p=new URLSearchParams(location.search).get('notrack');"
+    "try{if(p==='1')localStorage.setItem(k,'1');if(p==='0')localStorage.removeItem(k)}catch(e){}"
+    "window.va('beforeSend',function(ev){try{if(localStorage.getItem(k))return null}catch(e){}"
+    "try{var u=new URL(ev.url);u.searchParams.delete('notrack');return Object.assign({},ev,{url:u.toString()})}catch(e){return ev}})})()</script>\n"
+    '<script defer src="/_vercel/insights/script.js"></script>'
 )
 
 
@@ -513,6 +529,7 @@ def layout(title: str, description: str, body: str, path: str, extra_head: str =
 <link rel="stylesheet" href="{FONTS}">
 <link rel="stylesheet" href="/styles.css">
 {THEME_SCRIPT}
+{ANALYTICS_SCRIPT if ANALYTICS else ""}
 {extra_head}
 </head>
 <body class="{E(page_class)}">

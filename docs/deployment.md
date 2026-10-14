@@ -11,6 +11,7 @@ How the site, its server functions, CI, and releases are wired, and the one-time
 | Sign-in, expert reviews, and ratings (`api/auth.py`, `api/review.py`, `api/reviews.py`, `api/ratings.py`) | Vercel Python functions | the Review this skill and Rate this skill panels and the Reviews tab on skill pages |
 | Ratings, reviewer sign-ins, server-side analytics events | Supabase (Postgres), reached only by the functions | sign-ins, filed reviews, ratings |
 | Database keep-alive (`api/health.py`) | GitHub Actions `keepalive.yml` | every three days, so the free Supabase project isn't paused |
+| Page views | Vercel Web Analytics; the script is added by `scripts/build_site.py` on Vercel builds | every page load (section 12) |
 | Structure validation + PR comment | GitHub Actions `ci.yml` | every pull request and push to `main` |
 | Inbox unpacking | GitHub Actions `inbox.yml` | pull requests that add files under `inbox/` |
 | Navigator catalog snapshot | GitHub Actions `snapshot.yml` | pushes to `main` that change `skills/**` or `taxonomy.yaml` |
@@ -122,6 +123,7 @@ Rotate when someone leaves either organization or the key is posted anywhere pub
 - Submit the same archive through the website form with the contributor key: a `submit/<name>-<timestamp>` branch and PR appear with the `submitted-via-site` label.
 - Push a tag `v0.0.1-test`, confirm a Release appears with assets, then delete the tag and release.
 - `curl -sL https://<site>/api/auth/` returns `{"signed_in": false}`; `curl -sL https://<site>/api/health/` returns `{"ok": true, "db": true}`; `curl -sL https://<site>/api/reviews/` returns `{"ok": true, ...}`.
+- Open the site with the browser's developer tools on the Network tab: a page load makes a request to `/_vercel/insights/view` (or a similar path under `/_vercel/insights/`). Within a minute or two the visit shows in Vercel, Analytics. Then open `/?notrack=1`, reload, and check that no further request is made.
 - On a skill page, click **Review this skill**, sign in with a TAF or IL Google account, and file a short test review. An issue titled `[Expert review] ...` appears with its labels, shows in the skill's Reviews tab within two minutes, and a row appears in `besci_users`. Close the test issue as not planned.
 - Sign in with a personal Gmail account: the panel says expert reviews are limited to TAF and IL staff. Rate the skill anonymously with a comment: the header average updates and the comment shows as "Anonymous" in the Reviews tab. Signed in as someone in `ADMIN_EMAILS`, hide and delete that comment.
 
@@ -153,3 +155,14 @@ Who has signed up as a reviewer, and other queries, are in `docs/analytics.md`. 
 
 - `SESSION_SECRET`: change it in Vercel and redeploy. Everyone is signed out; nothing else is lost.
 - `SUPABASE_SECRET_KEY`: create a new secret key in Supabase, update Vercel, redeploy, then delete the old key in Supabase. Do this at once if the key is ever pasted anywhere public.
+
+## 12. Web Analytics (once)
+
+Page views are counted by Vercel Web Analytics on the free plan. What it shows and its limits are in `docs/analytics.md`.
+
+1. Vercel, the `besci-skills` project, Analytics in the sidebar (or the Analytics card on the project overview): **Enable**.
+2. Redeploy production (Deployments, the latest production deployment, Redeploy), or merge anything to `main`. Enabling adds the `/_vercel/insights/` routes from the next deployment on; the build adds the script to every page whenever it runs on Vercel.
+3. Check it as in section 8. Data appears in Analytics within minutes of the first visits.
+4. Each maintainer opens `https://besci-skills.vercel.app/?notrack=1` once in every browser they use, so their own visits aren't counted.
+
+If the site moves to a custom domain, nothing changes here; the script and routes follow the deployment.

@@ -2,7 +2,8 @@
 """
 build_site.py: builds the static catalog site into site/dist/.
 
-Reads:  skills/*/SKILL.md, workflows/*.md, taxonomy.yaml, site/src/
+Reads:  skills/*/ (SKILL.md, CHANGELOG.md, evals/, references/, scripts/, assets/),
+        workflows/*.md, taxonomy.yaml, site/src/
 Writes: site/dist/ (gitignored): HTML pages, data/catalog.json, data/skills.json, llms.txt,
         feed.xml, sitemap.xml, and a verbatim copy of site/src/.
 
@@ -137,7 +138,7 @@ def sprite() -> str:
 THEME_SCRIPT = (
     "<script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}"
     "if(t!=='light'&&t!=='dark'){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}"
-    "document.documentElement.setAttribute('data-theme',t);})()</script>"
+    "document.documentElement.setAttribute('data-theme',t);document.documentElement.classList.add('js');})()</script>"
 )
 
 
@@ -162,30 +163,91 @@ def inline_svg(name: str) -> str:
     return text.strip()
 
 
-def md_to_html(text: str, skill_name: Optional[str] = None) -> str:
-    """Render markdown. Relative links into a skill's own files go to GitHub."""
+def file_anchor(rel: str) -> str:
+    """The id a skill file gets on its skill page, e.g. references/worked-example.md -> ref-worked-example."""
+    top, _, rest = rel.partition("/")
+    if top == "evals":
+        return "test-cases"
+    if top == "references":
+        return "ref-" + slugify(rest[:-3] if rest.endswith(".md") else rest)
+    if top == "scripts":
+        return "script-" + slugify(rest)
+    return "assets"
+
+
+def md_to_html(text: str, skill_name: Optional[str] = None, local: Optional[set] = None, sibling_dir: str = "") -> str:
+    """Render markdown. Relative links into a skill's own files go to the file's
+    place on the skill page when it is shown there (``local``), else to GitHub.
+    ``sibling_dir`` lets a reference file mention a sibling by its bare name."""
+    local = local or set()
+
+    def href(rel: str) -> str:
+        if rel in local:
+            return "#" + file_anchor(rel)
+        return f"{GITHUB}/blob/main/skills/{skill_name}/{rel}"
+
     if skill_name:
-        base = f"{GITHUB}/blob/main/skills/{skill_name}/"
         text = re.sub(
             r"\]\(((?:references|scripts|assets|evals)/[^)\s]+)\)",
-            lambda m: f"]({base}{m.group(1)})",
+            lambda m: f"]({href(m.group(1))})",
             text,
         )
     out = MD.render(text)
     if skill_name:
-        base = f"{GITHUB}/blob/main/skills/{skill_name}/"
-        out = re.sub(
-            r"<code>((?:references|scripts|assets|evals)/[A-Za-z0-9_./-]+)</code>",
-            lambda m: f'<a href="{base}{m.group(1)}" rel="noopener"><code>{m.group(1)}</code></a>',
-            out,
-        )
+        def code_link(m: "re.Match") -> str:
+            rel = m.group(1)
+            if rel is None:  # an existing link: leave it alone
+                return m.group(0)
+            if not re.match(r"(references|scripts|assets|evals)/", rel):
+                if not sibling_dir or f"{sibling_dir}/{rel}" not in local:
+                    return m.group(0)
+                rel = f"{sibling_dir}/{rel}"
+            ext = "" if rel in local else ' rel="noopener"'
+            return f'<a href="{E(href(rel))}"{ext}><code>{m.group(1)}</code></a>'
+        out = re.sub(r"<a\b[^>]*>.*?</a>|<code>([A-Za-z0-9_./-]+)</code>", code_link, out, flags=re.S)
     return out
+
+
+def link_issue_refs(text: str) -> str:
+    """Turn #42 in markdown into a link to issue 42 (CHANGELOG entries cite the reviews they answer)."""
+    return re.sub(r"(?<![\w/&#`\[])#(\d{1,6})\b", lambda m: f"[#{m.group(1)}]({GITHUB}/issues/{m.group(1)})", text)
+
+
+def shift_headings(html_text: str, by: int) -> str:
+    """Demote headings so a rendered file nests under the page's own h2/h3."""
+    return re.sub(r"<(/?)h([1-6])\b", lambda m: f"<{m.group(1)}h{min(6, int(m.group(2)) + by)}", html_text)
 
 
 def changelog_dates(changelog: Optional[str]) -> List[str]:
     if not changelog:
         return []
     return re.findall(r"^## \S+\s*-\s*(\d{4}-\d{2}-\d{2})", changelog, flags=re.MULTILINE)
+
+
+SKIP_NAMES = {"__pycache__", ".DS_Store"}
+
+
+def read_skill_files(folder: str, sub: str) -> List[dict]:
+    """Every file under one of a skill's folders (references/, scripts/, assets/),
+    as {rel, name, text, lines}. text is None for files that aren't UTF-8 text."""
+    base = os.path.join(folder, sub)
+    out: List[dict] = []
+    if not os.path.isdir(base):
+        return out
+    for dirpath, dirnames, filenames in os.walk(base):
+        dirnames[:] = sorted(d for d in dirnames if d not in SKIP_NAMES)
+        for fn in sorted(filenames):
+            if fn in SKIP_NAMES or fn.endswith(".pyc"):
+                continue
+            path = os.path.join(dirpath, fn)
+            rel = os.path.relpath(path, folder).replace(os.sep, "/")
+            try:
+                with open(path, "r", encoding="utf-8") as fh:
+                    text: Optional[str] = fh.read()
+            except (OSError, UnicodeDecodeError):
+                text = None
+            out.append({"rel": rel, "name": fn, "text": text, "lines": text.count("\n") + 1 if text else 0})
+    return out
 
 
 def load_skills(taxonomy: dict) -> List[dict]:
@@ -203,6 +265,10 @@ def load_skills(taxonomy: dict) -> List[dict]:
         entry["first_date"] = dates[-1] if dates else ""
         entry["_changelog"] = sk.changelog or ""
         entry["_sections"] = sk.sections
+        cases = sk.evals.get("evals") if isinstance(sk.evals, dict) else None
+        entry["_evals"] = [c for c in cases if isinstance(c, dict)] if isinstance(cases, list) else []
+        for sub in ("references", "scripts", "assets"):
+            entry["_" + sub] = read_skill_files(folder, sub)
         skills.append(entry)
     skills.sort(key=lambda s: s["name"])
     return skills
@@ -1006,6 +1072,187 @@ def build_map() -> None:
          page_class="page-map", scripts=("/map.js",))
 
 
+# ---------------------------------------------------------------------------
+# Skill page tabs: one per part of the skill folder
+# ---------------------------------------------------------------------------
+
+# What each tab is for, shown at the top of the tab. Keys double as ?tab= values.
+TAB_INTROS = {
+    "skill": "The instructions your AI follows when this skill runs. Installing the skill gives it this file and everything in the other tabs.",
+    "test-cases": "Realistic requests used to check this skill, each paired with what a good answer must contain. Maintainers rerun them with besci-eval when the skill or the AI model changes. They also show the kind of request the skill is built for.",
+    "references": "Longer material the skill opens only when a step calls for it, which keeps the main instructions short.",
+    "scripts": "Code the skill runs during its steps, so results such as calculations come from code rather than from the AI working them out.",
+    "assets": "Files the skill uses as starting points, such as templates. They ship with the skill but aren't instructions.",
+    "version-history": "What changed in each version, newest first. An entry that answers an issue or review links to it.",
+}
+
+# Purpose lines for reference files whose opening paragraph describes the case, not the file.
+KNOWN_FILES = {
+    "worked-example.md": "A full run of the skill on a realistic case, showing the output it should produce.",
+    "evidence-notes.md": "The studies behind the method: what each found, how well it is verified, and how far it transfers.",
+}
+REFERENCE_ORDER = {"worked-example.md": 0, "evidence-notes.md": 2}  # everything else sorts between
+
+
+def panel_id(key: str) -> str:
+    return "skill-md" if key == "skill" else key
+
+
+def text_html(text: str) -> str:
+    """Plain text (a test request, an expected answer) as escaped paragraphs."""
+    paras = [p.strip() for p in re.split(r"\n\s*\n", text.strip()) if p.strip()]
+    return "".join("<p>" + E(p).replace("\n", "<br>") + "</p>" for p in paras)
+
+
+def split_doc(text: str):
+    """A markdown file as (frontmatter, title, body without the title, first paragraph)."""
+    fm = ""
+    if text.startswith("---\n"):
+        end = text.find("\n---", 4)
+        if end != -1:
+            fm, text = text[4:end].strip("\n"), text[end + 4:].lstrip("\n")
+    m = re.match(r"#\s+(.+)\n", text)
+    title = m.group(1).strip() if m else ""
+    body = text[m.end():] if m else text
+    first = next((p.strip() for p in re.split(r"\n\s*\n", body)
+                  if p.strip() and not p.lstrip().startswith(("#", "|", "-", "*", "```", ">"))), "")
+    return fm, title, body, first
+
+
+def first_sentence(text: str, limit: int = 180) -> str:
+    t = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", text)
+    t = " ".join(t.replace("`", "").replace("**", "").split())
+    m = re.match(r"(.+?[.!?])(\s|$)", t)
+    s = m.group(1) if m else t
+    return s if len(s) <= limit else s[:limit].rsplit(" ", 1)[0] + "…"
+
+
+def script_purpose(name: str, text: str) -> str:
+    """The first paragraph of a script's module docstring, without the leading 'name.py:'."""
+    m = re.search(r'("""|\'\'\')\s*(.*?)\s*(?:\n\s*\n|\1)', text, re.S)
+    if not m:
+        return ""
+    s = " ".join(m.group(2).split())
+    s = re.sub(r"^" + re.escape(name) + r"\s*[:—-]\s*", "", s)
+    return s[:1].upper() + s[1:]
+
+
+def tab_intro(key: str, title: str, s: dict, source: str = "") -> str:
+    src = ""
+    if source:
+        kind = "tree" if source.endswith("/") else "blob"
+        url = f"{GITHUB}/{kind}/main/skills/{s['name']}/{source.rstrip('/')}"
+        src = f'<p class="tab-source"><code>{E(source)}</code><a href="{E(url)}" rel="noopener">View on GitHub</a></p>'
+    return f'<div class="tab-intro"><h2 class="tab-title">{E(title)}</h2><p>{E(TAB_INTROS[key])}</p>{src}</div>'
+
+
+def file_head(s: dict, f: dict, title: str, purpose: str = "", download: bool = False) -> str:
+    gh = f"{GITHUB}/blob/main/skills/{s['name']}/{f['rel']}"
+    size = f"{f['lines']} lines" if f["text"] is not None else "not a text file"
+    raw = (f'<a href="https://raw.githubusercontent.com/{REPO}/main/skills/{E(s["name"])}/{E(f["rel"])}" rel="noopener" download>Download</a>'
+           if download else "")
+    purpose_html = f'<p class="file-purpose">{E(purpose)}</p>' if purpose else ""
+    return (f'<header class="file-head"><h3>{E(title)}</h3>'
+            f'<p class="file-meta"><code>{E(f["rel"])}</code><span>{size}</span><a href="{E(gh)}" rel="noopener">View on GitHub</a>{raw}</p>'
+            f'{purpose_html}</header>')
+
+
+def render_evals(s: dict):
+    """The Test cases tab: each case's request and what a good answer includes. Returns (html, toc)."""
+    parts, toc = [], []
+    for i, c in enumerate(s["_evals"], 1):
+        cid = str(c.get("id", i))
+        aid = f"test-case-{slugify(cid) or i}"
+        extra = ""
+        files = [str(x) for x in (c.get("files") or [])]
+        if files:
+            extra += ('<p class="case-label">Files given with the request</p><ul class="case-list">'
+                      + "".join(f"<li><code>{E(x)}</code></li>" for x in files) + "</ul>")
+        checks = [(a.get("text") or a.get("description") or json.dumps(a)) if isinstance(a, dict) else str(a)
+                  for a in (c.get("assertions") or [])]
+        if checks:
+            extra += ('<p class="case-label">Checks on the answer</p><ul class="case-list">'
+                      + "".join(f"<li>{E(x)}</li>" for x in checks) + "</ul>")
+        parts.append(
+            f'<article class="case" id="{E(aid)}"><h3>Test case {E(cid)}</h3>'
+            f'<p class="case-label">The request</p><blockquote class="case-prompt">{text_html(str(c.get("prompt", "")))}</blockquote>'
+            f'<p class="case-label">What a good answer includes</p><div class="case-expected">{text_html(str(c.get("expected_output", "")))}</div>'
+            f'{extra}</article>')
+        toc.append((aid, f"Test case {cid}"))
+    if not parts:
+        return '<p class="muted">This skill has no test cases yet.</p>', []
+    return "".join(parts), toc
+
+
+def render_references(s: dict, local: set):
+    """The References tab: an index, then each file rendered in full. Returns (html, toc)."""
+    files = sorted(s["_references"], key=lambda f: (REFERENCE_ORDER.get(f["name"], 1), f["rel"]))
+    parts, toc, index = [], [], []
+    for f in files:
+        aid = file_anchor(f["rel"])
+        title, purpose, summary, body_html = f["name"], "", "", ""
+        if f["text"] is not None and f["name"].endswith(".md"):
+            fm, h1, body, first = split_doc(f["text"])
+            title = h1 or f["name"]
+            purpose = KNOWN_FILES.get(f["name"], "")
+            summary = purpose or first_sentence(first)
+            if fm:
+                body_html += f'<pre><code>{E("---" + chr(10) + fm + chr(10) + "---")}</code></pre>'
+            body_html += shift_headings(md_to_html(body, s["name"], local, "references"), 2)
+        elif f["text"] is not None:
+            body_html = f'<pre class="code-file"><code>{E(f["text"])}</code></pre>'
+        parts.append(f'<section class="file-doc" id="{E(aid)}">{file_head(s, f, title, purpose)}<div class="file-body">{body_html}</div></section>')
+        toc.append((aid, title))
+        sub = f"<span>{E(summary)}</span>" if summary else ""
+        index.append(f'<li><a href="#{E(aid)}"><b>{E(title)}</b><code>{E(f["rel"])}</code></a>{sub}</li>')
+    index_html = f'<ul class="file-index">{"".join(index)}</ul>' if len(files) > 1 else ""
+    return index_html + "".join(parts), toc
+
+
+def render_scripts(s: dict):
+    """The Scripts tab: each script's purpose and full source. Returns (html, toc)."""
+    parts, toc = [], []
+    for f in s["_scripts"]:
+        aid = file_anchor(f["rel"])
+        purpose = script_purpose(f["name"], f["text"]) if f["text"] else ""
+        code = f'<pre class="code-file"><code>{E(f["text"])}</code></pre>' if f["text"] is not None else ""
+        parts.append(f'<section class="file-doc" id="{E(aid)}">{file_head(s, f, f["name"], purpose, download=True)}{code}</section>')
+        toc.append((aid, f["name"]))
+    return "".join(parts), toc
+
+
+def render_assets(s: dict) -> str:
+    items = []
+    for f in s["_assets"]:
+        gh = f"{GITHUB}/blob/main/skills/{s['name']}/{f['rel']}"
+        size = f"{f['lines']} lines" if f["text"] is not None else ""
+        items.append(f'<li><a href="{E(gh)}" rel="noopener"><code>{E(f["rel"])}</code></a><span>{size}</span></li>')
+    return f'<ul class="file-list">{"".join(items)}</ul>'
+
+
+def render_changelog(s: dict, local: set):
+    """The Version history tab. #N becomes an issue link; each version gets an id. Returns (html, toc)."""
+    md = re.sub(r"^# .*\n", "", s["_changelog"], count=1).strip()
+    if not md:
+        return "<p class='muted'>No changelog.</p>", []
+    out = shift_headings(md_to_html(link_issue_refs(md), s["name"], local), 1)
+    toc = []
+
+    def tag(m: "re.Match") -> str:
+        ver = m.group(1)
+        vid = "v-" + slugify(ver)
+        toc.append((vid, ver))
+        return f'<h3 id="{vid}">{ver}{m.group(2)}</h3>'
+    out = re.sub(r"<h3>(\d+\.\d+\.\d+)([^<]*)</h3>", tag, out)
+    return out, toc
+
+
+def toc_list(key: str, items, first: bool) -> str:
+    hidden = "" if first else " hidden"
+    lis = "".join(f'<li><a href="#{E(i)}">{E(label)}</a></li>' for i, label in items)
+    return f'<ol data-tab-for="{E(key)}"{hidden}>{lis}</ol>'
+
+
 def build_skill_pages(skills: List[dict], taxonomy: dict) -> None:
     stage_labels = label_map(taxonomy.get("stages"))
     weird_labels = label_map(taxonomy.get("weird_statuses"))
@@ -1046,14 +1293,36 @@ def build_skill_pages(skills: List[dict], taxonomy: dict) -> None:
   <p class="chain-foot"><a href="/map/?skill={quote(name)}">{ICONS['map']} See it on the map</a></p>
 </div>"""
 
+        # Files shown on this page; links to them stay on the page.
+        local = {f["rel"] for sub in ("_references", "_scripts", "_assets") for f in s[sub]}
+        if s["_evals"]:
+            local.add("evals/evals.json")
+
         sections_html = []
         for heading, text in s["_sections"].items():
             sid = slugify(heading)
-            sections_html.append(f'<section class="skill-section" id="{E(sid)}"><h2>{E(heading)}</h2>\n{md_to_html(text, name)}</section>')
-        toc = "".join(f'<li><a href="#{E(slugify(h))}">{E(h)}</a></li>' for h in s["_sections"].keys())
+            sections_html.append(f'<section class="skill-section" id="{E(sid)}"><h2>{E(heading)}</h2>\n{md_to_html(text, name, local)}</section>')
+        skill_toc = [("install", "Install")] + [(slugify(h), h) for h in s["_sections"].keys()] + [("cite", "Cite this skill")]
 
-        changelog_md = re.sub(r"^# .*\n", "", s["_changelog"], count=1).strip()
-        changelog_html = md_to_html(changelog_md) if changelog_md else "<p class='muted'>No changelog.</p>"
+        evals_html, evals_toc = render_evals(s)
+        refs_html, refs_toc = render_references(s, local)
+        scripts_html, scripts_toc = render_scripts(s)
+        changelog_html, changelog_toc = render_changelog(s, local)
+
+        # (key, tab label, count, panel html, toc entries)
+        tabs = [("test-cases", "Test cases", str(len(s["_evals"])),
+                 tab_intro("test-cases", "Test cases", s, "evals/evals.json") + evals_html, evals_toc)]
+        if s["_references"]:
+            tabs.append(("references", "References", str(len(s["_references"])),
+                         tab_intro("references", "References", s, "references/") + refs_html, refs_toc))
+        if s["_scripts"]:
+            tabs.append(("scripts", "Scripts", str(len(s["_scripts"])),
+                         tab_intro("scripts", "Scripts", s, "scripts/") + scripts_html, scripts_toc))
+        if s["_assets"]:
+            tabs.append(("assets", "Assets", str(len(s["_assets"])),
+                         tab_intro("assets", "Assets", s, "assets/") + render_assets(s), [("assets", "Files")]))
+        tabs.append(("version-history", "Version history", "",
+                     tab_intro("version-history", "Version history", s, "CHANGELOG.md") + changelog_html, changelog_toc))
 
         warnings_html = ""
         if s["warnings"] or s["errors"]:
@@ -1069,19 +1338,7 @@ def build_skill_pages(skills: List[dict], taxonomy: dict) -> None:
         elif status == "deprecated":
             banner = '<div class="banner banner-deprecated"><span>Deprecated. This skill is retired; its version history says what replaced it.</span></div>'
 
-        body = f"""
-<article class="skill-page" data-stage="{E(stage)}">
-<p class="breadcrumb"><a href="/skills/">skills</a><span aria-hidden="true">/</span><span>{E(name)}</span></p>
-<header class="skill-head">
-  <h1>{E(s['title'])}</h1>
-  <p class="skill-name-row"><code>{E(name)}</code></p>
-  <div class="badges">{pill(stage_labels.get(stage, stage) or 'no stage', 'stage', stage)}{pill('v' + s['version'], 'version')}{pill(s['type'] or 'atomic', 'meta' if s['type'] == 'meta' else 'type')}{pill(status, status)}{pill(org, 'org') if org else ''}</div>
-  {banner}
-  <p class="skill-what">{E(s['what_it_does'])}</p>
-</header>
-
-<div class="skill-layout">
-<div class="skill-main">
+        skill_panel = f"""{tab_intro("skill", "Skill", s, "SKILL.md")}
   <aside class="callout" aria-labelledby="fires-h">
     <h2 id="fires-h" class="callout-title">When this skill runs</h2>
     <p>{E(s['description'])}</p>
@@ -1096,19 +1353,46 @@ def build_skill_pages(skills: List[dict], taxonomy: dict) -> None:
 
   {''.join(sections_html)}
 
-  <section class="skill-section" id="version-history"><h2>Version history</h2>{changelog_html}</section>
-
   <section class="skill-section cite" id="cite"><h2>Cite this skill</h2>
     {copy_block(cite)}
     <p class="muted">Skills are fixed, versioned artifacts. Record the skill name and version in your project documentation the way you would register analysis code. See <a href="{GITHUB}/blob/main/docs/citing.md" rel="noopener">how to cite skills and workflows</a>, which follows Busara's <a href="https://busara.global/our-works/the-sifa-tool-for-a-statement-of-intellectual-fellowship-and-accountability/" rel="noopener">SIFA framework</a> for stating how humans and AI contributed.</p>
   </section>
 
-  <p class="disclosure-line">Using this skill inside a commercial AI product sends what you type to that product's provider. Do not paste sensitive personal or proprietary data without understanding the product's terms. <a href="{GITHUB}/blob/main/DISCLOSURE.md" rel="noopener">Read the disclosure</a>.</p>
+  <p class="disclosure-line">Using this skill inside a commercial AI product sends what you type to that product's provider. Do not paste sensitive personal or proprietary data without understanding the product's terms. <a href="{GITHUB}/blob/main/DISCLOSURE.md" rel="noopener">Read the disclosure</a>.</p>"""
+        tabs.insert(0, ("skill", "Skill", "", skill_panel, skill_toc))
+
+        tab_buttons, panels, tocs = [], [], []
+        for i, (key, label, count, panel_html, toc_items) in enumerate(tabs):
+            on = i == 0
+            cnt = f'<span class="ptab-count">{E(count)}</span>' if count else ""
+            selected = ' aria-selected="true"' if on else ' aria-selected="false" tabindex="-1"'
+            tab_buttons.append(f'<button class="ptab" role="tab" type="button" id="t-{key}" data-tab="{key}" aria-controls="{panel_id(key)}"{selected}>{E(label)}{cnt}</button>')
+            default = " data-default" if on else ""
+            panels.append(f'<section class="ptab-panel" role="tabpanel" id="{panel_id(key)}" aria-labelledby="t-{key}"{default}>\n{panel_html}\n</section>')
+            tocs.append(toc_list(key, toc_items, on))
+
+        body = f"""
+<article class="skill-page" data-stage="{E(stage)}">
+<p class="breadcrumb"><a href="/skills/">skills</a><span aria-hidden="true">/</span><span>{E(name)}</span></p>
+<header class="skill-head">
+  <h1>{E(s['title'])}</h1>
+  <p class="skill-name-row"><code>{E(name)}</code></p>
+  <div class="badges">{pill(stage_labels.get(stage, stage) or 'no stage', 'stage', stage)}{pill('v' + s['version'], 'version')}{pill(s['type'] or 'atomic', 'meta' if s['type'] == 'meta' else 'type')}{pill(status, status)}{pill(org, 'org') if org else ''}</div>
+  {banner}
+  <p class="skill-what">{E(s['what_it_does'])}</p>
+</header>
+
+<div class="skill-tabs" data-tabs="skill" data-tabs-url="tab">
+<div class="ptabs-bar"><div class="ptabs" role="tablist" aria-label="Parts of this skill">{''.join(tab_buttons)}</div></div>
+
+<div class="skill-layout">
+<div class="skill-main">
+{''.join(panels)}
 </div>
 
 <aside class="skill-side" aria-label="Skill details">
   <div class="side-actions">{add_button(name, s['title'], "add-btn add-btn-lg", "Add to workflow")}</div>
-  <nav class="side-box toc" aria-label="On this page"><h2>On this page</h2><ol><li><a href="#install">Install</a></li>{toc}<li><a href="#version-history">Version history</a></li><li><a href="#cite">Cite this skill</a></li></ol></nav>
+  <nav class="side-box toc" aria-label="On this page"><h2>On this page</h2>{''.join(tocs)}</nav>
   <div class="side-box">
     <h2>Details</h2>
     <dl class="meta">
@@ -1118,7 +1402,7 @@ def build_skill_pages(skills: List[dict], taxonomy: dict) -> None:
       <dt>Status</dt><dd>{E(status)}</dd>
       <dt>Stage</dt><dd><a href="/skills/?stage={E(stage)}">{E(stage_labels.get(stage, stage))}</a></dd>
       <dt>WEIRD</dt><dd>{E(weird_labels.get(s['weird'], s['weird'])) or '<span class="muted">not stated</span>'}</dd>
-      <dt>Tests</dt><dd>{s['eval_count']} in <a href="{GITHUB}/blob/main/skills/{E(name)}/evals/evals.json" rel="noopener">evals.json</a></dd>
+      <dt>Tests</dt><dd><a href="#test-cases">{s['eval_count']} test cases</a></dd>
       <dt>License</dt><dd>{E(s['license'])}</dd>
       <dt>Source</dt><dd><a href="{E(s['source_url'])}" rel="noopener">skills/{E(name)}</a></dd>
       <dt>Changed</dt><dd>{E(s['latest_date']) or '<span class="muted">Not stated</span>'}</dd>
@@ -1128,6 +1412,7 @@ def build_skill_pages(skills: List[dict], taxonomy: dict) -> None:
     {warnings_html}
   </div>
 </aside>
+</div>
 </div>
 </article>
 """

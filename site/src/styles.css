@@ -733,6 +733,74 @@ dl.meta dd a:hover { border-color: var(--fg); }
 .validator-notes { font-size: 0.875rem; margin-top: 0.8rem; color: var(--fg-2); }
 .validator-notes summary { cursor: pointer; }
 .validator-notes ul { padding-left: 1.2em; }
+
+/* Skill page tabs, one per part of the skill folder. Without JS the tab bar is
+   hidden and every panel shows, one after another. With JS, html.js hides the
+   other panels before first paint and app.js takes over (is-ready). */
+html:has(.skill-tabs) { scroll-padding-top: calc(var(--header-h) + 76px); }
+.ptabs-bar { display: none; position: sticky; top: var(--header-h); z-index: 20; margin-top: 1rem; }
+.ptabs-bar::before { content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; left: calc(50% - 50vw); right: calc(50% - 50vw); border-bottom: 1px solid var(--border); background: color-mix(in srgb, var(--bg) 85%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+html.js .ptabs-bar { display: block; }
+html.js .skill-page .skill-head { padding-bottom: 0.75rem; border-bottom: 0; }
+.ptabs { display: flex; gap: 0.25rem; overflow-x: auto; scrollbar-width: none; padding: 0.55rem 0; }
+.ptabs::-webkit-scrollbar { display: none; }
+.ptab { display: inline-flex; align-items: center; gap: 0.45rem; font: inherit; font-size: 0.9375rem; font-weight: 500; padding: 0.5rem 0.95rem; background: none; border: 0; border-radius: 999px; color: var(--fg-2); cursor: pointer; white-space: nowrap; transition: color var(--t-fast), background var(--t-fast); }
+.ptab:hover { color: var(--fg); }
+.ptab[aria-selected="true"] { color: var(--fg); background: var(--surface-3); }
+.ptab-count { font-size: 0.8125rem; color: var(--fg-3); font-variant-numeric: tabular-nums; }
+.ptab[aria-selected="true"] .ptab-count { color: var(--fg-2); }
+html.js .skill-tabs:not(.is-ready) .ptab-panel:not([data-default]) { display: none; }
+.ptab-panel[hidden] { display: none; }
+html:not(.js) .ptab-panel + .ptab-panel { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+html.js .skill-tabs .skill-side { top: calc(var(--header-h) + 76px); }
+.tab-intro { margin: 0 0 2rem; padding: 0 0 1.25rem; border-bottom: 1px solid var(--border); }
+.tab-title { margin: 0 0 0.5rem; font-size: 1.5rem; letter-spacing: -0.03em; }
+html.js .tab-title { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+.tab-intro p { margin: 0; color: var(--fg-2); max-width: 66ch; }
+.tab-intro .tab-source { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem 1rem; margin-top: 0.7rem; font-size: 0.875rem; }
+.tab-source a { color: var(--fg-2); }
+.tab-source a:hover { color: var(--fg); }
+
+.case { margin: 0 0 1rem; padding: 1.1rem 1.25rem 1.2rem; border: 1px solid var(--border); border-radius: var(--r-card); background: var(--surface); }
+.case h3 { margin: 0 0 0.8rem; font-size: 1.0625rem; letter-spacing: -0.015em; }
+.case-label { margin: 1rem 0 0.35rem; font-size: 0.875rem; font-weight: 600; color: var(--fg); }
+.case h3 + .case-label { margin-top: 0; }
+.case-prompt { margin: 0; padding: 0.7rem 1rem; border: 0; border-radius: var(--r-row); background: var(--surface-2); color: var(--fg); }
+.case-prompt p, .case-expected p { margin: 0.45rem 0; }
+.case-prompt p:first-child, .case-expected p:first-child { margin-top: 0; }
+.case-prompt p:last-child, .case-expected p:last-child { margin-bottom: 0; }
+.case-expected { color: var(--fg-2); }
+.case-list { margin: 0.3rem 0; padding-left: 1.3em; color: var(--fg-2); }
+
+.file-index { list-style: none; margin: 0 0 2.5rem; padding: 0; display: grid; gap: 0.5rem; }
+.file-index li { padding: 0.75rem 0.95rem; border: 1px solid var(--border); border-radius: var(--r-row); background: var(--surface); }
+.file-index a { display: block; text-decoration: none; }
+.file-index a:hover b { text-decoration: underline; text-decoration-color: var(--border-3); text-underline-offset: 3px; }
+.file-index b { display: block; font-weight: 600; }
+.file-index code { display: block; margin-top: 0.15rem; padding: 0; background: none; color: var(--fg-3); font-size: 0.8125rem; }
+.file-index span { display: block; margin-top: 0.25rem; color: var(--fg-2); font-size: 0.9375rem; }
+.file-doc { margin: 0 0 3rem; }
+.file-doc + .file-doc { padding-top: 2.5rem; border-top: 1px solid var(--border); }
+.file-head h3 { margin: 0 0 0.45rem; font-size: 1.375rem; letter-spacing: -0.025em; line-height: 1.25; }
+.file-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem 1rem; margin: 0; font-size: 0.875rem; color: var(--fg-3); }
+.file-meta code { padding: 0; background: none; color: var(--fg-2); }
+.file-meta a { color: var(--fg-2); }
+.file-meta a:hover { color: var(--fg); }
+.file-purpose { margin: 0.7rem 0 0; color: var(--fg-2); max-width: 66ch; }
+.file-body { margin-top: 1.25rem; }
+.file-body h4 { margin: 1.7em 0 0.45em; font-size: 1.1875rem; letter-spacing: -0.02em; }
+.file-body h5 { margin: 1.4em 0 0.35em; font-size: 1rem; }
+.file-body h6 { margin: 1.2em 0 0.3em; font-size: 0.9375rem; }
+.file-body ul, .file-body ol { padding-left: 1.4em; }
+.file-body li { margin: 0.3em 0; }
+.file-body li::marker { color: var(--fg-3); }
+.code-file { max-height: 36rem; margin-top: 1.25rem; font-size: 0.8125rem; }
+.file-list { list-style: none; margin: 0; padding: 0; }
+.file-list li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid var(--border); font-size: 0.9375rem; }
+.file-list a { text-decoration: none; overflow-wrap: anywhere; }
+.file-list span { color: var(--fg-3); font-size: 0.875rem; white-space: nowrap; }
+#version-history > h3 { margin: 2rem 0 0.4rem; font-size: 1.125rem; letter-spacing: -0.015em; }
+#version-history > .tab-intro + h3 { margin-top: 0; }
 @media (max-width: 900px) {
   .skill-layout { grid-template-columns: 1fr; gap: 1.5rem; }
   .skill-side { position: static; }

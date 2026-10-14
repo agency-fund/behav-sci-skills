@@ -13,7 +13,8 @@ The site's functions write to Supabase (docs/deployment.md, section 10). This ne
 |---|---|
 | `besci_users` | person who has signed in: name, email, domain, org, `can_review`, first and last sign-in, sign-in count |
 | `besci_expert_reviews` | expert review filed from the site, with its GitHub issue number |
-| `besci_events` | event: `sign_in` (props: `can_review`, `purpose`), `review_denied_domain` (someone outside TAF and IL tried to review), `review_filed` |
+| `besci_ratings` | rating: skill, version rated, stars, comment, anonymous, hidden |
+| `besci_events` | event: `sign_in` (props: `can_review`, `purpose`), `review_denied_domain` (someone outside TAF and IL tried to review), `review_filed`, `rating_saved` (props: `stars`, `anonymous`, `comment`), `rating_hidden`, `rating_shown`, `rating_deleted` |
 
 Queries for the Supabase SQL editor:
 
@@ -29,6 +30,12 @@ group by 1, 2 order by 1 desc, 2;
 
 -- Skills with the most expert reviews
 select skill, count(*) from besci_expert_reviews group by skill order by 2 desc;
+
+-- Ratings per skill: average, count, and how many came from TAF and IL staff
+select r.skill, round(avg(r.stars), 2) as average, count(*) as ratings,
+       count(*) filter (where u.org in ('TAF', 'IL')) as from_staff
+from besci_ratings r join besci_users u on u.id = r.user_id
+group by r.skill order by ratings desc;
 
 -- People outside TAF and IL who tried to file an expert review, by email domain
 select props->>'domain' as domain, count(*) from besci_events
@@ -53,6 +60,8 @@ where name = 'review_denied_domain' group by 1 order by 2 desc;
 | `sign_in_start` | The Google button is shown in a panel | `purpose` (`review` or `rate`) |
 | `sign_in` | Sign-in succeeded | `purpose`, `can_review` |
 | `review_filed` | An expert review was filed | `skill`, `verdict` |
+| `rate_panel_open` | The Rate this skill panel opens | `skill` |
+| `rating_saved` | A rating was saved | `skill`, `stars`, `comment` (true or false), `anonymous` |
 
 Add a row here whenever you add a `track()` call.
 

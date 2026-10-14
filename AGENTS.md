@@ -50,7 +50,7 @@ CI runs the validator, the sync check, the site build, packaging, and test_feedb
 | `taxonomy.yaml` | stages, types, statuses, WEIRD statuses, verbs, io types, suggested tags |
 | `scripts/` | validator, sync check, site builder, snapshot, packager, zip safety, inbox unpacker, submit tests |
 | `site/src/` | site assets; the builder generates pages from skills |
-| `api/` | the site's server functions on Vercel: upload (`submit.py`), Google sign-in (`auth.py`), expert reviews (`review.py`, `reviews.py`), database check (`health.py`); `_common.py` and `_review_issue.py` are shared code; `schema.sql` is the Supabase schema |
+| `api/` | the site's server functions on Vercel: upload (`submit.py`), Google sign-in (`auth.py`), expert reviews (`review.py`, `reviews.py`), ratings (`ratings.py`), database check (`health.py`); `_common.py` and `_review_issue.py` are shared code; `schema.sql` is the Supabase schema |
 | `.claude-plugin/` | marketplace and plugin manifests; one plugin, all skills |
 | `.github/` | CI, inbox unpack, snapshot commit, release zips, PR and issue templates |
 | `docs/` | spec, taxonomy, citing, deployment, ADRs, plan and session records |

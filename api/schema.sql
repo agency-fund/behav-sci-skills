@@ -43,12 +43,14 @@ create table if not exists besci_ratings (
   comment       text check (char_length(comment) <= 2000),
   anonymous     boolean not null default false,
   display_name  text,                        -- shown unless anonymous
+  org           text,                        -- TAF or IL shows a staff badge unless anonymous
   hidden        boolean not null default false, -- a maintainer hid the comment
   created_at    timestamptz not null default now(),
   updated_at    timestamptz not null default now(),
   unique (skill, user_id)                    -- one rating per person per skill; rating again updates it
 );
 create index if not exists besci_ratings_skill on besci_ratings (skill);
+alter table besci_ratings add column if not exists org text;  -- for databases set up before the column existed
 
 create table if not exists besci_events (    -- server-side analytics: sign_in, review_denied_domain, review_filed, rating_saved
   id         bigint generated always as identity primary key,

@@ -6,8 +6,9 @@ Covers: who may review (domain allowlist edge cases), session cookies (signing,
 tampering, expiry), the expert-review issue format (title, labels, body, and
 parsing it back, including issues filed with the GitHub form), CHANGELOG issue
 references, the browser's copies of the verdicts and parts, the issue form's
-field ids, and the api/auth.py, api/review.py and api/reviews.py logic
-against in-memory stand-ins for Google, Supabase, and GitHub. Ends with a real
+field ids, and the api/auth.py, api/review.py, api/reviews.py and
+api/ratings.py logic against in-memory stand-ins for Google, Supabase, and
+GitHub. Ends with a real
 HTTP round trip through the handlers, to check the same-origin rule.
 
 Run: uv run python scripts/test_feedback.py
@@ -39,6 +40,7 @@ os.environ["GOOGLE_CLIENT_ID"] = "test-client.apps.googleusercontent.com"
 import _common as c  # noqa: E402
 import _review_issue as R  # noqa: E402
 import auth  # noqa: E402
+import ratings  # noqa: E402
 import review  # noqa: E402
 import reviews  # noqa: E402
 import build_site  # noqa: E402
@@ -337,6 +339,57 @@ def test_reviews_listing() -> None:
     ok(first["verdict_label"] == "Needs substantial revision" and "**" not in first["excerpt"], "verdict label and plain excerpt")
 
 
+def test_ratings() -> None:
+    db = FakeSupabase()
+    jane, pat = session_for("jane@irrationallabs.com", db), session_for("pat@gmail.com", db)
+    skill = "define-key-behavior"
+    rate = lambda who, **kw: ratings.save_rating(who, dict({"skill": skill}, **kw), db)  # noqa: E731
+    ok(rate(None, stars=4)[0] == 401, "signed out: 401")
+    ok(all(rate(pat, stars=bad)[0] == 400 for bad in (0, 6, "4", True, None, 3.5)), "stars must be a whole number from 1 to 5")
+    ok(ratings.save_rating(pat, {"skill": "no-such-skill", "stars": 3}, db)[0] == 400, "unknown skill: 400")
+    ok(rate(pat, stars=3, comment="x" * 2001)[0] == 400, "comments over 2,000 characters: 400")
+    ok(rate(jane, stars=4, comment="Useful for our savings program.")[0] == 200, "staff rating saved")
+    ok(rate(pat, stars=2, comment="Too long for my team.", anonymous=True)[0] == 200, "anonymous rating from a Gmail account saved")
+    ok(rate(jane, stars=5, comment="Even better the second time.")[0] == 200 and len(db.tables["besci_ratings"]) == 2,
+       "rating again replaces the old rating")
+    status, data, cache = ratings.get_ratings({"skill": skill}, None, db)
+    ok(status == 200 and data["count"] == 2 and data["average"] == 3.5 and data["distribution"]["5"] == 1 and data["distribution"]["2"] == 1,
+       "average, count, and distribution")
+    ok(cache.startswith("public") and "s-maxage" in cache, "the public list is CDN-cached")
+    by_name = {cm["name"]: cm for cm in data["comments"]}
+    ok(set(by_name) == {"Jane", "Anonymous"} and by_name["Jane"]["badge"] == "IL staff" and by_name["Anonymous"]["badge"] == "",
+       "names, staff badge, and anonymity (no badge either)")
+    blob = json.dumps(data)
+    ok("@" not in blob and "user_id" not in blob and "hidden" not in blob, "no emails, user ids, or moderation flags in public output")
+    status, mine, cache = ratings.get_ratings({"skill": skill, "mine": "1"}, jane, db)
+    ok(mine["mine"]["stars"] == 5 and "no-store" in cache, "your own rating, not cached")
+    ok(ratings.get_ratings({"skill": skill, "mine": "1"}, None, db)[1]["mine"] is None, "no rating when signed out")
+    ok(ratings.get_ratings({"skill": "../etc"}, None, db)[0] == 400, "bad skill name in the query: 400")
+
+    pat_id = next(r["id"] for r in db.tables["besci_ratings"] if r["anonymous"])
+    jane_id = next(r["id"] for r in db.tables["besci_ratings"] if not r["anonymous"])
+    ok(ratings.moderate(jane, {"id": pat_id, "hidden": True}, db)[0] == 403, "non-admins can't hide comments")
+    os.environ["ADMIN_EMAILS"] = "michael@agency.fund"
+    admin = session_for("michael@agency.fund", db)
+    ok(ratings.moderate(admin, {"id": pat_id, "hidden": True}, db)[0] == 200, "an admin hides a comment")
+    data = ratings.get_ratings({"skill": skill}, None, db)[1]
+    ok(len(data["comments"]) == 1 and data["count"] == 2 and data["average"] == 3.5, "a hidden comment leaves the page but its stars still count")
+    status, data, _ = ratings.get_ratings({"skill": skill, "admin": "1"}, admin, db)
+    ok(status == 200 and any(cm.get("hidden") for cm in data["comments"]), "admins see hidden comments")
+    ok(ratings.get_ratings({"skill": skill, "admin": "1"}, jane, db)[0] == 403, "others can't ask for hidden comments")
+    ok(ratings.delete_rating(pat, {"id": jane_id}, db)[0] == 403, "non-admins can't delete other people's ratings")
+    ok(ratings.delete_rating(pat, {"skill": skill}, db)[0] == 200 and len(db.tables["besci_ratings"]) == 1, "anyone can remove their own rating")
+    ok(ratings.delete_rating(admin, {"id": jane_id}, db)[0] == 200 and ratings.get_ratings({"skill": skill}, None, db)[1]["average"] is None,
+       "an admin deletes a rating")
+    os.environ.pop("ADMIN_EMAILS")
+
+    uid = db.tables["besci_users"][1]["id"]
+    for _ in range(ratings.PER_DAY):
+        db.insert("besci_events", {"name": "rating_saved", "user_id": uid})
+    ok(rate(pat, stars=3)[0] == 429, "thirty ratings a day, then 429")
+    ok(ratings.save_rating(jane, {"skill": skill, "stars": 3}, c.Supabase(url="", key=""))[0] == 503, "no database: 503")
+
+
 def test_http_round_trip() -> None:
     """Run auth.handler on a local port: GET, a cross-origin POST, and sign-in from the site."""
     os.environ["SITE_URL"] = "https://skills.example.org"
@@ -387,6 +440,7 @@ def main() -> int:
     test_auth()
     test_review()
     test_reviews_listing()
+    test_ratings()
     test_http_round_trip()
     print(f"\n{checks} checks passed.")
     return 0

@@ -804,10 +804,15 @@ html.js .tab-title { position: absolute; width: 1px; height: 1px; margin: -1px; 
 
 /* Review this skill: the action row and side panel (feedback.js). The panel sits
    above the workflow tray; under 800px it becomes a bottom sheet. */
-.skill-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1rem; margin: 1.5rem 0 0; }
-html:not(.js) .skill-actions { display: none; }
-.skill-actions .btn svg { width: 18px; height: 18px; }
-.skill-actions-note { margin: 0; color: var(--fg-2); font-size: 0.9375rem; }
+.skill-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 0.75rem; margin: 1.5rem 0 0; }
+html:not(.js) .skill-actions, html:not(.js) .skill-actions-note { display: none; }
+.skill-actions .btn svg, .skill-actions .btn-secondary svg { width: 18px; height: 18px; }
+.skill-actions-note { margin: 0.75rem 0 0; color: var(--fg-2); font-size: 0.9375rem; }
+.rating-summary { display: inline-flex; align-items: center; gap: 0.45rem; margin-left: 0.4rem; color: var(--fg-2); font-size: 0.9375rem; text-decoration: none; }
+.rating-summary b { color: var(--fg); font-weight: 600; }
+.rating-summary:hover span { color: var(--fg); }
+.stars { display: inline-flex; gap: 1px; color: var(--accent); }
+.stars svg { width: 16px; height: 16px; }
 .skill-actions-note a { color: var(--fg); }
 .fb-panel { position: fixed; z-index: 55; top: calc(var(--header-h) + 12px); right: 12px; bottom: 12px; width: 440px; max-width: calc(100vw - 24px); display: flex; flex-direction: column; border: 1px solid var(--border-2); border-radius: var(--r-card); background: var(--surface); box-shadow: var(--shadow); }
 .fb-panel[hidden] { display: none; }
@@ -863,6 +868,38 @@ html:not(.js) .skill-actions { display: none; }
 .review-answer { margin: 0.75rem 0 0; padding: 0.6rem 0.8rem; border-radius: var(--r-row); background: var(--surface-2); font-size: 0.9375rem; }
 .review-link { margin: 0.75rem 0 0; font-size: 0.9375rem; }
 .reviews-foot { margin: 1rem 0 0; font-size: 0.9375rem; }
+.reviews-block + .reviews-block { margin-top: 3rem; }
+
+/* Ratings: overview, comments, and the star input in the panel */
+.rating-overview { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 1rem 2rem; margin: 0 0 1.25rem; padding: 1.1rem 1.25rem; border: 1px solid var(--border); border-radius: var(--r-card); background: var(--surface); }
+.rating-big { display: grid; justify-items: start; gap: 0.25rem; }
+.rating-big b { font-size: 2.25rem; font-weight: 600; letter-spacing: -0.04em; line-height: 1; }
+.rating-big span:last-child { color: var(--fg-3); font-size: 0.875rem; }
+.rating-bars { display: grid; gap: 0.3rem; max-width: 320px; }
+.rating-bar { display: grid; grid-template-columns: 4.2rem minmax(0, 1fr) 1.5rem; align-items: center; gap: 0.6rem; color: var(--fg-2); font-size: 0.8125rem; }
+.rating-bar .bar { height: 6px; border-radius: 999px; background: var(--surface-3); overflow: hidden; }
+.rating-bar .bar span { display: block; height: 100%; border-radius: 999px; background: var(--accent); }
+.rating-bar .bar-n { text-align: right; font-variant-numeric: tabular-nums; }
+.rating-overview .btn-secondary svg { width: 18px; height: 18px; }
+.rating-card { margin: 0 0 0.75rem; padding: 0.9rem 1.2rem 1rem; border: 1px solid var(--border); border-radius: var(--r-card); background: var(--surface); }
+.rating-card.is-hidden { opacity: 0.6; border-style: dashed; }
+.rating-card .review-head { align-items: center; }
+.review-head .stars { color: var(--accent); }
+.rating-card .review-excerpt { margin-top: 0.5rem; }
+.rating-badge { padding: 0.05rem 0.55rem; border: 1px solid var(--border-2); border-radius: 999px; font-size: 0.8125rem; }
+.rating-admin { display: flex; gap: 1rem; margin: 0.6rem 0 0; font-size: 0.875rem; }
+.star-input { display: flex; align-items: center; gap: 0.15rem; }
+.star-input label { display: inline-flex; padding: 0.2rem; border-radius: 8px; color: var(--border-3); cursor: pointer; transition: color var(--t-fast), transform var(--t-fast); }
+.star-input label.on { color: var(--accent); }
+.star-input label:hover { transform: scale(1.1); }
+.star-input label:focus-within { outline: 2px solid var(--accent); outline-offset: 1px; }
+.star-input svg { width: 30px; height: 30px; }
+.star-word { margin-left: 0.6rem; color: var(--fg-2); font-size: 0.9375rem; }
+.fb-note { padding: 0.6rem 0.8rem; border-radius: var(--r-row); background: var(--surface-2); color: var(--fg-2); }
+@media (max-width: 700px) {
+  .rating-overview { grid-template-columns: 1fr; }
+  .rating-summary { margin-left: 0; }
+}
 @media (max-width: 900px) {
   .skill-layout { grid-template-columns: 1fr; gap: 1.5rem; }
   .skill-side { position: static; }

@@ -24,11 +24,11 @@ This library is a set of open-source text files. Using them inside a commercial 
 
 ## Signing in on the website
 
-Reading, installing, and downloading skills never needs an account. Signing in with Google is needed only to file an expert review or (later) to rate a skill.
+Reading, installing, and downloading skills never needs an account. Signing in with Google is needed only to file an expert review or to rate a skill.
 
 **What we keep.** Your name and email address as Google provides them, your organization (worked out from the email domain), when you first and last signed in, and a record of the reviews and ratings you submit. It is stored in a Supabase database that only the site's server reads; maintainers can see it. We use it to confirm who may file expert reviews, to stop duplicate ratings, and to count how many people review and rate skills. We don't ask Google for anything else and don't share the data.
 
-**What is public.** An expert review is posted as a GitHub issue with your name, organization, and, if you add it, your GitHub username. Your email address is never published.
+**What is public.** An expert review is posted as a GitHub issue with your name, organization, and, if you add it, your GitHub username. A rating and its comment appear on the skill's page with your name, or as "Anonymous" if you choose; maintainers can still see who posted an anonymous rating. Your email address is never published. Maintainers may hide comments that are abusive or off topic.
 
 **Removing it.** Ask a maintainer listed in `MAINTAINERS.md`, and we delete your sign-in record and everything linked to it. An expert review already on GitHub stays there unless you ask us to delete the issue too.
 

@@ -22,6 +22,10 @@ This library is a set of open-source text files. Using them inside a commercial 
 
 **The repository is public.** Pull requests, issues, and review comments are visible to anyone.
 
+## Page views on the website
+
+The website counts page views with Vercel Web Analytics, run by the company that hosts the site. For each page view it records the page, the site you came from, your country, region, and city, and your browser, operating system, and device type. It sets no cookies and stores nothing that identifies you; Vercel tells visitors apart by a hash of the request, which it discards after 24 hours. We use the counts to see which skills people read and how they find the site. Page views are not linked to your sign-in. To stop your visits being counted, open any page with `?notrack=1` added to the address; `?notrack=0` undoes it.
+
 ## Signing in on the website
 
 Reading, installing, and downloading skills never needs an account. Signing in with Google is needed only to file an expert review or to rate a skill.
